@@ -6,8 +6,13 @@ markup: "mmark"
 In my free time I like to work on scientific coding projects in Fortran.
 
 ## Fortran interfaces
-* [nlopt](https://github.com/ivan-pi/nlopt)
-* [METIS](https://github.com/ivan-pi/fmetis)
+
+Fortran 2003 added features for interoperability with the C programming language. These can be accesed through the intrinsic `iso_c_binding` module and allow smooth interfacing between the two languages for a certain set of interoperable types. This way Fortran programmers can gain access to the numerous libraries written in C/C++ and vice versa.
+
+Using the C-Fortran interoperability I have written Fortran interfaces for the following (scientific) software libraries:
+
+* [nlopt](https://github.com/ivan-pi/nlopt): library for nonlinear optimization
+* [METIS](https://github.com/ivan-pi/fmetis): Serial Graph Partitioning and Fill-reducing Matrix Ordering
 * [FLANN](https://github.com/ivan-pi/flann):
 Fast Library for Approximate Nearest Neighbors (original library [here](http://people.cs.ubc.ca/~mariusm/flann))
 
