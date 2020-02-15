@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Setting up a personal website using Hugo | Ivan Pribec</title>
+
+    <style>body{margin:40px auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0 10px}h1,h2,h3{line-height:1.2}div.header h1{padding-top:0;padding-bottom:8px;margin-bottom:24px;font-size:18px;font-weight:400;border-bottom:1px solid}.header-menu{float:right}ul.pagination{list-style-type:none;text-align:center;padding:0}ul.pagination>li{padding:0 8px;display:inline-block}div.footer{border-top:1px solid;text-align:center}img{max-width:100%;max-height:100%;display:block;margin-left:auto;margin-right:auto}a:link{color:#3070b3}a:hover{color:#e37222}</style>
+
+    
+</head>
+
+<body>
+<div class="header">
+    <h1>
+        <a href="/">Ivan Pribec</a>
+        <div class="header-menu">
+            <a href="/posts/">blog</a>
+            <a href="/code/">code</a>
+            <a href="/now/">now</a>
+        </div>
+    </h1>
+</div>
+<div id="content">
+
+<header>
+    <h1>Setting up a personal website using Hugo</h1>
+    
+
+<div class="post-meta">
+    Date &#x5b;
+    <time datetime="2020-02-15">Feb 15, 2020</time>
+    &#x5d;
+    Categories &#x5b;
+    <a href="/categories/development/">Development</a>
+    <a href="/categories/hugo/">Hugo</a>
+    &#x5d;
+</div>
+</header>
+<article>
+    
+
+<p>As many before me, I&rsquo;ve decided I need a website to share some of my work and ideas in an uncensored fashion. I set up this page almost a year ago, but I didn&rsquo;t add any content in the meanwhile. This was in part simply due to lack of motivation and second due to focusing on other projects (I&rsquo;m saving some of these for blog posts).</p>
+
+<p>Getting back to the website was easier this time round. Still I have decided to document the process of creating this website, so I can come back to it easily at any future point (hopefully in sooner than one year).</p>
+
+<p>Since this post is aimed mostly towards myself, I might come back and add further instructions as I move along.</p>
+
+<h2 id="installing-hugo">Installing Hugo</h2>
+
+<p>To install Hugo on Linux I followed the instructions <a href="https://gohugo.io/getting-started/installing/#install-hugo-from-tarball">here</a> under the section &ldquo;Install Hugo from Tarball&rdquo;. Releases can be found at <a href="https://github.com/gohugoio/hugo/releases">https://github.com/gohugoio/hugo/releases</a>.</p>
+
+<p>After downloading the right tarball, I used the following commands to verify wasn&rsquo;t corrupted during the download, and install Hugo into my local <code>bin</code> directory:</p>
+
+<pre><code>tar tvf hugo_0.55.6_Linux-64bit.tar.gz
+cd ~/.local/bin
+tar -xvzf ~/Downloads/hugo_0.55.6_Linux-64bit.tar.gz
+</code></pre>
+
+<p>To check installation was succesful I ran the command</p>
+
+<pre><code>$ hugo version
+Hugo Static Site Generator v0.55.6-A5D4C82D linux/amd64 BuildDate: 2019-05-18T07:56:30Z
+</code></pre>
+
+<p>The <a href="https://gohugo.io/categories/getting-started">Getting Started</a> from Hugo contains tons of helpful information to move forward.</p>
+
+<h2 id="adding-blog-posts">Adding blog posts</h2>
+
+<p>To add a blog post just create a content file <code>/content/posts/&lt;FILE&gt;.&lt;FORMAT&gt;</code> and provide the needed metadata and post content. The metadata is stored in the <a href="https://gohugo.io/content-management/front-matter/">front matter</a> of a post using either YAML (identified by opening and closing <code>+++</code>), TOML (identified by opening or closing <code>---</code>) or JSON (a single JSON object surrounded by curly braces <code>{</code> and <code>}</code>, followed by a new line).</p>
+
+<p>The command</p>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">hugo new posts/my-latest-post.md</code></pre></div>
+<p>can be used to create a new content file and automatically set the date and title. The command will guess the type file of to create based on the path provided. The command should be run within the root directory of the site.</p>
+
+<p><a href="https://gohugo.io/content-management/archetypes/">Archetype</a> templates can be used to preconfigure the front matter and possibly also the content dispositions for the the different content types.</p>
+
+<h2 id="displaying-math-using-katex">Displaying math using Katex</h2>
+
+<p>Math can be rendered using the <a href="https://katex.org/">Katex</a> engine. The necessary lines of HTML to achieve this are found in the partials folder <code>\themes\mytheme\layouts\partials\</code> in the file <code>katex.html</code>.</p>
+
+<p>To use math in a post it is necessary to set the following two page variables:</p>
+
+<pre><code>markup: &quot;mmark&quot;
+katex: &quot;true&quot;
+</code></pre>
+
+<p>Consult the <a href="https://katex.org/docs/supported.html">Supported Functions</a> page to make sure if a TeX function is supported or not.</p>
+
+</article>
+
+
+    </div>
+
+<div class="footer">
+    
+    
+    <div class="footer-links">
+        <a href="/https:/github.com/ivan-pi">GitHub</a>
+        <a href="/posts/index.xml">RSS</a>
+    </div>
+    
+
+    
+    
+    <div class="copyright">© 2019 — Ivan Pribec — All rights reserved.</div>
+    
+
+</div>
+
+
+</body>
+
+</html>

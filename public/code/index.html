@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Code development | Ivan Pribec</title>
+
+    <style>body{margin:40px auto;max-width:650px;line-height:1.6;font-size:18px;color:#444;padding:0 10px}h1,h2,h3{line-height:1.2}div.header h1{padding-top:0;padding-bottom:8px;margin-bottom:24px;font-size:18px;font-weight:400;border-bottom:1px solid}.header-menu{float:right}ul.pagination{list-style-type:none;text-align:center;padding:0}ul.pagination>li{padding:0 8px;display:inline-block}div.footer{border-top:1px solid;text-align:center}img{max-width:100%;max-height:100%;display:block;margin-left:auto;margin-right:auto}a:link{color:#3070b3}a:hover{color:#e37222}</style>
+
+    
+</head>
+
+<body>
+<div class="header">
+    <h1>
+        <a href="/">Ivan Pribec</a>
+        <div class="header-menu">
+            <a href="/posts/">blog</a>
+            <a href="/code/">code</a>
+            <a href="/now/">now</a>
+        </div>
+    </h1>
+</div>
+<div id="content">
+
+<header>
+    <h1>Code development</h1>
+    
+
+<div class="post-meta">
+    
+</div>
+</header>
+<article>
+    <p>In my free time I like to work on scientific coding projects in Fortran.</p>
+
+<h2 id="fortran-interfaces">Fortran interfaces</h2>
+
+<ul>
+<li><a href="https://github.com/ivan-pi/nlopt">nlopt</a></li>
+<li><a href="https://github.com/ivan-pi/fmetis">METIS</a></li>
+<li><a href="https://github.com/ivan-pi/flann">FLANN</a>:
+Fast Library for Approximate Nearest Neighbors (original library <a href="http://people.cs.ubc.ca/~mariusm/flann">here</a>)</li>
+</ul>
+
+<h2 id="legacy-code">Legacy code</h2>
+
+<ul>
+<li><a href="https://github.com/ivan-pi/TOMS-494">Algorithm 494: PDEONE</a> is a subroutine developed by Sincovec and Madsen in 1975 for solving one-dimensional systems of PDEs using the method of lines. Second-order centered difference approximations are used to discretize the spatial variable and yield a system of ordinary differential equations that can be integrated in time with a robust ODE integrator (like LSODE).</li>
+<li><a href="https://github.com/ivan-pi/TOMS-Algorithm-675">Algorithm 675</a>: Fortran subroutines for computing the square root covariance filter and square root information filter in dense and hessenberg forms; codes are provided for the square root covariance filter and the square root information filter.</li>
+<li><a href="https://github.com/ivan-pi/stroud_quad">Quadrature routines from Stroud &amp; Secrest</a> - An updated version of the routines from the book <em>Gaussian quadrature formulas</em> by A. H. Stroud and D. Secrest published in 1966. Includes routines for generatics the knots and weights of the classic Jacobi, Laguerre, and Hermite quadratures.</li>
+<li><a href="https://github.com/ivan-pi/fortran_lsp">Least squares solvers from Lawson &amp; Hanson</a> - This package contains the routines from the book <em>Solving least squares problems</em> by Lawson and Hanson (1995). Most of the routines date back to the 1974 version of the book and were developed for use at the NASA Jet Propulsion Laboratory in California, Pasadena. I have tried to modernize the interfaces of most of the subroutines. The non-negative least squares solver <code>nnls</code> appears also in <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.nnls.html"><code>scipy.optimize.nnls</code></a>.</li>
+</ul>
+
+</article>
+
+
+    </div>
+
+<div class="footer">
+    
+    
+    <div class="footer-links">
+        <a href="/https:/github.com/ivan-pi">GitHub</a>
+        <a href="/posts/index.xml">RSS</a>
+    </div>
+    
+
+    
+    
+    <div class="copyright">© 2019 — Ivan Pribec — All rights reserved.</div>
+    
+
+</div>
+
+
+</body>
+
+</html>
