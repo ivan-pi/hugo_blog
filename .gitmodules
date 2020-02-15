@@ -1,0 +1,4 @@
+[submodule "public"]
+	path = public
+	url = https://github.com/ivan-pi/ivan-pi.github.io.git
+	branch = master

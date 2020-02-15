@@ -49,3 +49,12 @@ img {
     margin-left: auto;
     margin-right: auto;
 }
+
+
+a:link {
+  color: #3070b3;
+}
+
+a:hover {
+  color: #e37222 ;
+}

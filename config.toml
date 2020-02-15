@@ -16,10 +16,11 @@ paginatePath = "page"
 copyright = "© 2019 — Ivan Pribec — All rights reserved."
 
 # Highlighting
-pygmentsCodefences = true
-pygmentsCodeFencesGuessSyntax = true
-pygmentsoptions = "linenos=table"
-pygmentsStyle = "vs"
+pygmentscodefences = true
+pygmentscodefencesguessgyntax = false
+pygmentsoptions = ""
+pygmentsstyle = "vs"
+pygmentsuseclasses = true
 
 # Taxonomies
 [taxonomies]

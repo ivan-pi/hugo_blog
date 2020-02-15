@@ -14,6 +14,7 @@ categories = [
 ]
 author = "John Doe"
 language = "en"
+draft = "true"
 +++
 
 ## Step 1. Install Hugo

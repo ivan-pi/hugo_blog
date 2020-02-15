@@ -17,7 +17,8 @@ I am a Slovenian engineering student pursuing graduate studies at the [Technical
 
 ## Research interests:
 
-* Lattice Boltzmann methods and their application to fluid dynamics, heat transfer, mass transport and reactive flows.
+* Lattice Boltzmann methods and their application to fluid dynamics, multiphase flow, mass transport, heat transfer and chemical reactions.
+* Off-lattice Boltzmann methods
 * Meshless methods in fluid and solid mechanics.
 * Computational methods for the solution of partial differential equations.
 * Mathematical modelling in the life sciences.
