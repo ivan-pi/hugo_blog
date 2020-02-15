@@ -43,6 +43,18 @@ can be used to create a new content file and automatically set the date and titl
 
 [Archetype](https://gohugo.io/content-management/archetypes/) templates can be used to preconfigure the front matter and possibly also the content dispositions for the the different content types.
 
+## Deploying the page
+
+### Host on GitHub
+
+At the moment I am hosting this website using GitHub pages as a user page located at https://ivan-pi.github.io. The sources are located at https://github.com/ivan-pi/hugo_blog. This kind of setup is described in the [Hugo](https://gohugo.io/hosting-and-deployment/hosting-on-github/) documentation.
+
+Deploying the page is automated using the `deploy.sh` script:
+```
+./deploy.sh [message]
+```
+which accepts an optional commit message. The page should be up and running within a couple minutes.
+
 ## Displaying math using Katex
 
 Math can be rendered using the [Katex](https://katex.org/) engine. The necessary lines of HTML to achieve this are found in the partials folder `\themes\mytheme\layouts\partials\` in the file `katex.html`.
