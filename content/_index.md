@@ -21,7 +21,7 @@ I am a Slovenian engineering student pursuing graduate studies at the [Technical
 * Off-lattice Boltzmann methods
 * Meshless methods in fluid and solid mechanics.
 * Computational methods for the solution of partial differential equations.
-* Mathematical modelling in the life sciences.
+* Mathematical modelling in life sciences.
 
 ## Background
 

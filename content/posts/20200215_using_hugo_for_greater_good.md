@@ -5,11 +5,13 @@ draft: false
 categories: ["Development","Hugo"]
 tags:
 keywords: ["Hugo"]
+markup: "mmark"
+katex: "true"
 ---
 
 As many before me, I've decided I need a website to share some of my work and ideas in an uncensored fashion. I set up this page almost a year ago, but I didn't add any content in the meanwhile. This was in part simply due to lack of motivation and second due to focusing on other projects (I'm saving some of these for blog posts).
 
-Getting back to the website was easier this time round. Still I have decided to document the process of creating this website, so I can come back to it easily at any future point (hopefully in sooner than one year).
+Getting back to the website was easier this time round. Still I have decided to document the process of creating the website, so I can come back to it easily at any future point (hopefully sooner than one year).
 
 Since this post is aimed mostly towards myself, I might come back and add further instructions as I move along.
 
@@ -57,6 +59,8 @@ which accepts an optional commit message. The page should be up and running with
 
 ## Displaying math using Katex
 
+### Latex
+
 Math can be rendered using the [Katex](https://katex.org/) engine. The necessary lines of HTML to achieve this are found in the partials folder `\themes\mytheme\layouts\partials\` in the file `katex.html`.
 
 To use math in a post it is necessary to set the following two page variables:
@@ -66,3 +70,28 @@ katex: "true"
 ```
 
 Consult the [Supported Functions](https://katex.org/docs/supported.html) page to make sure if a TeX function is supported or not.
+
+---
+
+Warning: mmark will be deprecated in the future, so a different solution will be needed.
+
+---
+
+### Equation numbering
+
+A numbered equation shortcode has been added to simple Hugo theme in `themes/simple-hugo-theme/layouts/shortcodes/neq.html` and can be called as follows:
+```
+{{</* neq 1 "E=mc^2"  */>}}
+```
+where the first argument is the displayed equation number, and the second argument is a valid KaTeX formula (enclosed between quotation marks).
+
+Sample output:
+
+{{< neq 1 "E=mc^2"  >}}
+
+At the moment referencing must be performed manually. If you find of a better solution for equation numbering, please let me know.
+
+Related:
+* [KaTeX \tag hack](https://jsfiddle.net/p9du5Lgq/5/?utm_source=website&utm_medium=embed&utm_campaign=p9du5Lgq)
+* [Equation numbering (KaTeX issue)](https://github.com/KaTeX/KaTeX/issues/350)
+
