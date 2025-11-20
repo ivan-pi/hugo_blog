@@ -39,6 +39,10 @@ pygmentsuseclasses = true
     name = "code"
     weight = 4
   [[menu.main]]
+    url = "/diary/"
+    name = "diary"
+    weight = 4
+  [[menu.main]]
     url = "/now/"
     name = "now"
     weight = 5
