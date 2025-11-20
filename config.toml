@@ -6,8 +6,9 @@ languageCode = "en-us"
 theme = "simple-hugo-theme"
 
 # Pagination
-paginate = 3
-paginatePath = "page"
+[pagination]
+  pagerSize = 3
+  path = "page"
 
 # Google analytics
 # googleAnalytics = ""
