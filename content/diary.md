@@ -1,5 +1,6 @@
 ---
 title: "Diary"
+markup: "goldmark"
 ---
 
 A chronological collection of things I've found interesting.

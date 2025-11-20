@@ -1,6 +1,6 @@
 ---
 title: "What I'm doing now"
-markup: "mmark"
+markup: "goldmark"
 katex: true
 ---
 

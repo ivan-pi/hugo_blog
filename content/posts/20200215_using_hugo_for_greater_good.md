@@ -5,7 +5,7 @@ draft: false
 categories: ["Development","Hugo"]
 tags:
 keywords: ["Hugo"]
-markup: "mmark"
+markup: "goldmark"
 katex: "true"
 ---
 

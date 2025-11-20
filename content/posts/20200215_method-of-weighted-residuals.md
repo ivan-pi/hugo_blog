@@ -2,7 +2,7 @@
 title: "Solution of a steady-state reaction-diffusion problem by the method of weighted residuals"
 date: 2020-02-15T20:47:20+01:00
 draft: true
-markup: "mmark"
+markup: "goldmark"
 katex: true
 ---
 

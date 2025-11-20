@@ -1,6 +1,6 @@
 ---
 title: "Code development"
-markup: "mmark"
+markup: "goldmark"
 ---
 
 In my free time I like to work on scientific coding projects in Fortran.

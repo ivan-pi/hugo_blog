@@ -3,7 +3,7 @@ title = "Ivan Pribec"
 languageCode = "en-us"
 
 # Theme to use
-theme = "simple-hugo-theme"
+theme = "hugo-bearblog"
 
 # Pagination
 [pagination]
@@ -22,6 +22,12 @@ pygmentscodefencesguessgyntax = false
 pygmentsoptions = ""
 pygmentsstyle = "vs"
 pygmentsuseclasses = true
+
+[markup]
+defaultMarkdownHandler = "goldmark"
+
+  [markup.goldmark.renderer]
+  unsafe = true
 
 # Taxonomies
 [taxonomies]
