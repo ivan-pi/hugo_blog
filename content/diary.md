@@ -1,9 +1,22 @@
 ---
 title: "Diary"
-markup: "goldmark"
 ---
 
 A chronological collection of things I've found interesting.
+
+## 2025-11-26
+
+- [Why Systolic Architectures?](https://www.eecs.harvard.edu/~htk/publication/1982-kung-why-systolic-architecture.pdf) (PDF, 2.4 MB)
+- [Flang Documentation](https://flang.llvm.org/docs/index.html)
+- [The Practitioner's Cookbook for Good Parallel Performance on Multi- and Many-Core Systems | RRZE](https://blogs.fau.de/hager/files/2013/11/sc13_tutorial_134.pdf) (PDF, 7.1 MB)
+- [Performance Analysis of the Apple AMX Matrix Accelerator | Jonathan Zhou](https://commit.csail.mit.edu/papers/2025/Jonathan_Zhou_SB_Thesis.pdf) (PDF, 1777 KB)
+- [Counting cycles and instructions on ARM-based Apple systems | Daniel Lemire](https://lemire.me/blog/2023/03/21/counting-cycles-and-instructions-on-arm-based-apple-systems/)
+- [Apple Firestorm/Icestorm CPU microarchitecture docs](https://github.com/dougallj/applecpu?tab=readme-ov-file)
+- [Finding and evaluating AMX co-processors in Apple silicon chips](https://eclecticlight.co/2023/12/13/finding-and-evaluating-amx-co-processors-in-apple-silicon-chips/)
+- [Apple vs. Oranges: Evaluating the Apple Silicon M-Series SoCs for HPC Performance and Efficiency](https://arxiv.org/abs/2502.05317)
+- [A64 SIMD Instruction List: SVE Instructions](https://dougallj.github.io/asil/index.html)
+- [High Performance Computing Class | FSU Jena](https://scalable.uni-jena.de/opt/hpc/index.html)
+- [Designing a SIMD Algorithm from Scratch | mcyoung](https://mcyoung.xyz/2023/11/27/simd-base64/)
 
 ## 2025-11-20
 

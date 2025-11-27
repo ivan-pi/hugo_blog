@@ -1,33 +1,28 @@
 baseurl = ""
 title = "Ivan Pribec"
+theme = "hugo-simple"
+defaultContentLanguage = "en"
 languageCode = "en-us"
-
-# Theme to use
-theme = "hugo-bearblog"
+copyright = "© 2025 — Ivan Pribec — All rights reserved."
+timeZone = "Local"
 
 # Pagination
 [pagination]
-  pagerSize = 3
+  pagerSize = 10
   path = "page"
-
-# Google analytics
-# googleAnalytics = ""
-
-# Copyright
-copyright = "© 2019 — Ivan Pribec — All rights reserved."
-
-# Highlighting
-pygmentscodefences = true
-pygmentscodefencesguessgyntax = false
-pygmentsoptions = ""
-pygmentsstyle = "vs"
-pygmentsuseclasses = true
 
 [markup]
 defaultMarkdownHandler = "goldmark"
+[markup.goldmark.renderer]
+unsafe = true
+[markup.highlight]
+lineNos = false
+lineNumbersInTable = false
+noClasses = true
+style = "catppuccin-latte"
 
-  [markup.goldmark.renderer]
-  unsafe = true
+
+disableKinds = ["taxonomy"]
 
 # Taxonomies
 [taxonomies]
@@ -36,23 +31,28 @@ defaultMarkdownHandler = "goldmark"
 
 # Menu
 [menu]
+[[menu.main]]
+name = "home"
+pageRef = "/"
+weight=1
+
   # Header
   [[menu.main]]
     url = "/posts/"
     name = "blog"
-    weight = 1
+    weight = 10
   [[menu.main]]
     url = "/code/"
     name = "code"
-    weight = 4
+    weight = 40
   [[menu.main]]
     url = "/diary/"
     name = "diary"
-    weight = 4
+    weight = 40
   [[menu.main]]
     url = "/now/"
     name = "now"
-    weight = 5
+    weight = 50
 
   # Footer
   [[menu.footer]]
@@ -70,8 +70,15 @@ defaultMarkdownHandler = "goldmark"
   posts = "/posts/:year/:month/:title/"
 
 [params]
-  # Date format (default: Jan 2, 2006)
-  # datefmt  = "Jan 2, 2006"
-  # enable_katex = true
-  katex = true
-  custom_css = ["css/address.css"]
+# Date format (default: Jan 2, 2006)
+# datefmt  = "Jan 2, 2006"
+# enable_katex = true
+katex = true
+custom_css = ["css/address.css"]
+title = "Ivan Pribec"
+description = "Ivan's personal website"
+dateFormat = "2006-01-02"
+hideMadeWithLine = true
+hideRSSLink = true
+[params.author]
+name = "Ivan Pribec"

@@ -1,7 +1,6 @@
-[submodule "public"]
-	path = public
-	url = https://github.com/ivan-pi/ivan-pi.github.io.git
-	branch = master
 [submodule "themes/hugo-bearblog"]
 	path = themes/hugo-bearblog
 	url = https://github.com/janraasch/hugo-bearblog.git
+[submodule "themes/hugo-simple"]
+	path = themes/hugo-simple
+	url = https://github.com/maolonglong/hugo-simple.git
