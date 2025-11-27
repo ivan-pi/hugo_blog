@@ -1,7 +1,5 @@
 ---
 title: "What I'm doing now"
-markup: "goldmark"
-katex: true
 ---
 
 This is my [/now](https://sivers.org/nowff) page, inspired by Derek Sivers and others at [nownownow.com](https://nownownow.com/).
