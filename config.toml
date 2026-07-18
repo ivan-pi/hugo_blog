@@ -1,4 +1,4 @@
-baseurl = ""
+baseURL = "https://ivan-pi.github.io/"
 title = "Ivan Pribec"
 theme = "hugo-simple"
 defaultContentLanguage = "en"

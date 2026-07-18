@@ -1,0 +1,11 @@
+# Hugo build output.
+# The rendered site is deployed as a *separate* git repository (the
+# ivan-pi.github.io GitHub Pages repo) by deploy.sh, so it must not be
+# committed here in the sources.
+/public/
+
+# Hugo's generated resource cache (regenerated on every build).
+/resources/_gen/
+
+# Hugo build lock file.
+.hugo_build.lock

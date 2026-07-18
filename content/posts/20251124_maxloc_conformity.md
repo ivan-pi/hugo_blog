@@ -1,6 +1,13 @@
--- Minloc test issue ---
+---
+title: "Zero-sized arrays and the maxloc/minloc conformity issue"
+date: 2025-11-24
+draft: true
+tags: ["Fortran", "maxloc", "minloc", "compilers"]
+---
 
-https://community.intel.com/t5/Intel-Fortran-Compiler/Incorrect-minloc-maxloc-results-with-ifx-2024-0/td-p/1549287
+Reference links:
+
+- Intel forum thread: <https://community.intel.com/t5/Intel-Fortran-Compiler/Incorrect-minloc-maxloc-results-with-ifx-2024-0/td-p/1549287>
 
 GodBolt reproducer
 https://godbolt.org/z/aWf119h3a

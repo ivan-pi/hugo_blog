@@ -1,0 +1,48 @@
+{{- /*
+  Project-level custom <head> additions.
+
+  This file OVERRIDES the theme's empty layouts/_partials/custom_head.html
+  (Hugo merges the project's layouts/ directory on top of the theme's).
+
+  It restores two things the previous theme used to provide but the current
+  "hugo-simple" theme does not:
+
+    1. KaTeX math rendering  — loaded whenever math is enabled for the page.
+    2. Extra stylesheets     — every path listed under `custom_css` in the
+                               site configuration (the theme itself ignores
+                               that config key).
+*/ -}}
+
+{{- /* ---- 1. Math rendering via KaTeX ---------------------------------- */ -}}
+{{- /* Default to the site-wide `katex` setting, but let a page override it
+       with its own `katex:` front-matter value. */ -}}
+{{- $katex := site.Params.katex -}}
+{{- if isset .Params "katex" -}}{{- $katex = .Params.katex -}}{{- end -}}
+{{- if $katex }}
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+    crossorigin="anonymous" />
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"
+    crossorigin="anonymous"></script>
+  <script
+    defer
+    src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '$', right: '$', display: false }
+      ],
+      throwOnError: false
+    });"></script>
+{{- end }}
+
+{{- /* ---- 2. Extra stylesheets from the `custom_css` config key --------- */ -}}
+{{- range site.Params.custom_css }}
+  <link rel="stylesheet" href="{{ . | relURL }}" />
+{{- end }}
