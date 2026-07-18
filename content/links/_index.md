@@ -18,7 +18,10 @@ For my running, dated log of interesting links and papers, see the [Diary](/link
 
 ## Blogs & people I follow
 
+- [Computers can be understood — Aleksa Gordić](https://www.aleksagordic.com/blog)
 - [Degenerate Conic — Jacob Williams](https://degenerateconic.com/)
+- [John D. Cook](https://www.johndcook.com/blog/)
 - [Matt Godbolt](https://xania.org/) (created Compiler Explorer)
+- [salykova — Amanzhol Salykov](https://salykova.github.io/)
 - [SciVision](https://www.scivision.dev/)
 - [The Cyber Vanguard](https://cyber.dabamos.de/)
