@@ -183,6 +183,27 @@ overrides or supplements the theme's version. Two files live here:
 
 ---
 
+## Themes
+
+The active theme is **`hugo-simple`**, vendored as a git submodule under
+`themes/hugo-simple` (set via `theme = "hugo-simple"` in `config.toml`). A fresh
+clone gets it with `git submodule update --init themes/hugo-simple`.
+
+Themes I've tried before and since removed from the repo — kept here for
+reference in case I want to revisit one:
+
+| Theme | Source |
+|-------|--------|
+| **hugo-simple** *(in use)* | <https://github.com/maolonglong/hugo-simple> |
+| hugo-bearblog | <https://github.com/janraasch/hugo-bearblog> |
+| hugo-primer | <https://github.com/qqhann/hugo-primer> |
+| simple-hugo-theme | <https://github.com/Xzya/simple-hugo-theme> |
+
+To try one again, add it as a submodule (`git submodule add <url> themes/<name>`)
+or just clone it into `themes/`, then point `theme = "…"` in `config.toml` at it.
+
+---
+
 ## Local preview
 
 ```bash
@@ -240,9 +261,12 @@ listed in `.gitignore`, so build output never gets committed to the sources.
   It was previously empty, which produced broken absolute links in the RSS
   feed and SEO/social tags. Internal navigation uses relative links, so it
   keeps working regardless, but RSS/sitemap/Open-Graph need this set.
-- **`theme = "hugo-simple"`** — the active theme. The other folders under
-  `themes/` (`simple-hugo-theme`, `hugo-primer`, `hugo-bearblog`) are old and
-  unused; the site only uses `hugo-simple`.
+- **`theme = "hugo-simple"`** — the active theme, vendored as a submodule under
+  `themes/hugo-simple`. Themes I evaluated earlier were removed to keep the repo
+  tidy; they're listed under *Themes* above in case I want to revisit one.
+- **`locale = "en-us"`** — sets the site's language (drives the RSS `<language>`
+  tag and similar). Replaces the old `languageCode` key, which Hugo deprecated in
+  v0.158.0 in favour of `locale`.
 - **`[permalinks] posts = "/posts/:year/:month/:title/"`** — post URLs are built
   from the date and title, not the filename.
 - **`katex = true`** and **`custom_css = ["css/address.css"]`** under
