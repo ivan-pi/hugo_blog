@@ -14,6 +14,10 @@ Using the C-Fortran interoperability I have written Fortran interfaces for the f
 * [METIS](https://github.com/ivan-pi/fmetis): Serial Graph Partitioning and Fill-reducing Matrix Ordering
 * [FLANN](https://github.com/ivan-pi/flann):
 Fast Library for Approximate Nearest Neighbors (original library [here](http://people.cs.ubc.ca/~mariusm/flann))
+* [libdogleg-f](https://github.com/ivan-pi/libdogleg-f): Fortran bindings to libdogleg, a large-scale nonlinear least-squares optimization library
+* [blis-fortran](https://github.com/ivan-pi/blis-fortran): Fortran bindings for BLIS generated using Coccinelle
+
+The `libdogleg-f` and `blis-fortran` bindings were the subject of my [FOSDEM 2025 talk on writing a bindings generator with Coccinelle](https://archive.fosdem.org/2025/schedule/event/fosdem-2025-6509-easier-api-interoperability-writing-a-bindings-generator-to-c-c-with-coccinelle/).
 
 
 ## Python bindings
