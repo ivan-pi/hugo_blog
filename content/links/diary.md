@@ -109,7 +109,7 @@ cuTile:
 - [TileGym](https://github.com/NVIDIA/TileGym)
 - [NVIDIA TileIR Internals: from CuTile to MLIR/LLVM to SASS](https://maknee.github.io/blog/2026/NVIDIA-TileIR-Internals-from-CuTile-to-MLIR-LLVM-to-SASS/)
 - [CuTile on Blackwell: NVIDIA's Compiler Moat Is Already Built](https://patricktoulme.substack.com/p/cutile-on-blackwell-nvidias-compiler)
-- [CUDA Tile IR: Lessons from a Tile-Centric CUDA Dialect for MLIR](https://m-sp.org/downloads/eurollvm_2026_cuda_tile_ir.pdf) (PDF)
+- [CUDA Tile IR: Lessons from a Tile-Centric CUDA Dialect for MLIR](https://m-sp.org/downloads/eurollvm_2026_cuda_tile_ir.pdf) (PDF, 1105 KB)
 
 Interpreters:
 - [What opcode dispatch strategies are used in efficient interpreters?](https://stackoverflow.com/questions/511566/what-opcode-dispatch-strategies-are-used-in-efficient-interpreters)
@@ -126,8 +126,8 @@ Interpreters:
 - [Are Jump Tables Always Fastest](https://news.ycombinator.com/item?id=15395429)
 
 Unreachable:
-- [Portable assumptions](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p1774r4.pdf) (PDF)
-- [Function to mark unreachable code](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p0627r5.pdf) (PDF)
+- [Portable assumptions](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p1774r4.pdf) (PDF, 300 KB)
+- [Function to mark unreachable code](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p0627r5.pdf) (PDF, 96.4 KB)
 - [Why do some languages not have an 'unreachable' function?](https://langdev.stackexchange.com/questions/462/why-do-some-languages-not-have-an-unreachable-function)
 - [Unreachable Switch Statement Default Cases](https://mmore500.com/2021/03/24/switch-default.html)
 - [__assume](https://learn.microsoft.com/en-us/cpp/intrinsics/assume?view=msvc-170)
@@ -145,7 +145,7 @@ Interpreters:
 - [LuaJIT 2 beta 3 is out: Support both x32 & x64 (comment by mikemike)](https://www.reddit.com/r/programming/comments/badl2/comment/c0lrus0/)
 - [Template Interpreters | zackoverflow](https://zackoverflow.dev/writing/template-interpreters)
 - [Cheaply writing a fast interpreter - Neil Mitchell](https://youtu.be/V8dnIw3amLA?si=qCtqYOaqwbzGoln_)
-- [Branch Prediction and the Performance of Interpreters - Don’t Trust Folklore](https://inria.hal.science/hal-01100647/document) (PDF)
+- [Branch Prediction and the Performance of Interpreters - Don’t Trust Folklore](https://inria.hal.science/hal-01100647/document) (PDF, 345 KB)
 - [Relative performance of interpreter implementations](https://www.reddit.com/r/ProgrammingLanguages/comments/oq4q4a/relative_performance_of_interpreter/)
 
 ## 2026-02-05
@@ -159,12 +159,12 @@ Misc:
 
 Stencils:
 - [Compiling stencils in high performance Fortran](https://dl.acm.org/doi/epdf/10.1145/509593.509605)
-- [Register Optimizations for Stencils on GPUs](https://inria.hal.science/hal-01955542/document) (PDF)
-- [Evaluation of Programming Models and Performance for Stencil Computation on Current GPU Architectures](https://arxiv.org/pdf/2404.04441) (PDF)
+- [Register Optimizations for Stencils on GPUs](https://inria.hal.science/hal-01955542/document) (PDF, 925 KB)
+- [Evaluation of Programming Models and Performance for Stencil Computation on Current GPU Architectures](https://arxiv.org/pdf/2404.04441) (PDF, 753 KB)
 
 Batched BLAS:
 - [Batched BLAS | Innovative Computing Laboratory](https://icl.utk.edu/bblas/)
-- [KokkosKernels: Compact Layouts for Batched Blas and Sparse Matrix-Matrix multiply](https://www.netlib.org/utk/people/JackDongarra/WEB-PAGES/Batched-BLAS-2017/talk10-siva.pdf) (PDF)
+- [KokkosKernels: Compact Layouts for Batched Blas and Sparse Matrix-Matrix multiply](https://www.netlib.org/utk/people/JackDongarra/WEB-PAGES/Batched-BLAS-2017/talk10-siva.pdf) (PDF, 6.0 MB)
 
 
 Runtime dispatch:
@@ -173,7 +173,7 @@ Runtime dispatch:
 - [ax, Qax (Compiler Option) | Intel oneAPI DPC++/C++ Compiler](https://www.intel.com/content/www/us/en/docs/dpcpp-cpp-compiler/developer-guide-reference/2025-2/ax-qax.html)
 - [Function multi-versioning | MaskRay](https://maskray.me/blog/2023-02-05-function-multi-versioning)
 - [The - surprisingly limited - usefulness of function multiversioning in GCC](https://hannes.hauswedell.net/post/2017/12/09/fmv/)
-- [Architecture Specific Code Generation and Function Multiversioning | Eric Christopher](https://llvm.org/devmtg/2014-10/Slides/Christopher-Function%20Multiversioning%20Talk.pdf) (PDF)
+- [Architecture Specific Code Generation and Function Multiversioning | Eric Christopher](https://llvm.org/devmtg/2014-10/Slides/Christopher-Function%20Multiversioning%20Talk.pdf) (PDF, 136 KB)
 - [Generate code for multiple SIMD architectures](https://stackoverflow.com/questions/44479069/generate-code-for-multiple-simd-architectures)
 - [Runtime CPU Detection | Nvidia Grace CPU Benchmarking Guide](https://nvidia.github.io/grace-cpu-benchmarking-guide/developer/cpudetect.html)
 - [Intel® Intrinsics Guide](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html#text=feature)
@@ -195,14 +195,14 @@ Fortran Software Papers:
 
 Fortran Subsets (ELF90 and F):
 - [Loren Meissner, Little Giants - The New Fortran Subsets (1996)](https://dl.acm.org/doi/pdf/10.1145/263877.263884) (PDF, 425 KB)
-- [Jerry Wagener, Fortran Reflections (1997)](https://dl.acm.org/doi/pdf/10.1145/274104.274105) (PDF)
+- [Jerry Wagener, Fortran Reflections (1997)](https://dl.acm.org/doi/pdf/10.1145/274104.274105) (PDF, 393 KB)
 - [Fortran 90 subsets offer simplified environment for first-time users (1998)](https://doi.org/10.1063/1.168632)
 
 Finite Difference Calculations:
 - [An extension of FORTRAN containing finite difference operators (1972)](https://doi.org/10.1002/spe.4380020404)
 - [A Fortran program to generate finite difference formulas (1975)](https://doi.org/10.1002/nme.1620090307)
 - [FORTRAN subprograms for finite-difference formulas (1976)](https://doi.org/10.1016/0021-9991(78)90103-1)
-- [Generation of finite difference formulas on arbitrarily spaced grids (1988)](http://dx.doi.org/10.1090/S0025-5718-1988-0935077-0) (formulas are implemented [here](https://github.com/bjodah/finitediff), [authors copy](https://www.colorado.edu/amath/sites/default/files/attached-files/mathcomp_88_fd_formulas.pdf)?)
+- [Generation of finite difference formulas on arbitrarily spaced grids (1988)](http://dx.doi.org/10.1090/S0025-5718-1988-0935077-0) (formulas are implemented [here](https://github.com/bjodah/finitediff))
 - [An abstract machine for partial differential equations (1994)](https://www.proquest.com/openview/fff2a877976f61a2f96d5d5d8bebc2ae/1?pq-origsite=gscholar&cbl=18750&diss=y)
 - [Finite Difference Methods in CUDA Fortran, Part 1](https://developer.nvidia.com/blog/finite-difference-methods-cuda-fortran-part-1/)
 - [Finite Difference Methods in CUDA Fortran, Part 2](https://developer.nvidia.com/blog/finite-difference-methods-cuda-fortran-part-2/)
@@ -216,7 +216,7 @@ Misc:
 - [vpternlog: Signed Saturation](https://wunkolo.github.io/post/2025/12/vpternlog-signed-saturation/)
 - [Modal, GPU Glossary](https://modal.com/gpu-glossary/readme)
 - [Fabien Sanglard, A History of Nvidia Stream Multiprocessor](https://fabiensanglard.net/cuda/index.html)
-- [Heinz-Gerd Hegering, 50 Jahre LRZ (1962-2012)](https://www.lrz.de/fileadmin/Medien/Downloadbereich/Chroniken/LRZ-Chronik-1962-2012.pdf) (PDF)
+- [Heinz-Gerd Hegering (ed.), 50 Jahre LRZ (1962-2012)](https://www.lrz.de/fileadmin/Medien/Downloadbereich/Chroniken/LRZ-Chronik-1962-2012.pdf) (PDF, 17.6 MB)
 
 ## 2025-12-21
 
@@ -233,7 +233,7 @@ R history and other links:
 
 Co-Array Fortran Resources:
 
-- [Coarray in the next Fortran Standard | John Reid](https://wg5-fortran.org/N1801-N1850/N1824.pdf) (PDF)
+- [Coarray in the next Fortran Standard | John Reid](https://wg5-fortran.org/N1801-N1850/N1824.pdf) (PDF, 189 KB)
 - [Coarray Fortran on LRZ's HPC systems](https://doku.lrz.de/coarray-fortran-on-lrz-s-hpc-systems-10746527.html)
 - [Parallel programming with Fortran 2008 and 2018 coarrays | Anton Shterenlikht](https://coarrays.sourceforge.io/doc.html)
 - [coarray-tutorial | Thomas König](https://github.com/tkoenig1/coarray-tutorial) (look for `tutorial.md`)
