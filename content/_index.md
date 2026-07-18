@@ -31,6 +31,7 @@ My full [Curriculum Vitae](/cv/cv_ivan_pribec.pdf) is also available online.
 
 ## Profiles
 
+* [GitHub](https://github.com/ivan-pi)
 * [ORCID](https://orcid.org/0000-0001-8436-882X)
 * [Google Scholar](https://scholar.google.com/citations?user=2kZcNEgAAAAJ&hl=en)
 
