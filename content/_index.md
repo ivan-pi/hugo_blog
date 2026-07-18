@@ -1,6 +1,5 @@
 ---
 title: Ivan Pribec
-katex: true
 ---
 
 I am a Slovenian engineering student pursuing graduate studies at the [Technical University of Munich, Department of Brewing and Beverage Technology](http://lbgt.wzw.tum.de/index.php?id=5&L=1) in Freising. My research focuses on the use of lattice Boltzmann methods for simulation of physical phenomena related to food and beverage process engineering such as drying and multiphase flow.

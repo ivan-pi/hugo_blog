@@ -151,10 +151,11 @@ you set `draft: false`):
 
 ## Writing math (KaTeX)
 
-Math is rendered in the browser by [KaTeX](https://katex.org). It is loaded
-automatically (site-wide, because `config.toml` sets `katex = true` under
-`[params]`). To turn it off for a single page, add `katex: false` to that
-page's front matter.
+Math is rendered in the browser by [KaTeX](https://katex.org). It is **off by
+default** and loaded **only on pages that opt in** — add `katex: true` to the
+front matter of any post that uses `$…$`, `$$…$$`, or the `neq` shortcode.
+Pages without math don't pull in the KaTeX assets at all. (The site-wide
+default lives under `[params]` in `config.toml` as `katex = false`.)
 
 - Inline math: `$ ... $`  →  e.g. `the coefficient $b_2$` .
 - Display math: `$$ ... $$` on its own.
@@ -292,8 +293,9 @@ listed in `.gitignore`, so build output never gets committed to the sources.
   unused; the site only uses `hugo-simple`.
 - **`[permalinks] posts = "/posts/:year/:month/:title/"`** — post URLs are built
   from the date and title, not the filename.
-- **`katex = true`** and **`custom_css = ["css/address.css"]`** under
-  `[params]` — consumed by `layouts/_partials/custom_head.html` (above).
+- **`katex = false`** and **`custom_css = ["css/address.css"]`** under
+  `[params]` — consumed by `layouts/_partials/custom_head.html` (above). KaTeX
+  is off by default; a page opts in with `katex: true` in its front matter.
 - **`ignoreFiles = [ … ]`** — the safety net that stops stray scratch files
   (`.py`, `.txt`, `.f90`, …) in `content/` from being published. See "Where to
   keep unfinished work" above.
@@ -306,7 +308,7 @@ listed in `.gitignore`, so build output never gets committed to the sources.
 |---------|-------------|
 | Build error: `template for shortcode "neq" not found` | `layouts/_shortcodes/neq.html` is missing. It must exist for any post using `{{< neq … >}}`. |
 | A blog entry shows date **`0001-01-01`** and no title | That file has no front matter (or no `title`/`date`). Add front matter, or mark it `draft: true`, or move it out of `content/posts/`. |
-| Math shows as raw `$$…$$` in the browser | KaTeX didn't load. Check `katex` isn't set to `false` on the page, and that `layouts/_partials/custom_head.html` is present. |
+| Math shows as raw `$$…$$` in the browser | KaTeX didn't load — it's off by default. Add `katex: true` to that page's front matter. |
 | A finished post isn't on the live site | It's still `draft: true`. Set `draft: false` and redeploy. |
 | A scratch file (`foo.py`, `notes.txt`) got published | It was loose inside `content/`. Move it to a `notes/`/`drafts/` folder at the repo root; add its extension to `ignoreFiles` if needed. `--cleanDestinationDir` removes it from the live site on the next deploy. |
 | A deleted post/file is still live | Older Hugo left orphans in `public/`; the deploy now uses `--cleanDestinationDir`, so a redeploy removes it. |

@@ -93,8 +93,11 @@ weight=1
 [params]
 # Date format (default: Jan 2, 2006)
 # datefmt  = "Jan 2, 2006"
-# enable_katex = true
-katex = true
+# KaTeX math rendering is OFF by default (opt-in). Enable it on a page by
+# setting `katex: true` in that page's front matter — needed for any post using
+# `$…$`, `$$…$$`, or the `neq` shortcode. This keeps the KaTeX assets off the
+# pages that don't have math.
+katex = false
 custom_css = ["css/address.css"]
 title = "Ivan Pribec"
 description = "Ivan's personal website"
