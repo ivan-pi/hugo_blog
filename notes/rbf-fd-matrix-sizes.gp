@@ -19,10 +19,11 @@ m3(p)   = p*(p+1)*(p+2)/6.0
 dim(m)  = 3.0*m
 kb(m,b) = (dim(m)**2 * b) / 1024.0
 
-f2_32(p) = kb(m2(p),4)
-f2_64(p) = kb(m2(p),8)
-f3_32(p) = kb(m3(p),4)
-f3_64(p) = kb(m3(p),8)
+# defined only for polynomial order >= 1 (data starts at 1; the axis starts at 0)
+f2_32(p) = (p >= 1) ? kb(m2(p),4) : NaN
+f2_64(p) = (p >= 1) ? kb(m2(p),8) : NaN
+f3_32(p) = (p >= 1) ? kb(m3(p),4) : NaN
+f3_64(p) = (p >= 1) ? kb(m3(p),8) : NaN
 
 # --- output selection (default: SVG for the blog) ----------------------
 if (!exists("term")) term = "svg"
@@ -47,28 +48,29 @@ set title "RBF-FD system-matrix size vs. polynomial order\n{/*0.72 dense (3m)×(
 set xlabel "Polynomial order"
 set ylabel "Matrix storage (KB)"
 
-set xrange [1:15]
+set xrange [0:15]
 set xtics 1
 set yrange [0.02:60000]
 set logscale y
 set format y "%g"
 
-set samples 15          # evaluate curves exactly at integer polynomial orders
+set samples 16          # evaluate curves exactly at integer polynomial orders 0..15
 set key at graph 0.03, graph 0.97 left top reverse Left samplen 2.2 spacing 1.15 \
         font ",11" box lc rgb "#cccccc" opaque
 
 # --- L1 data cache band + reference lines ------------------------------
+# Each label is centred on its line; an opaque box masks the line behind the
+# text. The 48 KB line is dropped so the labels are not crowded.
+set style textbox opaque fillcolor rgb "white" noborder margins 0.5,0.4
 set object 1 rectangle from graph 0, first 32 to graph 1, first 128 \
         fillcolor rgb "#000000" fillstyle transparent solid 0.05 noborder behind
-set arrow 1 from graph 0, first 32  to graph 1, first 32  nohead ls 9 front
-set arrow 2 from graph 0, first 48  to graph 1, first 48  nohead ls 9 front
-set arrow 3 from graph 0, first 64  to graph 1, first 64  nohead ls 9 front
-set arrow 4 from graph 0, first 128 to graph 1, first 128 nohead ls 9 front
+set arrow 1 from graph 0, first 32  to graph 1, first 32  nohead ls 9 back
+set arrow 3 from graph 0, first 64  to graph 1, first 64  nohead ls 9 back
+set arrow 4 from graph 0, first 128 to graph 1, first 128 nohead ls 9 back
 
-set label 11 "128 KB  Apple M (P-core)" at graph 0.985, first 128 right offset 0,0.55 font ",10" tc rgb "#555555" front
-set label 12 "64 KB  Grace, A64FX"      at graph 0.985, first 64  right offset 0,0.55 font ",10" tc rgb "#555555" front
-set label 13 "48 KB  Intel, Zen 5"      at graph 0.985, first 48  right offset 0,0.55 font ",10" tc rgb "#555555" front
-set label 14 "32 KB  Zen 4"             at graph 0.985, first 32  right offset 0,0.55 font ",10" tc rgb "#555555" front
+set label 11 "128 KB  Apple M (P-core)" at 12.4, first 128 center boxed font ",10" tc rgb "#555555" front
+set label 12 "64 KB  Grace, A64FX"      at 12.4, first 64  center boxed font ",10" tc rgb "#555555" front
+set label 14 "32 KB  Zen 4"             at 12.4, first 32  center boxed font ",10" tc rgb "#555555" front
 set label 15 "L1 data cache" at graph 0.02, first 90 left font ",10" tc rgb "#777777" front
 
 # --- plot --------------------------------------------------------------
