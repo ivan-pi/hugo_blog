@@ -359,22 +359,22 @@
 	</g>
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="1.00" stroke-linecap="butt" stroke-linejoin="miter">
-	<g transform="translate(688.72,253.79)" stroke="none" fill="rgb(85,85,85)" font-family="Helvetica" font-size="10.00"  text-anchor="middle" style='filter:url(#textbox)'>
+	<g transform="translate(798.39,253.79)" stroke="none" fill="rgb(85,85,85)" font-family="Helvetica" font-size="10.00"  text-anchor="end" style='filter:url(#textbox)'>
 		<text xml:space="preserve"><tspan font-family="Helvetica"  xml:space="preserve">128 KB  Apple M (P-core)</tspan></text>
 	</g>
-	<g transform="translate(688.72,253.79)" stroke="none" fill="rgb(85,85,85)" font-family="Helvetica" font-size="10.00"  text-anchor="middle">
+	<g transform="translate(798.39,253.79)" stroke="none" fill="rgb(85,85,85)" font-family="Helvetica" font-size="10.00"  text-anchor="end">
 		<text xml:space="preserve"><tspan font-family="Helvetica"  xml:space="preserve">128 KB  Apple M (P-core)</tspan></text>
 	</g>
-	<g transform="translate(688.72,272.56)" stroke="none" fill="rgb(85,85,85)" font-family="Helvetica" font-size="10.00"  text-anchor="middle" style='filter:url(#textbox)'>
+	<g transform="translate(798.39,272.56)" stroke="none" fill="rgb(85,85,85)" font-family="Helvetica" font-size="10.00"  text-anchor="end" style='filter:url(#textbox)'>
 		<text xml:space="preserve"><tspan font-family="Helvetica"  xml:space="preserve">64 KB  Grace, A64FX</tspan></text>
 	</g>
-	<g transform="translate(688.72,272.56)" stroke="none" fill="rgb(85,85,85)" font-family="Helvetica" font-size="10.00"  text-anchor="middle">
+	<g transform="translate(798.39,272.56)" stroke="none" fill="rgb(85,85,85)" font-family="Helvetica" font-size="10.00"  text-anchor="end">
 		<text xml:space="preserve"><tspan font-family="Helvetica"  xml:space="preserve">64 KB  Grace, A64FX</tspan></text>
 	</g>
-	<g transform="translate(688.72,291.33)" stroke="none" fill="rgb(85,85,85)" font-family="Helvetica" font-size="10.00"  text-anchor="middle" style='filter:url(#textbox)'>
+	<g transform="translate(798.39,291.33)" stroke="none" fill="rgb(85,85,85)" font-family="Helvetica" font-size="10.00"  text-anchor="end" style='filter:url(#textbox)'>
 		<text xml:space="preserve"><tspan font-family="Helvetica"  xml:space="preserve">32 KB  Zen 4</tspan></text>
 	</g>
-	<g transform="translate(688.72,291.33)" stroke="none" fill="rgb(85,85,85)" font-family="Helvetica" font-size="10.00"  text-anchor="middle">
+	<g transform="translate(798.39,291.33)" stroke="none" fill="rgb(85,85,85)" font-family="Helvetica" font-size="10.00"  text-anchor="end">
 		<text xml:space="preserve"><tspan font-family="Helvetica"  xml:space="preserve">32 KB  Zen 4</tspan></text>
 	</g>
 	<g transform="translate(111.80,263.33)" stroke="none" fill="rgb(119,119,119)" font-family="Helvetica" font-size="10.00"  text-anchor="start">

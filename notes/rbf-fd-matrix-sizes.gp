@@ -68,9 +68,9 @@ set arrow 1 from graph 0, first 32  to graph 1, first 32  nohead ls 9 back
 set arrow 3 from graph 0, first 64  to graph 1, first 64  nohead ls 9 back
 set arrow 4 from graph 0, first 128 to graph 1, first 128 nohead ls 9 back
 
-set label 11 "128 KB  Apple M (P-core)" at 12.4, first 128 center boxed font ",10" tc rgb "#555555" front
-set label 12 "64 KB  Grace, A64FX"      at 12.4, first 64  center boxed font ",10" tc rgb "#555555" front
-set label 14 "32 KB  Zen 4"             at 12.4, first 32  center boxed font ",10" tc rgb "#555555" front
+set label 11 "128 KB  Apple M (P-core)" at graph 0.98, first 128 right boxed font ",10" tc rgb "#555555" front
+set label 12 "64 KB  Grace, A64FX"      at graph 0.98, first 64  right boxed font ",10" tc rgb "#555555" front
+set label 14 "32 KB  Zen 4"             at graph 0.98, first 32  right boxed font ",10" tc rgb "#555555" front
 set label 15 "L1 data cache" at graph 0.02, first 90 left font ",10" tc rgb "#777777" front
 
 # --- plot --------------------------------------------------------------
