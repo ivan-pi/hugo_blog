@@ -86,19 +86,23 @@ Reading the expression from the inside out:
   array elements in that same storage order, a single statement prints the
   triangle row by row.
 
-A small naming aside: Fortran is case-insensitive, so a parameter `N` and a
-loop variable `n` would be the *same* identifier. Calling the size `nmax`
-frees up `n` and `k` to match the mathematical notation $\binom{n}{k}$.
+### Why Fortran 2018?
 
-### Why Fortran 2023?
-
-The program relies on a Fortran 2023 feature: you may **declare the type of an
-implied-`do` variable directly inside the array constructor**, which is the
-`integer :: i = ...`, `integer :: k = ...`, and `integer :: n = ...` you see
-above. This scopes the loop index to the constructor itself and keeps the whole
-expression a constant expression — a hard requirement for initializing a
-`parameter`. You will need a compiler with Fortran 2023 support to build it (I
-used flang 22.1.8).
+The youngest ingredient is the ability to **declare the type of an implied-`do`
+index directly inside the array constructor** — the `integer :: i = ...`,
+`integer :: k = ...`, and `integer :: n = ...` you see above. Fortran 2008
+introduced in-place index declarations for `do concurrent` and `forall`;
+Fortran 2018 extended them to the implied-`do` loops of array constructors and
+`data` statements (see §5.18 of John Reid's [*The New Features of Fortran
+2018*](https://wg5-fortran.org/N2151-N2200/ISO-IECJTC1-SC22-WG5_N2161_The_New_Features_of_Fortran_2018.pdf)).
+As Steve Lionel has explained on Fortran Discourse, "declare" is almost too
+strong a word: the index is a construct-scope variable that must be an integer
+anyway, so the only real novelty is being able to state its kind in place. The
+practical payoff is tidiness — no `integer :: i, k, n` declarations lingering
+in the surrounding scope purely for the constructor's benefit, which is
+especially welcome when initializing parameters at module scope. The feature
+has been on paper since 2018, but compiler support is still thin on the
+ground — hence the very recent flang (22.1.8).
 
 ### A note on the format
 
