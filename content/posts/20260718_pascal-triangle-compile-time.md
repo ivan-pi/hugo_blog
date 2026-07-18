@@ -6,8 +6,10 @@ tags: ["Fortran", "compile-time", "metaprogramming"]
 katex: true
 ---
 
-Pascal's triangle — also known as **Khayyam's triangle** after the Persian
-mathematician and poet Omar Khayyam — arranges the binomial coefficients
+[Pascal's triangle](https://en.wikipedia.org/wiki/Pascal%27s_triangle) — also
+known as **Khayyam's triangle** after the Persian mathematician and poet Omar
+Khayyam — arranges the [binomial
+coefficients](https://en.wikipedia.org/wiki/Binomial_coefficient)
 
 {{< neq 1 "\binom{n}{k} = \frac{n!}{k!\,(n-k)!}" >}}
 
@@ -69,22 +71,16 @@ _QQroX9x9xi4X0:
         .long   1
 ```
 
-Reading the expression from the inside out:
-
-- `product([(i, integer :: i = n-k+1, n)])` forms the falling product
-  $n(n-1)\cdots(n-k+1) = n!\,/\,(n-k)!$.
-- `product([(i, integer :: i = 1, k)])` forms $k!$.
-- Their integer quotient is exactly the binomial coefficient $\binom{n}{k}$; the
-  division is exact, so no rounding sneaks in. For $k = 0$ both ranges are
-  empty, and the *empty product* is `1` — precisely the value we want for
-  $\binom{n}{0}$.
-- The two nested implied-`do` loops enumerate every coefficient for
-  $0 \le n, k \le \mathtt{nmax}$, with $k$ innermost, so the flat list is laid
-  out one triangle row after another. `reshape` then fills the square array in
-  Fortran's column-major order, which lands each printed row in one memory
-  column — element `pascal(k, n)` holds $\binom{n}{k}$. Since `write` emits
-  array elements in that same storage order, a single statement prints the
-  triangle row by row.
+The initializer itself is just equation (1) in disguise: the first `product`
+multiplies the integers from `n-k+1` up to `n`, the second gives the factorial
+of `k`, and their integer quotient is the binomial coefficient — the division
+is always exact. Two edge cases fall out for free. For `k = 0` both ranges are
+empty, and the *empty product* is `1` — exactly the value we want. And for
+`k > n` the first range runs through zero, so the numerator vanishes — those
+are the zeros filling the upper half of the table. Finally, with `k` as the
+innermost implied-`do` index the flat list comes out one triangle row after
+another, which is precisely the storage order in which `write` prints the
+reshaped array.
 
 ### Why Fortran 2018?
 
@@ -121,9 +117,9 @@ explorations of what is possible today:
 - [*Some adventures with compile time evaluation*](https://www.youtube.com/watch?v=zL9sNsjbM-w),
   Mohd Furquan, FortranCon 2021
 - [*Computing at compile time*](https://fortran-lang.discourse.group/t/computing-at-compile-time/3044),
-  Fortran Discourse
+  Fortran Discourse, March 2022
 - [*Compile Time Computing*](https://community.intel.com/t5/Intel-Fortran-Compiler/Compile-Time-Computing/td-p/1588060),
-  Intel Fortran Compiler Forum
+  Intel Fortran Compiler Forum, April 2024
 
 And if you enjoy the triangle itself, it stars in one of my favourite Veritasium
 videos, [*The Discovery That Transformed Pi*](https://www.youtube.com/watch?v=gMlf1ELvRzc)
