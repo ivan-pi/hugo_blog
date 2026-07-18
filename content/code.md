@@ -19,9 +19,10 @@ Fast Library for Approximate Nearest Neighbors (original library [here](http://p
 ## Python bindings
 
 * [zvode](https://ivan-pi.github.io/zvode/): Python bindings to the classic ZVODE ODE solver.
+* [phs_poly](https://pypi.org/project/phs-poly/): Procedures for generating RBF-FD weights for derivative calculations.
 
 
-## fpm tooling
+## Fortran tooling
 
 * [fpm-deps and fpm-tree](https://ivan-pi.github.io/fpm-deps/): `fpm-deps` generates dependency graphs of [fpm](https://fpm.fortran-lang.org/) packages, with `fpm-tree` as a companion tool.
 
