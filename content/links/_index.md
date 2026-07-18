@@ -8,6 +8,8 @@ For my running, dated log of interesting links and papers, see the [Diary](/link
 
 ## People I've collaborated with
 
+*Listed alphabetically by surname.*
+
 - [David Benson](https://geology.mines.edu/project/benson-david/)
 - [Ondřej Čertík](https://ondrejcertik.com/)
 - [Milan Curcic](https://milancurcic.com/)
