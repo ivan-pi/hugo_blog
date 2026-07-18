@@ -16,6 +16,16 @@ Using the C-Fortran interoperability I have written Fortran interfaces for the f
 Fast Library for Approximate Nearest Neighbors (original library [here](http://people.cs.ubc.ca/~mariusm/flann))
 
 
+## Python bindings
+
+* [zvode](https://ivan-pi.github.io/zvode/): Python bindings to the classic ZVODE ODE solver.
+
+
+## fpm tooling
+
+* [fpm-deps and fpm-tree](https://ivan-pi.github.io/fpm-deps/): `fpm-deps` generates dependency graphs of [fpm](https://fpm.fortran-lang.org/) packages, with `fpm-tree` as a companion tool.
+
+
 ## Legacy code
 
 * [Algorithm 494: PDEONE](https://github.com/ivan-pi/TOMS-494) is a subroutine developed by Sincovec and Madsen in 1975 for solving one-dimensional systems of PDEs using the method of lines. Second-order centered difference approximations are used to discretize the spatial variable and yield a system of ordinary differential equations that can be integrated in time with a robust ODE integrator (like LSODE).
