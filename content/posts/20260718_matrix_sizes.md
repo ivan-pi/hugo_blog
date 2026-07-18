@@ -69,16 +69,16 @@ Here are the L1 data cache sizes of a few recent CPU architectures:
 | AMD Zen 5                | 48                  |
 | AMD Zen 4                | 32                  |
 
-The figure below ties the two together: it extends the storage estimates out to
-polynomial order 15 and overlays these L1 data cache sizes as horizontal
-references. Storage scales with the *square* of the number of polynomial terms,
-so a logarithmic vertical axis is used.
+The figure below plots the matrix storage against polynomial order out to 15,
+with the L1 data cache sizes drawn as horizontal references. Storage scales with
+the *square* of the number of polynomial terms, so the vertical axis is
+logarithmic.
 
 <figure>
 <object type="image/svg+xml" data="/images/rbf-fd-matrix-sizes.svg" style="display:block; width:100%; max-width:840px; aspect-ratio:3/2; height:auto; margin-inline:auto;">
 <img src="/images/rbf-fd-matrix-sizes.svg" alt="Log-scale plot of RBF-FD system-matrix storage in kilobytes versus polynomial order from 1 to 15, for 2-D and 3-D approximations in single and double precision, with horizontal lines marking the 32, 48, 64 and 128 KB L1 data cache sizes of recent CPUs." />
 </object>
-<figcaption>System-matrix storage vs. polynomial order for the <em>twice the number of polynomial terms</em> stencil heuristic, in single (fp32) and double (fp64) precision. Horizontal lines mark representative L1 data cache sizes; in 3-D the matrices climb out of the L1 cache range by around polynomial order 5&ndash;6. <em>Interactive:</em> hover to read off values, and click a legend entry to toggle a curve.</figcaption>
+<figcaption>System-matrix storage vs. polynomial order for the <em>twice the number of polynomial terms</em> stencil heuristic, in single (fp32) and double (fp64) precision. Horizontal lines mark representative L1 data cache sizes. <em>Interactive:</em> hover to read off values, and click a legend entry to toggle a curve.</figcaption>
 </figure>
 
 For polynomials below order 7 in 2D (or 5 in 3D) the RBF-FD matrices fit comfortably in the lowest cache level.
