@@ -95,7 +95,9 @@ introduced in-place index declarations for `do concurrent` and `forall`;
 Fortran 2018 extended them to the implied-`do` loops of array constructors and
 `data` statements (see §5.18 of John Reid's [*The New Features of Fortran
 2018*](https://wg5-fortran.org/N2151-N2200/ISO-IECJTC1-SC22-WG5_N2161_The_New_Features_of_Fortran_2018.pdf)).
-As Steve Lionel has explained on Fortran Discourse, "declare" is almost too
+As Steve Lionel has explained [on Fortran
+Discourse](https://fortran-lang.discourse.group/t/declare-variables-inside-loops/3395),
+"declare" is almost too
 strong a word: the index is a construct-scope variable that must be an integer
 anyway, so the only real novelty is being able to state its kind in place. The
 practical payoff is tidiness — no `integer :: i, k, n` declarations lingering
