@@ -4,6 +4,35 @@ title: "Diary"
 
 A chronological collection of things I've found interesting.
 
+## 2026-07-18
+
+GPU & Accelerated Computing:
+- [Inside TPU and GPU Clusters: The Anatomy of Collective Communication | Aleksa Gordić](https://www.aleksagordic.com/blog/collective-operations)
+- [Porting High-Performance HIP Kernels to FlyDSL | AMD ROCm Blogs](https://rocm.blogs.amd.com/software-tools-optimization/porting-hip-flydsl/README.html)
+- [Understanding ATen: PyTorch's tensor library | Red Hat Developer](https://developers.redhat.com/articles/2026/02/19/understanding-aten-pytorchs-tensor-library#)
+- [MatX - GPU-Accelerated Numerical Computing in Modern C++ | NVIDIA](https://github.com/NVIDIA/matx)
+- [Metal Compute Shaders And C++](https://www.smish.dev/programming/metal_compute_cpp/metal_compute_cpp.pdf) (PDF)
+
+Linear Algebra:
+- [Show HN: LAPACK without Fortran77; a C11 translation (github.com/ilayn)](https://news.ycombinator.com/item?id=47644703)
+- [semicolon-lapack](https://github.com/ilayn/semicolon-lapack)
+
+AI Compute Extensions (ACE):
+- [Intel Posts Initial GCC Compiler Patches For AI Compute Extensions "ACE" | Phoronix](https://www.phoronix.com/news/Intel-GCC-ACE-AI-Patches)
+- [The AI Compute Extensions (ACE) for x86](https://x86ecosystem.org/wp-content/uploads/2026/03/ACE-Whitepaper-v1.pdf) (PDF, 147 KB)
+
+Finite Elements & CFD:
+- [Templated FEM kernels: Benefits and Drawbacks](https://www.smish.dev/programming/dynamic_kernel_refactor/)
+- [From Particles on a Grid to the Wind Tunnel’s Digital Rival: The Rise of LBM in Defense Aviation | Dassault Systèmes SIMULIA](https://blog.3ds.com/brands/simulia/from-particles-grid-wind-tunnel-digital-rival-rise-lbm-defense-aviation/)
+
+Programming:
+- [Story-time: C++, bounds checking, performance, and compilers | Chandler Carruth](https://chandlerc.blog/posts/2024/11/story-time-bounds-checking/)
+- [The Second Coming of the Command Line](https://cautomaton.com/articles/second-coming-of-the-command-line/)
+
+Life Advice:
+- [Life Lessons from the First Half-Century of My Career | Communications of the ACM](https://cacm.acm.org/opinion/life-lessons-from-the-first-half-century-of-my-career/)
+- [What the Middle Ages can teach us about preventing burnout | BBC Culture](https://www.bbc.com/culture/article/20260713-what-the-middle-ages-can-teach-us-about-burnout)
+
 ## 2026-05-28
 
 - [Architecture & Systems are Changing: The Architect’s Role in the Era of Agentic Co-Design | Computer Architecture Today](https://www.sigarch.org/architecture-systems-are-changing-the-architects-role-in-the-era-of-agentic-co-design/)
