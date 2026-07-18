@@ -239,18 +239,18 @@ Co-Array Fortran Resources:
 
 Co-Array Fortran Articles:
 
-- Numrich, R. W., Reid, J., & Kim, K. (1998, June). Writing a multigrid solver using co-array fortran. In International Workshop on Applied Parallel Computing (pp. 390-399). Berlin, Heidelberg: Springer Berlin Heidelberg. https://doi.org/10.1007/BFb0095362
-- Dotsenko, Y., Coarfa, C., & Mellor-Crummey, J. (2004, October). A multi-platform co-array fortran compiler. In Proceedings. 13th International Conference on Parallel Architecture and Compilation Techniques, 2004. PACT 2004. (pp. 29-40). IEEE. https://dl.acm.org/doi/10.5555/1025127.1025994
-- Numrich, R. W., & Reid, J. (2005, August). Co-arrays in the next Fortran standard. In ACM SIGPLAN Fortran Forum (Vol. 24, No. 2, pp. 4-17). New York, NY, USA: ACM. https://doi.org/10.1145/1080399.1080400
-- Numrich, R. W. (2005, September). A parallel numerical library for co-array Fortran. In International Conference on Parallel Processing and Applied Mathematics (pp. 960-969). Berlin, Heidelberg: Springer Berlin Heidelberg. https://doi.org/10.1007/11752578_116
-- Numrich, R. W. (2005). Parallel numerical algorithms based on tensor notation and Co-Array Fortran syntax. Parallel Computing, 31(6), 588-607. https://doi.org/10.1016/j.parco.2005.03.003
-- Mellor-Crummey, J., Adhianto, L., Scherer III, W. N., & Jin, G. (2009, October). A new vision for Coarray Fortran. In Proceedings of the Third Conference on Partitioned Global Address Space Programing Models (pp. 1-9). https://doi.org/10.1145/1809961.1809969
-- Eachempati, D., Jun, H. J., & Chapman, B. (2010, October). An open-source compiler and runtime implementation for Coarray Fortran. In Proceedings of the Fourth Conference on Partitioned Global Address Space Programming Model (pp. 1-8). https://doi.org/10.1145/2020373.2020386
-- Eachempati, D., Richardson, A., Liao, T., Calandra, H., & Chapman, B. (2012, November). A coarray fortran implementation to support data-intensive application development. In 2012 SC Companion: High Performance Computing, Networking Storage and Analysis (pp. 771-776). IEEE. https://doi.org/10.1109/SC.Companion.2012.106
-- Mallinson, A. C., Jarvis, S. A., Gaudin, W. P., & Herdman, J. A. (2014, October). Experiences at scale with PGAS versions of a Hydrodynamics application. In Proceedings of the 8th International Conference on Partitioned Global Address Space Programming Models (pp. 1-11). https://doi.org/10.1145/2676870.2676873
-- Garain, S., Balsara, D. S., & Reid, J. (2015). Comparing Coarray Fortran (CAF) with MPI for several structured mesh PDE applications. Journal of Computational Physics, 297, 237-253. https://doi.org/10.1016/j.jcp.2015.05.020
-- Sharma, A., & Moulitsas, I. (2017). MPI to Coarray Fortran: experiences with a CFD solver for unstructured meshes. Scientific Programming, 2017(1), 3409647. https://doi.org/10.1155/2017/3409647
-- McKevitt, J., Vorobyov, E. I., & Kulikov, I. (2025). Accelerating Fortran codes: A method for integrating Coarray Fortran with CUDA Fortran and OpenMP. Journal of Parallel and Distributed Computing, 195, 104977. https://doi.org/10.1016/j.jpdc.2024.104977
+- [Writing a multigrid solver using co-array fortran (1998) | Numrich et al.](https://doi.org/10.1007/BFb0095362)
+- [A multi-platform co-array fortran compiler (2004) | Dotsenko et al.](https://dl.acm.org/doi/10.5555/1025127.1025994)
+- [Co-arrays in the next Fortran standard (2005) | Numrich & Reid](https://doi.org/10.1145/1080399.1080400)
+- [A parallel numerical library for co-array Fortran (2005) | Numrich](https://doi.org/10.1007/11752578_116)
+- [Parallel numerical algorithms based on tensor notation and Co-Array Fortran syntax (2005) | Numrich](https://doi.org/10.1016/j.parco.2005.03.003)
+- [A new vision for Coarray Fortran (2009) | Mellor-Crummey et al.](https://doi.org/10.1145/1809961.1809969)
+- [An open-source compiler and runtime implementation for Coarray Fortran (2010) | Eachempati et al.](https://doi.org/10.1145/2020373.2020386)
+- [A coarray fortran implementation to support data-intensive application development (2012) | Eachempati et al.](https://doi.org/10.1109/SC.Companion.2012.106)
+- [Experiences at scale with PGAS versions of a Hydrodynamics application (2014) | Mallinson et al.](https://doi.org/10.1145/2676870.2676873)
+- [Comparing Coarray Fortran (CAF) with MPI for several structured mesh PDE applications (2015) | Garain et al.](https://doi.org/10.1016/j.jcp.2015.05.020)
+- [MPI to Coarray Fortran: experiences with a CFD solver for unstructured meshes (2017) | Sharma & Moulitsas](https://doi.org/10.1155/2017/3409647)
+- [Accelerating Fortran codes: A method for integrating Coarray Fortran with CUDA Fortran and OpenMP (2025) | McKevitt et al.](https://doi.org/10.1016/j.jpdc.2024.104977)
 
 Fortran debate:
 - [David Cann (1992). Retire Fortran? A Debate Rekindled](https://doi.org/10.1145/135226.135231) (an earlier version is available in the Supercomputing '91 proceedings)
@@ -305,12 +305,12 @@ Nvidia PTX Resources:
 - [OpenMP* SIMD for Inclusive/Exclusive Scans](https://www.intel.com/content/www/us/en/developer/articles/technical/openmp-simd-for-inclusiveexclusive-scans.html)
 - [Effiziente Nutzung von Hochleistungsrechnern in der numerischen Strömungsmechanik | Dr. Georg Hager](https://blogs.fau.de/hager/files/2010/07/numet_hager_08.pdf) (PDF, 599 KB)
 - [Automatic Translation of FORTRAN Programs to Vector Form | Randy Allen and Ken Kennedy](https://dl.acm.org/doi/pdf/10.1145/29873.29875) (PDF, 2.8 MB)
-- Bik, A. J., Tian, X., & Girkar, M. B. (2006). Multimedia vectorization of floating‐point MIN/MAX reductions. Concurrency and Computation: Practice and Experience, 18(9), 997-1007. https://doi.org/10.1002/cpe.1009
+- [Multimedia vectorization of floating-point MIN/MAX reductions (2006) | Bik et al.](https://doi.org/10.1002/cpe.1009)
 - [Vectorization Essentials | Intel Software](https://doku.lrz.de/files/11497000/11497017/8/1745835328413/3_Vectorization.pdf) (PDF, 1913 KB)
-- Karp, A. H., & Babb, R. B. (1988). A comparison of 12 parallel Fortran dialects. Ieee Software, 5(5), 52-67. https://doi.org/10.1109/52.7943
-- Oraji, Y. M., Hück, A., & Bischof, C. (2025, November). Extending MPI Correctness Benchmarking to the Fortran Language. In Proceedings of the SC'25 Workshops of the International Conference for High Performance Computing, Networking, Storage and Analysis (pp. 244-248). https://doi.org/10.1145/3731599.3767366
+- [A comparison of 12 parallel Fortran dialects (1988) | Karp & Babb](https://doi.org/10.1109/52.7943)
+- [Extending MPI Correctness Benchmarking to the Fortran Language (2025) | Oraji et al.](https://doi.org/10.1145/3731599.3767366)
 - [Investigating the performance of LLVM-based Intel Fortran Compiler (ifx) | Dhani Ruhela](https://www.ixpug.org/images/docs/isc_2024/Investigating_the_perfomance_of_LLVM-based_IFX.pdf) (PDF, 596 KB)
-- Rouson, D., Dibba, B., Rasmussen, K., Richardson, B., Torres, D., Zhang, Y., ... & Shende, S. (2024). Just Write Fortran: Experiences with a Language-Based Alternative to MPI+ X. https://doi.org/10.25344/S4H88D
+- [Just Write Fortran: Experiences with a Language-Based Alternative to MPI+X (2024) | Rouson et al.](https://doi.org/10.25344/S4H88D)
 
 ## 2025-11-19
 
