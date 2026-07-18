@@ -14,6 +14,19 @@ Using the C-Fortran interoperability I have written Fortran interfaces for the f
 * [METIS](https://github.com/ivan-pi/fmetis): Serial Graph Partitioning and Fill-reducing Matrix Ordering
 * [FLANN](https://github.com/ivan-pi/flann):
 Fast Library for Approximate Nearest Neighbors (original library [here](http://people.cs.ubc.ca/~mariusm/flann))
+* [libdogleg-f](https://github.com/ivan-pi/libdogleg-f): Fortran bindings to libdogleg, a large-scale nonlinear least-squares optimization library
+* [blis-fortran](https://github.com/ivan-pi/blis-fortran): Fortran bindings for BLIS generated using Coccinelle (the subject of my [FOSDEM 2025 talk](https://archive.fosdem.org/2025/schedule/event/fosdem-2025-6509-easier-api-interoperability-writing-a-bindings-generator-to-c-c-with-coccinelle/))
+
+
+## Python bindings
+
+* [zvode](https://ivan-pi.github.io/zvode/): Python bindings to the classic ZVODE ODE solver.
+* [phs_poly](https://pypi.org/project/phs-poly/): Procedures for generating RBF-FD weights for derivative calculations.
+
+
+## Fortran tooling
+
+* [fpm-deps and fpm-tree](https://ivan-pi.github.io/fpm-deps/): `fpm-deps` generates dependency graphs of [fpm](https://fpm.fortran-lang.org/) packages, with `fpm-tree` as a companion tool.
 
 
 ## Legacy code
