@@ -1,8 +1,10 @@
 ---
 title: "Diary"
+aliases:
+  - /diary/
 ---
 
-A chronological collection of things I've found interesting.
+A chronological collection of things I've found interesting. Back to [links](/links/).
 
 ## 2026-07-18
 
