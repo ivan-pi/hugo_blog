@@ -98,8 +98,11 @@ As Steve Lionel [explains on Fortran
 Discourse](https://fortran-lang.discourse.group/t/declare-variables-inside-loops/3395/5),
 the index is a construct-scope integer regardless — the real novelty is
 stating its kind in place, so no `integer :: i, k, n` declarations clutter the
-surrounding scope. On paper the feature is from 2018, but compiler support is
-still thin — hence the very recent flang.
+surrounding scope. On paper the feature is from 2018; in practice the state of
+affairs is rather sad. Of the compilers I tried, gfortran 16.1, lfortran 0.59,
+nvfortran 26.5, and NAG 7.2 all reject the program, and ifx 2025.3 compiles it
+but prints a wrong table — leaving flang as the only compiler I know of that
+gets it right.
 
 ### A note on the format
 
