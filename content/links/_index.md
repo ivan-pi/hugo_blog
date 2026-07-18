@@ -8,16 +8,16 @@ For my running, dated log of interesting links and papers, see the [Diary](/link
 
 ## People I've collaborated with
 
+- [Ondřej Čertík](https://ondrejcertik.com/)
+- [Milan Curcic](https://milancurcic.com/)
+- [Matteo Foglieni](https://foglienimatteo.com/)
+- [Jorge Luis Gálvez Vallejo](https://jorgeg94.github.io/)
 - [Michele Martone](https://michelemartone.org/)
 - [Filip Strniša](https://e6.ijs.si/sc/people/fstrnisa/)
 - [Tomaž Urbič](https://www.urbic.com/)
-- [Matteo Foglieni](https://foglienimatteo.com/)
-- [Jorge Luis Gálvez Vallejo](https://jorgeg94.github.io/)
-- [Ondřej Čertík](https://ondrejcertik.com/)
-- [Milan Curcic](https://milancurcic.com/)
 
 ## Blogs & people I follow
 
-- [SciVision](https://www.scivision.dev/)
 - [Degenerate Conic — Jacob Williams](https://degenerateconic.com/)
+- [SciVision](https://www.scivision.dev/)
 - [The Cyber Vanguard](https://cyber.dabamos.de/)
