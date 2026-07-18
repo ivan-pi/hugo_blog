@@ -11,12 +11,13 @@ For my running, dated log of interesting links and papers, see the [Diary](/link
 - [Michele Martone](https://michelemartone.org/)
 - [Filip Strniša](https://e6.ijs.si/sc/people/fstrnisa/)
 - [Tomaž Urbič](https://www.urbic.com/)
-
-## Blogs & people I follow
-
 - [Matteo Foglieni](https://foglienimatteo.com/)
 - [Jorge Luis Gálvez Vallejo](https://jorgeg94.github.io/)
 - [Ondřej Čertík](https://ondrejcertik.com/)
 - [Milan Curcic](https://milancurcic.com/)
+
+## Blogs & people I follow
+
 - [SciVision](https://www.scivision.dev/)
 - [Degenerate Conic — Jacob Williams](https://degenerateconic.com/)
+- [The Cyber Vanguard](https://cyber.dabamos.de/)
