@@ -9,3 +9,6 @@
 
 # Hugo build lock file.
 .hugo_build.lock
+
+# macOS Finder metadata (can appear in any directory).
+.DS_Store
