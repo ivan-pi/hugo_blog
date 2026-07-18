@@ -21,13 +21,13 @@ Here is the complete program:
 ```fortran
 ! pascal.f90 -- prints Pascal's triangle
 implicit none
-integer, parameter :: N = 8
-character(len=*), parameter :: fmt = '(9(I6,:,1X))'
-integer, parameter :: c(0:N, 0:N) = &
-    reshape([([(product([(jj, integer :: jj=nn-k+1,nn)]) / &
-               product([(jj, integer :: jj=1,k)]),  &
-               integer :: nn=0,N)], integer :: k=0,N)], [N+1, N+1], order=[2,1])
-write(*,fmt) c
+integer, parameter :: nmax = 8
+character(len=*), parameter :: fmt = '(9(I6,:,1X))'   ! 9 = nmax + 1
+integer, parameter :: pascal(0:nmax, 0:nmax) = reshape( &
+    [([( product([(i, integer :: i = n-k+1, n)])  &
+       / product([(i, integer :: i = 1, k)]),     &
+       integer :: k = 0, nmax)], integer :: n = 0, nmax)], [nmax+1, nmax+1])
+write(*,fmt) pascal
 end
 ```
 
@@ -49,42 +49,54 @@ $ flang -pedantic pascal.f90 && ./a.out
 
 ## How it works
 
-The key observation is that `c` is a `parameter` — a named constant. Its
+The key observation is that `pascal` is a `parameter` — a named constant. Its
 initializer must therefore be a *constant expression*, which means the compiler
 evaluates every entry while it is compiling. At run time there is no arithmetic
 left to do; the executable simply prints nine rows of pre-computed integers.
 
 Reading the expression from the inside out:
 
-- `product([(jj, integer :: jj=nn-k+1,nn)])` forms the rising product
+- `product([(i, integer :: i = n-k+1, n)])` forms the falling product
   $n(n-1)\cdots(n-k+1) = n!\,/\,(n-k)!$.
-- `product([(jj, integer :: jj=1,k)])` forms $k!$.
+- `product([(i, integer :: i = 1, k)])` forms $k!$.
 - Their integer quotient is exactly the binomial coefficient $\binom{n}{k}$; the
   division is exact, so no rounding sneaks in. For $k = 0$ both ranges are
   empty, and the *empty product* is `1` — precisely the value we want for
   $\binom{n}{0}$.
 - The two nested implied-`do` loops enumerate every coefficient for
-  $0 \le n, k \le N$, and `reshape(..., [N+1, N+1], order=[2,1])` packs that flat
-  list into the square array `c`.
+  $0 \le n, k \le \mathtt{nmax}$, with $k$ innermost, so the flat list is laid
+  out one triangle row after another. `reshape` then fills the square array in
+  Fortran's column-major order, which lands each printed row in one memory
+  column — element `pascal(k, n)` holds $\binom{n}{k}$. Since `write` emits
+  array elements in that same storage order, a single statement prints the
+  triangle row by row.
+
+A small naming aside: Fortran is case-insensitive, so a parameter `N` and a
+loop variable `n` would be the *same* identifier. Calling the size `nmax`
+frees up `n` and `k` to match the mathematical notation $\binom{n}{k}$.
 
 ### Why Fortran 2023?
 
 The program relies on a Fortran 2023 feature: you may **declare the type of an
 implied-`do` variable directly inside the array constructor**, which is the
-`integer :: jj=...`, `integer :: nn=...`, and `integer :: k=...` you see above.
-This scopes the loop index to the constructor itself and keeps the whole
+`integer :: i = ...`, `integer :: k = ...`, and `integer :: n = ...` you see
+above. This scopes the loop index to the constructor itself and keeps the whole
 expression a constant expression — a hard requirement for initializing a
 `parameter`. You will need a compiler with Fortran 2023 support to build it (I
 used flang 22.1.8).
 
 ### A note on the format
 
-The output edit descriptor `'(9(I6,:,1X))'` prints `9` (that is `N + 1`)
+The output edit descriptor `'(9(I6,:,1X))'` prints `9` (that is `nmax + 1`)
 integers per line in six-character fields. The colon (`:`) stops the format as
 soon as the data list is exhausted, and `1X` inserts a single space between
-columns. Getting the count right — `9`, not the default that Fortran would pick —
-is what lets the whole table print with a single `write` statement. I admit the
-variable names are not the prettiest, but the one-liner earns its keep.
+columns. Getting the repeat count right — `9`, not the default that Fortran
+would pick — is what lets the whole table print with a single `write`
+statement. It is the one place where the program will not follow `nmax`
+automatically: change the parameter and you must touch the format too, as
+there is no convenient way to splice an integer into a character constant
+expression. (For single digits, `achar(iachar('0') + nmax + 1)` would do it —
+but that cure is worse than the disease.)
 
 ## Further reading
 
