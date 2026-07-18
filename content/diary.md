@@ -50,7 +50,7 @@ Life Advice:
 ## 2026-05-22
 
 - [Alan Hindmarsh]()
-- [ODEPACK: A systematicized collection]()
+- [ODEPACK: A systematized collection]()
 - [ODE Meeting Argonne]()
 
 ## 2026-05-03
@@ -63,7 +63,6 @@ Life Advice:
 Object-oriented Design Principles:
 - [Why getter and setter methods are evil](https://www.infoworld.com/article/2161183/why-getter-and-setter-methods-are-evil.html)
 - [Getters/Setters. Evil. Period.](https://www.yegor256.com/2014/09/16/getters-and-setters-are-evil.html)
--
 
 Misc:
 - [C Traps and Pitfalls](http://literateprogramming.com/ctraps.pdf) (PDF, 117 KB)
@@ -136,7 +135,7 @@ Unreachable:
 
 ## 2026-03-20
 
-Intepreters:
+Interpreters:
 - [A Deep Dive into Dispatching Techniques | Jonathan Müller](https://www.jonathanmueller.dev/talk/deep-dive-dispatch/)
 - [Parsing Protobuf at 2+GB/s: How I Learned To Love Tail Calls in C | Josh Haberman](https://blog.reverberate.org/2021/04/21/musttail-efficient-interpreters.html)
 - [Subject: Re: Suggestions on implementing an efficient instruction set simulator in LuaJIT2](http://lua-users.org/lists/lua-l/2011-02/msg00742.html)
@@ -187,7 +186,7 @@ Fortran Software Papers:
 - [Serious FORTRAN (1973)](https://doi.org/10.1002/spe.4380030203)
 - [Serious FORTRAN—Part 2 (1973)](https://doi.org/10.1002/spe.4380030303)
 - [Fortran 77 portability (1981)](https://doi.org/10.1002/spe.4380111006)
-- [A fortran procedure for drawing some space-filling curves (1986)](https://doi.org/10.1002/spe.4380160607
+- [A fortran procedure for drawing some space-filling curves (1986)](https://doi.org/10.1002/spe.4380160607)
 - [Module coupling and cohesion (COMP145, 2000)](https://www.cs.unc.edu/~stotts/COMP145/modules.html) (see [Team Software Engineering](https://www.cs.unc.edu/~stotts/COMP145/) course homepage)
 - [Multibox Parsers (1994)](https://dl.acm.org/doi/pdf/10.1145/181593.181602) (PDF, 702 KB)
 - [Multibox parsers: no more handwritten lexical parsers](https://doi.org/10.1109/52.406759)
@@ -222,7 +221,7 @@ Misc:
 R history and other links:
 - [R: Past and Future History | Ross Ihaka](https://www.stat.auckland.ac.nz/~ihaka/downloads/Interface98.pdf) (PDF, 92.5 KB)
 - [A Brief History of S | Richard A. Becker](https://sas.uwaterloo.ca/~rwoldfor/software/R-code/historyOfS.pdf) (PDF, 151 KB)
-- [History of S and R | John Chamers](https://www.r-project.org/conferences/useR-2006/Slides/Chambers.pdf) (PDF, 234 KB)
+- [History of S and R | John Chambers](https://www.r-project.org/conferences/useR-2006/Slides/Chambers.pdf) (PDF, 234 KB)
 - [History and Overview of R | R Programming for Data Science](https://bookdown.org/rdpeng/rprogdatascience/history-and-overview-of-r.html)
 - [R behind the scenes: Using S the (un)usual way | Friedrich Leisch](https://epub.ub.uni-muenchen.de/2085/1/tr012.pdf) (PDF, 1357 KB)
 
@@ -265,12 +264,12 @@ I found these at the bottom of the Fortran Wiki [Articles](https://fortranwiki.o
 Nvidia PTX Resources:
 
 - [Understanding PTX, the Assembly Language of CUDA GPU Computing | Nvidia](https://developer.nvidia.com/blog/understanding-ptx-the-assembly-language-of-cuda-gpu-computing/)
-- [Advanded NVIDIA CUDA Kernel Optimiziazion Techniques: Handwritten PTX | Nvidia](https://developer.nvidia.com/blog/advanced-nvidia-cuda-kernel-optimization-techniques-handwritten-ptx/)
+- [Advanced NVIDIA CUDA Kernel Optimization Techniques: Handwritten PTX | Nvidia](https://developer.nvidia.com/blog/advanced-nvidia-cuda-kernel-optimization-techniques-handwritten-ptx/)
 - [Inline PTX Assembly in CUDA | Nvidia](https://docs.nvidia.com/cuda/inline-ptx-assembly/index.html)
 - [What is Parallel Thread Execution? | Modal](https://modal.com/gpu-glossary/device-software/parallel-thread-execution)
 - [Tutorial: Understanding GPU Assembly with PTX | eunomia](https://eunomia.dev/others/cuda-tutorial/02-ptx-assembly/)
 - [Parallel Thread Execution ISA Version 9.1 | Nvidia](https://docs.nvidia.com/cuda/parallel-thread-execution/)
-- [Parallel Thread Execustion ISA Version 5.0 | Nvidia](https://docs.nvidia.com/cuda/archive/8.0/parallel-thread-execution/)
+- [Parallel Thread Execution ISA Version 5.0 | Nvidia](https://docs.nvidia.com/cuda/archive/8.0/parallel-thread-execution/)
 - [Parallel Thread Execution ISA Version 6.3 | Nvidia](https://docs.nvidia.com/cuda/archive/10.0/parallel-thread-execution/index.html)
 - [Parallel Thread Execution ISA Version 3.0 | Nvidia](https://developer.download.nvidia.com/compute/DevZone/docs/html/C/doc/ptx_isa_3.0.pdf) (PDF, 2.2 MB)
 - [PTX: Parallel Thread Execution ISA Version 1.4](https://www.cs.cmu.edu/afs/cs/academic/class/15668-s11/www/cuda-doc/ptx_isa_1.4.pdf) (PDF, 2.5 MB)
@@ -310,7 +309,7 @@ Nvidia PTX Resources:
 - [Vectorization Essentials | Intel Software](https://doku.lrz.de/files/11497000/11497017/8/1745835328413/3_Vectorization.pdf) (PDF, 1913 KB)
 - Karp, A. H., & Babb, R. B. (1988). A comparison of 12 parallel Fortran dialects. Ieee Software, 5(5), 52-67. https://doi.org/10.1109/52.7943
 - Oraji, Y. M., Hück, A., & Bischof, C. (2025, November). Extending MPI Correctness Benchmarking to the Fortran Language. In Proceedings of the SC'25 Workshops of the International Conference for High Performance Computing, Networking, Storage and Analysis (pp. 244-248). https://doi.org/10.1145/3731599.3767366
-- [Investigating the performance of LLVM- based Intel Fortran Complier (ifx) | Dhani Ruhela](https://www.ixpug.org/images/docs/isc_2024/Investigating_the_perfomance_of_LLVM-based_IFX.pdf) (PDF, 596 KB)
+- [Investigating the performance of LLVM-based Intel Fortran Compiler (ifx) | Dhani Ruhela](https://www.ixpug.org/images/docs/isc_2024/Investigating_the_perfomance_of_LLVM-based_IFX.pdf) (PDF, 596 KB)
 - Rouson, D., Dibba, B., Rasmussen, K., Richardson, B., Torres, D., Zhang, Y., ... & Shende, S. (2024). Just Write Fortran: Experiences with a Language-Based Alternative to MPI+ X. https://doi.org/10.25344/S4H88D
 
 ## 2025-11-19
