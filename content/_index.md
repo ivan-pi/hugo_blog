@@ -1,18 +1,16 @@
 ---
 title: Ivan Pribec
-katex: true
+katex: false
 ---
 
-I am a Slovenian engineering student pursuing graduate studies at the [Technical University of Munich, Department of Brewing and Beverage Technology](http://lbgt.wzw.tum.de/index.php?id=5&L=1) in Freising. My research focuses on the use of lattice Boltzmann methods for simulation of physical phenomena related to food and beverage process engineering such as drying and multiphase flow.
+I am a computational scientist and HPC Application Specialist at the [Leibniz Supercomputing Centre (LRZ)](https://www.lrz.de/) in Garching, Germany, where I am a member of the Computational X Support (CXS) group within the HPC team. Before joining the LRZ, I worked as a researcher at the [Technical University of Munich (TUM), Department of Brewing and Beverage Technology](https://www.lse.ls.tum.de/en/bgt/home/) in Freising.
 
-![tum_garching](/images/tum_garching.jpg)
+![Ivan Pribec at the TUM Campus Garching, 2018](/images/tum_garching.jpg)
 
 ## Contact
 
 <address>
-  <a href="mailto:ivan.pribec@tum.de">📧 ivan.pribec@tum.de</a><br>
-  <a href="tel:+498161 71-2623">📞 +49(0)8161 71-2623</a><br>
-  <a href="https://portal.mytum.de/displayRoomMap?01.037@4226">🏢 Room 1.OG 37, iGZW (TUM RoomFinder)</a>, <a href=https://www.google.com/maps/place/48%C2%B023'57.0%22N+11%C2%B043'11.9%22E/@48.3991702,11.7177835,446m/data=!3m2!1e3!4b1!4m5!3m4!1s0x0:0x0!8m2!3d48.399155!4d11.7199752>Google Maps</a>
+  <a href="mailto:ivan.pribec@lrz.de">ivan.pribec@lrz.de</a>
 </address>
 
 ## Research interests:
@@ -28,3 +26,19 @@ I am a Slovenian engineering student pursuing graduate studies at the [Technical
 I received my master's degree in chemical engineering at the Faculty of Chemisty and Chemical Technology, University of Ljubljana in the [microprocess engineering group](http://chemeng.fkkt.uni-lj.si/?page_id=21). My thesis titled "The Description of Chemical Reactions with the Lattice Boltzmann Method" was supervised by Prof. Dr. Igor Plazl and [Prof. Dr. Tomaz Urbic](http://www.urbic.com/). In the final year of my master's I also worked shortly as a student researcher at the [Parallel and Distributed Systems Laboratory](http://www-e6.ijs.si/ParallelAndDistributedSystems/) at the Jozef Stefan Institute as a developer of the [medusa](http://www-e6.ijs.si/medusa/wiki/index.php/Medusa) meshless method library.
 
 My full [Curriculum Vitae](/cv/cv_ivan_pribec.pdf) is also available online.
+
+## Profiles
+
+* [GitHub](https://github.com/ivan-pi)
+* [LinkedIn](https://www.linkedin.com/in/ivan-pribec-45514871/)
+* [YouTube](https://www.youtube.com/@ivanpribec3353)
+* [Fortran Discourse](https://fortran-lang.discourse.group/u/ivanpribec/activity)
+* [ORCID](https://orcid.org/0000-0001-8436-882X)
+* [Google Scholar](https://scholar.google.com/citations?user=2kZcNEgAAAAJ&hl=en)
+
+## Talks and Publications
+
+* **Upcoming:** [presentation](https://wccm-eccomas2026.org/event/contribution/f0e0ab35-05d3-11f1-919d-000c29ddfc0c) at the WCCM ECCOMAS Congress 2026 in Munich (July 2026).
+* [Easier API interoperability: writing a bindings generator to C/C++ with Coccinelle](https://archive.fosdem.org/2025/schedule/event/fosdem-2025-6509-easier-api-interoperability-writing-a-bindings-generator-to-c-c-with-coccinelle/) — talk at FOSDEM 2025, Brussels (February 2025).
+* [Bringing Fortran and C++ together](https://www.lrz.de/en/news/detail/2023-07-26-poster-award-en) — interview with LRZ (2023).
+* [Bridging the Language Gap: Classes for C++/Fortran Interoperability](https://pasc-conference.org/editions/pasc23/program/plenary-sessions/awarded-contributions/) — poster P11, **awarded the Best Poster Prize** at the PASC23 Conference, Davos (June 2023).
