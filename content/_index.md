@@ -3,16 +3,14 @@ title: Ivan Pribec
 katex: true
 ---
 
-I am a Slovenian engineering student pursuing graduate studies at the [Technical University of Munich, Department of Brewing and Beverage Technology](http://lbgt.wzw.tum.de/index.php?id=5&L=1) in Freising. My research focuses on the use of lattice Boltzmann methods for simulation of physical phenomena related to food and beverage process engineering such as drying and multiphase flow.
+I am a computational scientist and HPC Application Specialist at the [Leibniz Supercomputing Centre (LRZ)](https://www.lrz.de/) in Garching, Germany. I am a member of the Computational X Support (CXS) group within the HPC team.
 
 ![tum_garching](/images/tum_garching.jpg)
 
 ## Contact
 
 <address>
-  <a href="mailto:ivan.pribec@tum.de">📧 ivan.pribec@tum.de</a><br>
-  <a href="tel:+498161 71-2623">📞 +49(0)8161 71-2623</a><br>
-  <a href="https://portal.mytum.de/displayRoomMap?01.037@4226">🏢 Room 1.OG 37, iGZW (TUM RoomFinder)</a>, <a href=https://www.google.com/maps/place/48%C2%B023'57.0%22N+11%C2%B043'11.9%22E/@48.3991702,11.7177835,446m/data=!3m2!1e3!4b1!4m5!3m4!1s0x0:0x0!8m2!3d48.399155!4d11.7199752>Google Maps</a>
+  <a href="mailto:ivan.pribec@lrz.de">ivan.pribec@lrz.de</a>
 </address>
 
 ## Research interests:
