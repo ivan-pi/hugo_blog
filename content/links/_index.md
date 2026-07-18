@@ -19,5 +19,6 @@ For my running, dated log of interesting links and papers, see the [Diary](/link
 ## Blogs & people I follow
 
 - [Degenerate Conic — Jacob Williams](https://degenerateconic.com/)
+- [Matt Godbolt](https://xania.org/) (created Compiler Explorer)
 - [SciVision](https://www.scivision.dev/)
 - [The Cyber Vanguard](https://cyber.dabamos.de/)
