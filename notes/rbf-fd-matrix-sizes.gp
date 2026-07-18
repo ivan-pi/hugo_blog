@@ -31,6 +31,13 @@ f3_64(p) = (p >= 1) ? kb(m3(p),8) : NaN
 #   toggles that curve. It references gnuplot's mousing library at /js (served
 #   from static/js/gnuplot_svg.js) rather than embedding it, which keeps the
 #   file small and avoids the CDATA parsing issues of the "standalone" variant.
+#
+#   Provenance of static/js/gnuplot_svg.js: byte-identical, unmodified copy of
+#   /usr/share/gnuplot/gnuplot/6.0/js/gnuplot_svg.js as shipped with gnuplot
+#   6.0 (Ubuntu package "gnuplot"); part of the gnuplot distribution
+#   (share/js/), originally contributed by Marko Karjalainen -- see the
+#   attribution header inside the file. Keep it unmodified; to update, copy
+#   the file from the gnuplot release used to regenerate the SVG.
 #   Interactivity has no effect when the SVG is shown through an <img> tag
 #   (browsers disable SVG scripts there) -- it just renders statically.
 #   Pass -e "mousing=0" for a plain static SVG with no script reference.
@@ -58,29 +65,30 @@ set title "RBF-FD system-matrix size vs. polynomial order\n{/*0.72 dense (3m)×(
 set xlabel "Polynomial order"
 set ylabel "Matrix storage (KB)"
 
-set xrange [0:15]
+set xrange [0:12]
 set xtics 1
-set yrange [0.02:60000]
+set yrange [0.02:20000]
 set logscale y
 set format y "%g"
 
-set samples 16          # evaluate curves exactly at integer polynomial orders 0..15
+set samples 13          # evaluate curves exactly at integer polynomial orders 0..12
 set key at graph 0.03, graph 0.97 left top reverse Left samplen 2.2 spacing 1.15 \
         font ",11" box lc rgb "#cccccc" opaque
 
 # --- L1 data cache band + reference lines ------------------------------
-# Each label is centred on its line; an opaque box masks the line behind the
-# text. The 48 KB line is dropped so the labels are not crowded.
-set style textbox opaque fillcolor rgb "white" noborder margins 0.5,0.4
+# Labels sit in a reserved margin to the right of the plot border, vertically
+# centred on their lines, so they can never occlude the curves. The 48 KB
+# line is dropped so the labels are not crowded.
+set rmargin at screen 0.82
 set object 1 rectangle from graph 0, first 32 to graph 1, first 128 \
         fillcolor rgb "#000000" fillstyle transparent solid 0.05 noborder behind
 set arrow 1 from graph 0, first 32  to graph 1, first 32  nohead ls 9 back
 set arrow 3 from graph 0, first 64  to graph 1, first 64  nohead ls 9 back
 set arrow 4 from graph 0, first 128 to graph 1, first 128 nohead ls 9 back
 
-set label 11 "128 KB  Apple M (P-core)" at graph 0.98, first 128 right boxed font ",10" tc rgb "#555555" front
-set label 12 "64 KB  Grace, A64FX"      at graph 0.98, first 64  right boxed font ",10" tc rgb "#555555" front
-set label 14 "32 KB  Zen 4"             at graph 0.98, first 32  right boxed font ",10" tc rgb "#555555" front
+set label 11 "128 KB  Apple M (P-core)" at graph 1.02, first 128 left font ",10" tc rgb "#555555" front
+set label 12 "64 KB  Grace, A64FX"      at graph 1.02, first 64  left font ",10" tc rgb "#555555" front
+set label 14 "32 KB  Zen 4"             at graph 1.02, first 32  left font ",10" tc rgb "#555555" front
 set label 15 "L1 data cache" at graph 0.02, first 90 left font ",10" tc rgb "#777777" front
 
 # --- plot --------------------------------------------------------------
