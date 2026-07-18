@@ -3,9 +3,9 @@ title: Ivan Pribec
 katex: false
 ---
 
-I am a computational scientist and HPC Application Specialist at the [Leibniz Supercomputing Centre (LRZ)](https://www.lrz.de/) in Garching, Germany, where I am a member of the Computational X Support (CXS) group within the HPC team. Before joining the LRZ, I worked as a researcher at the [Technical University of Munich (TUM), Department of Brewing and Beverage Technology](http://lbgt.wzw.tum.de/index.php?id=5&L=1) in Freising.
+I am a computational scientist and HPC Application Specialist at the [Leibniz Supercomputing Centre (LRZ)](https://www.lrz.de/) in Garching, Germany, where I am a member of the Computational X Support (CXS) group within the HPC team. Before joining the LRZ, I worked as a researcher at the [Technical University of Munich (TUM), Department of Brewing and Beverage Technology](https://www.lse.ls.tum.de/en/bgt/home/) in Freising.
 
-![Ivan Pribec at the Technical University of Munich](/images/tum_garching.jpg)
+![TUM Campus in Garching](/images/tum_garching.jpg)
 
 ## Contact
 
