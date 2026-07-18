@@ -16,6 +16,7 @@ Using the C-Fortran interoperability I have written Fortran interfaces for the f
 Fast Library for Approximate Nearest Neighbors (original library [here](http://people.cs.ubc.ca/~mariusm/flann))
 * [libdogleg-f](https://github.com/ivan-pi/libdogleg-f): Fortran bindings to libdogleg, a large-scale nonlinear least-squares optimization library
 * [blis-fortran](https://github.com/ivan-pi/blis-fortran): Fortran bindings for BLIS generated using Coccinelle (the subject of my [FOSDEM 2025 talk](https://archive.fosdem.org/2025/schedule/event/fosdem-2025-6509-easier-api-interoperability-writing-a-bindings-generator-to-c-c-with-coccinelle/))
+* [Fortran-KaHIP-Interface](https://github.com/ivan-pi/Fortran-KaHIP-Interface): A modern Fortran interface to the KaHIP graph partitioning framework
 
 
 ## Python bindings
@@ -35,4 +36,9 @@ Fast Library for Approximate Nearest Neighbors (original library [here](http://p
 * [Algorithm 675](https://github.com/ivan-pi/TOMS-Algorithm-675): Fortran subroutines for computing the square root covariance filter and square root information filter in dense and hessenberg forms; codes are provided for the square root covariance filter and the square root information filter.
 * [Quadrature routines from Stroud & Secrest](https://github.com/ivan-pi/stroud_quad) - An updated version of the routines from the book *Gaussian quadrature formulas* by A. H. Stroud and D. Secrest published in 1966. Includes routines for generatics the knots and weights of the classic Jacobi, Laguerre, and Hermite quadratures.
 * [Least squares solvers from Lawson & Hanson](https://github.com/ivan-pi/fortran_lsp) - This package contains the routines from the book *Solving least squares problems* by Lawson and Hanson (1995). Most of the routines date back to the 1974 version of the book and were developed for use at the NASA Jet Propulsion Laboratory in California, Pasadena. I have tried to modernize the interfaces of most of the subroutines. The non-negative least squares solver `nnls` appears also in [`scipy.optimize.nnls`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.nnls.html).
+* [stiff3](https://github.com/ivan-pi/stiff3): Adaptive solver for stiff systems of ODEs using semi-implicit Runge-Kutta method of third order.
+* [bode](https://github.com/ivan-pi/bode): A low-order adaptive solver for implicit ODEs.
+* [y12m](https://github.com/ivan-pi/y12m): Solution of Large and Sparse Systems of Linear Algebraic Equations.
+* [kdtree2](https://github.com/ivan-pi/kdtree2): A kd-tree implementation in Fortran by Matthew B. Kennel. The original was archived and is now maintained, evolved, and tested by me with other contributions.
+* [pdecheb](https://github.com/ivan-pi/pdecheb): Chebyshev Polynomial Software for Elliptic-Parabolic Systems of PDEs.
 
