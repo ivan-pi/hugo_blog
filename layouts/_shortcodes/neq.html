@@ -1,0 +1,23 @@
+{{- /*
+  neq — a numbered display equation.
+
+  Usage in a post:  put the shortcode on its own line, e.g.
+      {{< neq 1 "E = mc^2" >}}
+
+    * argument 0 = the equation label shown in parentheses on the right, e.g. (1)
+    * argument 1 = a KaTeX/TeX formula (rendered by the KaTeX auto-render loaded
+                   in layouts/_partials/custom_head.html)
+
+  The formula is wrapped in dollar signs so KaTeX renders it as centered display
+  math.  Inline styles switch off the theme's default table borders/striping so
+  the equation reads as a clean centered line rather than a boxed grid cell.
+*/ -}}
+<table style="width: 100%; border: none; margin: 1rem 0;">
+  <tbody style="border: none;">
+    <tr style="background: none; border: none;">
+      <td style="border: none; padding: 0; width: 2.5rem;"></td>
+      <td style="border: none; padding: 0; text-align: center;">$${{ .Get 1 }}$$</td>
+      <td style="border: none; padding: 0; width: 2.5rem; text-align: right;">({{ .Get 0 }})</td>
+    </tr>
+  </tbody>
+</table>
