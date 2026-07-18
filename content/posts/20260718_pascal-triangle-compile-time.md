@@ -31,8 +31,7 @@ write(*,fmt) pascal
 end
 ```
 
-Compiling and running it with [flang](https://github.com/llvm/llvm-project)
-22.1.8:
+Compiling and running it with [flang](https://flang.llvm.org/docs/) 22.1.8:
 
 ```text
 $ flang -pedantic pascal.f90 && ./a.out
@@ -53,6 +52,22 @@ The key observation is that `pascal` is a `parameter` — a named constant. Its
 initializer must therefore be a *constant expression*, which means the compiler
 evaluates every entry while it is compiling. At run time there is no arithmetic
 left to do; the executable simply prints nine rows of pre-computed integers.
+
+Don't take my word for it — [see for yourself on Compiler
+Explorer](https://godbolt.org/z/TKdMP41rd). The assembly contains no loops and
+no multiplications, just the finished table sitting in the data section as 81
+integer literals (row by row, exactly as printed):
+
+```asm
+_QQroX9x9xi4X0:
+        .long   1
+        .long   0
+        .long   0
+        ...
+        .long   28
+        .long   8
+        .long   1
+```
 
 Reading the expression from the inside out:
 
