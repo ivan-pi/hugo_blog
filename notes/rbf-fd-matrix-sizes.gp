@@ -26,10 +26,20 @@ f3_32(p) = (p >= 1) ? kb(m3(p),4) : NaN
 f3_64(p) = (p >= 1) ? kb(m3(p),8) : NaN
 
 # --- output selection (default: SVG for the blog) ----------------------
-if (!exists("term")) term = "svg"
-if (!exists("out"))  out  = "content/images/rbf-fd-matrix-sizes.svg"
-if (term eq "svg") { set terminal svg size 840,560 font "Helvetica,13" background rgb "white" }
-if (term eq "png") { set terminal pngcairo size 1008,672 font "Helvetica,13" background rgb "white" }
+#   mousing = 1 (default) makes the SVG interactive when embedded via <object>
+#   (see the post): hover reads off plot coordinates and clicking a key entry
+#   toggles that curve. It references gnuplot's mousing library at /js (served
+#   from static/js/gnuplot_svg.js) rather than embedding it, which keeps the
+#   file small and avoids the CDATA parsing issues of the "standalone" variant.
+#   Interactivity has no effect when the SVG is shown through an <img> tag
+#   (browsers disable SVG scripts there) -- it just renders statically.
+#   Pass -e "mousing=0" for a plain static SVG with no script reference.
+if (!exists("term"))    term = "svg"
+if (!exists("out"))     out  = "content/images/rbf-fd-matrix-sizes.svg"
+if (!exists("mousing")) mousing = 1
+if (term eq "svg" && mousing)  { set terminal svg size 840,560 dynamic mouse jsdir '/js' name "rbffd_matrix_sizes" font "Helvetica,13" background rgb "white" }
+if (term eq "svg" && !mousing) { set terminal svg size 840,560 font "Helvetica,13" background rgb "white" }
+if (term eq "png")             { set terminal pngcairo size 1008,672 font "Helvetica,13" background rgb "white" }
 set output out
 
 # --- styles ------------------------------------------------------------

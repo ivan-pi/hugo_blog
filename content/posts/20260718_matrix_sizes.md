@@ -74,10 +74,12 @@ polynomial order 15 and overlays these L1 data cache sizes as horizontal
 references. Storage scales with the *square* of the number of polynomial terms,
 so a logarithmic vertical axis is used.
 
-{{< figure
-    src="/images/rbf-fd-matrix-sizes.svg"
-    alt="Log-scale plot of RBF-FD system-matrix storage in kilobytes versus polynomial order from 1 to 15, for 2-D and 3-D approximations in single and double precision, with horizontal lines marking the 32, 48, 64 and 128 KB L1 data cache sizes of recent CPUs."
-    caption="System-matrix storage vs. polynomial order for the <em>twice the number of polynomial terms</em> stencil heuristic, in single (fp32) and double (fp64) precision. Horizontal lines mark representative L1 data cache sizes. In 3-D the matrices climb out of the L1 cache range by around polynomial order 5&ndash;6." >}}
+<figure>
+<object type="image/svg+xml" data="/images/rbf-fd-matrix-sizes.svg" style="display:block; width:100%; max-width:840px; aspect-ratio:3/2; height:auto; margin-inline:auto;">
+<img src="/images/rbf-fd-matrix-sizes.svg" alt="Log-scale plot of RBF-FD system-matrix storage in kilobytes versus polynomial order from 1 to 15, for 2-D and 3-D approximations in single and double precision, with horizontal lines marking the 32, 48, 64 and 128 KB L1 data cache sizes of recent CPUs." />
+</object>
+<figcaption>System-matrix storage vs. polynomial order for the <em>twice the number of polynomial terms</em> stencil heuristic, in single (fp32) and double (fp64) precision. Horizontal lines mark representative L1 data cache sizes; in 3-D the matrices climb out of the L1 cache range by around polynomial order 5&ndash;6. <em>Interactive:</em> hover to read off values, and click a legend entry to toggle a curve.</figcaption>
+</figure>
 
 For polynomials below order 7 in 2D (or 5 in 3D) the RBF-FD matrices fit comfortably in the lowest cache level.
 The Apple M-series and recent ARM servers like the Nvidia Grace or Fujitsu A64FX have a slight advantage due to the larger L1 cache sizes.
