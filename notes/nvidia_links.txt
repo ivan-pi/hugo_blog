@@ -1,0 +1,33 @@
+
+
+RTX on - The NVIDIA Turing GPU
+https://doi.org/10.1109/MM.2020.2971677
+
+Dissecting the
+NVIDIA Volta
+GPU Architecture
+via Microbenchmarking
+https://arxiv.org/pdf/1804.06826
+
+Dissecting the NVidia Turing T4 GPU via Microbenchmarking
+https://arxiv.org/abs/1903.07486
+
+Dissecting the NVIDIA Hopper Architecture through Microbenchmarking and Multiple Level Analysis
+https://arxiv.org/abs/2501.12084
+
+Benchmarking and Dissecting the Nvidia Hopper GPU Architecture
+https://doi.org/10.1109/IPDPS57955.2024.00064
+
+
+Demystifying the Nvidia Ampere Architecture through Microbenchmarking and Instruction-level Analysis
+https://doi.org/10.1109/HPEC55821.2022.9926299
+
+Structured Sparsity in the NVIDIA Ampere Architecture and Applications in Search Engines
+https://developer.nvidia.com/blog/structured-sparsity-in-the-nvidia-ampere-architecture-and-applications-in-search-engines/
+
+Parallel Computing Experiences with CUDA
+https://doi.org/10.1109/MM.2008.57
+
+Related presentation
+https://www.cs.virginia.edu/~skadron/cuda_asplos08_tutorial/3-CUDA-model-and-language.pdf
+

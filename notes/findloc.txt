@@ -1,0 +1,6 @@
+Ideas:
+- Add Python to show speed difference
+- Split int and double results, as they have different width (32 vs 64 bit)
+- Add x86-64 benchmarks
+- Try with new compiler versions
+- Add LFortran speed
