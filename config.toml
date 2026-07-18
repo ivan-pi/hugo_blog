@@ -2,7 +2,7 @@ baseURL = "https://ivan-pi.github.io/"
 title = "Ivan Pribec"
 theme = "hugo-simple"
 defaultContentLanguage = "en"
-languageCode = "en-us"
+locale = "en-us"                 # replaces the deprecated `languageCode` (Hugo ≥ 0.158.0)
 copyright = "© 2025 — Ivan Pribec — All rights reserved."
 timeZone = "Local"
 
