@@ -4,6 +4,35 @@ title: "Diary"
 
 A chronological collection of things I've found interesting.
 
+## 2026-07-18
+
+GPU & Accelerated Computing:
+- [Inside TPU and GPU Clusters: The Anatomy of Collective Communication | Aleksa Gordić](https://www.aleksagordic.com/blog/collective-operations)
+- [Porting High-Performance HIP Kernels to FlyDSL | AMD ROCm Blogs](https://rocm.blogs.amd.com/software-tools-optimization/porting-hip-flydsl/README.html)
+- [Understanding ATen: PyTorch's tensor library | Red Hat Developer](https://developers.redhat.com/articles/2026/02/19/understanding-aten-pytorchs-tensor-library#)
+- [MatX - GPU-Accelerated Numerical Computing in Modern C++ | NVIDIA](https://github.com/NVIDIA/matx)
+- [Metal Compute Shaders And C++](https://www.smish.dev/programming/metal_compute_cpp/metal_compute_cpp.pdf) (PDF)
+
+Linear Algebra:
+- [Show HN: LAPACK without Fortran77; a C11 translation (github.com/ilayn)](https://news.ycombinator.com/item?id=47644703)
+- [semicolon-lapack](https://github.com/ilayn/semicolon-lapack)
+
+AI Compute Extensions (ACE):
+- [Intel Posts Initial GCC Compiler Patches For AI Compute Extensions "ACE" | Phoronix](https://www.phoronix.com/news/Intel-GCC-ACE-AI-Patches)
+- [The AI Compute Extensions (ACE) for x86](https://x86ecosystem.org/wp-content/uploads/2026/03/ACE-Whitepaper-v1.pdf) (PDF, 147 KB)
+
+Finite Elements & CFD:
+- [Templated FEM kernels: Benefits and Drawbacks](https://www.smish.dev/programming/dynamic_kernel_refactor/)
+- [From Particles on a Grid to the Wind Tunnel’s Digital Rival: The Rise of LBM in Defense Aviation | Dassault Systèmes SIMULIA](https://blog.3ds.com/brands/simulia/from-particles-grid-wind-tunnel-digital-rival-rise-lbm-defense-aviation/)
+
+Programming:
+- [Story-time: C++, bounds checking, performance, and compilers | Chandler Carruth](https://chandlerc.blog/posts/2024/11/story-time-bounds-checking/)
+- [The Second Coming of the Command Line](https://cautomaton.com/articles/second-coming-of-the-command-line/)
+
+Life Advice:
+- [Life Lessons from the First Half-Century of My Career | Communications of the ACM](https://cacm.acm.org/opinion/life-lessons-from-the-first-half-century-of-my-career/)
+- [What the Middle Ages can teach us about preventing burnout | BBC Culture](https://www.bbc.com/culture/article/20260713-what-the-middle-ages-can-teach-us-about-burnout)
+
 ## 2026-05-28
 
 - [Architecture & Systems are Changing: The Architect’s Role in the Era of Agentic Co-Design | Computer Architecture Today](https://www.sigarch.org/architecture-systems-are-changing-the-architects-role-in-the-era-of-agentic-co-design/)
@@ -21,7 +50,7 @@ A chronological collection of things I've found interesting.
 ## 2026-05-22
 
 - [Alan Hindmarsh]()
-- [ODEPACK: A systematicized collection]()
+- [ODEPACK: A systematized collection]()
 - [ODE Meeting Argonne]()
 
 ## 2026-05-03
@@ -34,7 +63,6 @@ A chronological collection of things I've found interesting.
 Object-oriented Design Principles:
 - [Why getter and setter methods are evil](https://www.infoworld.com/article/2161183/why-getter-and-setter-methods-are-evil.html)
 - [Getters/Setters. Evil. Period.](https://www.yegor256.com/2014/09/16/getters-and-setters-are-evil.html)
--
 
 Misc:
 - [C Traps and Pitfalls](http://literateprogramming.com/ctraps.pdf) (PDF, 117 KB)
@@ -107,7 +135,7 @@ Unreachable:
 
 ## 2026-03-20
 
-Intepreters:
+Interpreters:
 - [A Deep Dive into Dispatching Techniques | Jonathan Müller](https://www.jonathanmueller.dev/talk/deep-dive-dispatch/)
 - [Parsing Protobuf at 2+GB/s: How I Learned To Love Tail Calls in C | Josh Haberman](https://blog.reverberate.org/2021/04/21/musttail-efficient-interpreters.html)
 - [Subject: Re: Suggestions on implementing an efficient instruction set simulator in LuaJIT2](http://lua-users.org/lists/lua-l/2011-02/msg00742.html)
@@ -158,7 +186,7 @@ Fortran Software Papers:
 - [Serious FORTRAN (1973)](https://doi.org/10.1002/spe.4380030203)
 - [Serious FORTRAN—Part 2 (1973)](https://doi.org/10.1002/spe.4380030303)
 - [Fortran 77 portability (1981)](https://doi.org/10.1002/spe.4380111006)
-- [A fortran procedure for drawing some space-filling curves (1986)](https://doi.org/10.1002/spe.4380160607
+- [A fortran procedure for drawing some space-filling curves (1986)](https://doi.org/10.1002/spe.4380160607)
 - [Module coupling and cohesion (COMP145, 2000)](https://www.cs.unc.edu/~stotts/COMP145/modules.html) (see [Team Software Engineering](https://www.cs.unc.edu/~stotts/COMP145/) course homepage)
 - [Multibox Parsers (1994)](https://dl.acm.org/doi/pdf/10.1145/181593.181602) (PDF, 702 KB)
 - [Multibox parsers: no more handwritten lexical parsers](https://doi.org/10.1109/52.406759)
@@ -193,7 +221,7 @@ Misc:
 R history and other links:
 - [R: Past and Future History | Ross Ihaka](https://www.stat.auckland.ac.nz/~ihaka/downloads/Interface98.pdf) (PDF, 92.5 KB)
 - [A Brief History of S | Richard A. Becker](https://sas.uwaterloo.ca/~rwoldfor/software/R-code/historyOfS.pdf) (PDF, 151 KB)
-- [History of S and R | John Chamers](https://www.r-project.org/conferences/useR-2006/Slides/Chambers.pdf) (PDF, 234 KB)
+- [History of S and R | John Chambers](https://www.r-project.org/conferences/useR-2006/Slides/Chambers.pdf) (PDF, 234 KB)
 - [History and Overview of R | R Programming for Data Science](https://bookdown.org/rdpeng/rprogdatascience/history-and-overview-of-r.html)
 - [R behind the scenes: Using S the (un)usual way | Friedrich Leisch](https://epub.ub.uni-muenchen.de/2085/1/tr012.pdf) (PDF, 1357 KB)
 
@@ -211,18 +239,18 @@ Co-Array Fortran Resources:
 
 Co-Array Fortran Articles:
 
-- Numrich, R. W., Reid, J., & Kim, K. (1998, June). Writing a multigrid solver using co-array fortran. In International Workshop on Applied Parallel Computing (pp. 390-399). Berlin, Heidelberg: Springer Berlin Heidelberg. https://doi.org/10.1007/BFb0095362
-- Dotsenko, Y., Coarfa, C., & Mellor-Crummey, J. (2004, October). A multi-platform co-array fortran compiler. In Proceedings. 13th International Conference on Parallel Architecture and Compilation Techniques, 2004. PACT 2004. (pp. 29-40). IEEE. https://dl.acm.org/doi/10.5555/1025127.1025994
-- Numrich, R. W., & Reid, J. (2005, August). Co-arrays in the next Fortran standard. In ACM SIGPLAN Fortran Forum (Vol. 24, No. 2, pp. 4-17). New York, NY, USA: ACM. https://doi.org/10.1145/1080399.1080400
-- Numrich, R. W. (2005, September). A parallel numerical library for co-array Fortran. In International Conference on Parallel Processing and Applied Mathematics (pp. 960-969). Berlin, Heidelberg: Springer Berlin Heidelberg. https://doi.org/10.1007/11752578_116
-- Numrich, R. W. (2005). Parallel numerical algorithms based on tensor notation and Co-Array Fortran syntax. Parallel Computing, 31(6), 588-607. https://doi.org/10.1016/j.parco.2005.03.003
-- Mellor-Crummey, J., Adhianto, L., Scherer III, W. N., & Jin, G. (2009, October). A new vision for Coarray Fortran. In Proceedings of the Third Conference on Partitioned Global Address Space Programing Models (pp. 1-9). https://doi.org/10.1145/1809961.1809969
-- Eachempati, D., Jun, H. J., & Chapman, B. (2010, October). An open-source compiler and runtime implementation for Coarray Fortran. In Proceedings of the Fourth Conference on Partitioned Global Address Space Programming Model (pp. 1-8). https://doi.org/10.1145/2020373.2020386
-- Eachempati, D., Richardson, A., Liao, T., Calandra, H., & Chapman, B. (2012, November). A coarray fortran implementation to support data-intensive application development. In 2012 SC Companion: High Performance Computing, Networking Storage and Analysis (pp. 771-776). IEEE. https://doi.org/10.1109/SC.Companion.2012.106
-- Mallinson, A. C., Jarvis, S. A., Gaudin, W. P., & Herdman, J. A. (2014, October). Experiences at scale with PGAS versions of a Hydrodynamics application. In Proceedings of the 8th International Conference on Partitioned Global Address Space Programming Models (pp. 1-11). https://doi.org/10.1145/2676870.2676873
-- Garain, S., Balsara, D. S., & Reid, J. (2015). Comparing Coarray Fortran (CAF) with MPI for several structured mesh PDE applications. Journal of Computational Physics, 297, 237-253. https://doi.org/10.1016/j.jcp.2015.05.020
-- Sharma, A., & Moulitsas, I. (2017). MPI to Coarray Fortran: experiences with a CFD solver for unstructured meshes. Scientific Programming, 2017(1), 3409647. https://doi.org/10.1155/2017/3409647
-- McKevitt, J., Vorobyov, E. I., & Kulikov, I. (2025). Accelerating Fortran codes: A method for integrating Coarray Fortran with CUDA Fortran and OpenMP. Journal of Parallel and Distributed Computing, 195, 104977. https://doi.org/10.1016/j.jpdc.2024.104977
+- [Writing a multigrid solver using co-array fortran (1998) | Numrich et al.](https://doi.org/10.1007/BFb0095362)
+- [A multi-platform co-array fortran compiler (2004) | Dotsenko et al.](https://dl.acm.org/doi/10.5555/1025127.1025994)
+- [Co-arrays in the next Fortran standard (2005) | Numrich & Reid](https://doi.org/10.1145/1080399.1080400)
+- [A parallel numerical library for co-array Fortran (2005) | Numrich](https://doi.org/10.1007/11752578_116)
+- [Parallel numerical algorithms based on tensor notation and Co-Array Fortran syntax (2005) | Numrich](https://doi.org/10.1016/j.parco.2005.03.003)
+- [A new vision for Coarray Fortran (2009) | Mellor-Crummey et al.](https://doi.org/10.1145/1809961.1809969)
+- [An open-source compiler and runtime implementation for Coarray Fortran (2010) | Eachempati et al.](https://doi.org/10.1145/2020373.2020386)
+- [A coarray fortran implementation to support data-intensive application development (2012) | Eachempati et al.](https://doi.org/10.1109/SC.Companion.2012.106)
+- [Experiences at scale with PGAS versions of a Hydrodynamics application (2014) | Mallinson et al.](https://doi.org/10.1145/2676870.2676873)
+- [Comparing Coarray Fortran (CAF) with MPI for several structured mesh PDE applications (2015) | Garain et al.](https://doi.org/10.1016/j.jcp.2015.05.020)
+- [MPI to Coarray Fortran: experiences with a CFD solver for unstructured meshes (2017) | Sharma & Moulitsas](https://doi.org/10.1155/2017/3409647)
+- [Accelerating Fortran codes: A method for integrating Coarray Fortran with CUDA Fortran and OpenMP (2025) | McKevitt et al.](https://doi.org/10.1016/j.jpdc.2024.104977)
 
 Fortran debate:
 - [David Cann (1992). Retire Fortran? A Debate Rekindled](https://doi.org/10.1145/135226.135231) (an earlier version is available in the Supercomputing '91 proceedings)
@@ -236,12 +264,12 @@ I found these at the bottom of the Fortran Wiki [Articles](https://fortranwiki.o
 Nvidia PTX Resources:
 
 - [Understanding PTX, the Assembly Language of CUDA GPU Computing | Nvidia](https://developer.nvidia.com/blog/understanding-ptx-the-assembly-language-of-cuda-gpu-computing/)
-- [Advanded NVIDIA CUDA Kernel Optimiziazion Techniques: Handwritten PTX | Nvidia](https://developer.nvidia.com/blog/advanced-nvidia-cuda-kernel-optimization-techniques-handwritten-ptx/)
+- [Advanced NVIDIA CUDA Kernel Optimization Techniques: Handwritten PTX | Nvidia](https://developer.nvidia.com/blog/advanced-nvidia-cuda-kernel-optimization-techniques-handwritten-ptx/)
 - [Inline PTX Assembly in CUDA | Nvidia](https://docs.nvidia.com/cuda/inline-ptx-assembly/index.html)
 - [What is Parallel Thread Execution? | Modal](https://modal.com/gpu-glossary/device-software/parallel-thread-execution)
 - [Tutorial: Understanding GPU Assembly with PTX | eunomia](https://eunomia.dev/others/cuda-tutorial/02-ptx-assembly/)
 - [Parallel Thread Execution ISA Version 9.1 | Nvidia](https://docs.nvidia.com/cuda/parallel-thread-execution/)
-- [Parallel Thread Execustion ISA Version 5.0 | Nvidia](https://docs.nvidia.com/cuda/archive/8.0/parallel-thread-execution/)
+- [Parallel Thread Execution ISA Version 5.0 | Nvidia](https://docs.nvidia.com/cuda/archive/8.0/parallel-thread-execution/)
 - [Parallel Thread Execution ISA Version 6.3 | Nvidia](https://docs.nvidia.com/cuda/archive/10.0/parallel-thread-execution/index.html)
 - [Parallel Thread Execution ISA Version 3.0 | Nvidia](https://developer.download.nvidia.com/compute/DevZone/docs/html/C/doc/ptx_isa_3.0.pdf) (PDF, 2.2 MB)
 - [PTX: Parallel Thread Execution ISA Version 1.4](https://www.cs.cmu.edu/afs/cs/academic/class/15668-s11/www/cuda-doc/ptx_isa_1.4.pdf) (PDF, 2.5 MB)
@@ -277,12 +305,12 @@ Nvidia PTX Resources:
 - [OpenMP* SIMD for Inclusive/Exclusive Scans](https://www.intel.com/content/www/us/en/developer/articles/technical/openmp-simd-for-inclusiveexclusive-scans.html)
 - [Effiziente Nutzung von Hochleistungsrechnern in der numerischen Strömungsmechanik | Dr. Georg Hager](https://blogs.fau.de/hager/files/2010/07/numet_hager_08.pdf) (PDF, 599 KB)
 - [Automatic Translation of FORTRAN Programs to Vector Form | Randy Allen and Ken Kennedy](https://dl.acm.org/doi/pdf/10.1145/29873.29875) (PDF, 2.8 MB)
-- Bik, A. J., Tian, X., & Girkar, M. B. (2006). Multimedia vectorization of floating‐point MIN/MAX reductions. Concurrency and Computation: Practice and Experience, 18(9), 997-1007. https://doi.org/10.1002/cpe.1009
+- [Multimedia vectorization of floating-point MIN/MAX reductions (2006) | Bik et al.](https://doi.org/10.1002/cpe.1009)
 - [Vectorization Essentials | Intel Software](https://doku.lrz.de/files/11497000/11497017/8/1745835328413/3_Vectorization.pdf) (PDF, 1913 KB)
-- Karp, A. H., & Babb, R. B. (1988). A comparison of 12 parallel Fortran dialects. Ieee Software, 5(5), 52-67. https://doi.org/10.1109/52.7943
-- Oraji, Y. M., Hück, A., & Bischof, C. (2025, November). Extending MPI Correctness Benchmarking to the Fortran Language. In Proceedings of the SC'25 Workshops of the International Conference for High Performance Computing, Networking, Storage and Analysis (pp. 244-248). https://doi.org/10.1145/3731599.3767366
-- [Investigating the performance of LLVM- based Intel Fortran Complier (ifx) | Dhani Ruhela](https://www.ixpug.org/images/docs/isc_2024/Investigating_the_perfomance_of_LLVM-based_IFX.pdf) (PDF, 596 KB)
-- Rouson, D., Dibba, B., Rasmussen, K., Richardson, B., Torres, D., Zhang, Y., ... & Shende, S. (2024). Just Write Fortran: Experiences with a Language-Based Alternative to MPI+ X. https://doi.org/10.25344/S4H88D
+- [A comparison of 12 parallel Fortran dialects (1988) | Karp & Babb](https://doi.org/10.1109/52.7943)
+- [Extending MPI Correctness Benchmarking to the Fortran Language (2025) | Oraji et al.](https://doi.org/10.1145/3731599.3767366)
+- [Investigating the performance of LLVM-based Intel Fortran Compiler (ifx) | Dhani Ruhela](https://www.ixpug.org/images/docs/isc_2024/Investigating_the_perfomance_of_LLVM-based_IFX.pdf) (PDF, 596 KB)
+- [Just Write Fortran: Experiences with a Language-Based Alternative to MPI+X (2024) | Rouson et al.](https://doi.org/10.25344/S4H88D)
 
 ## 2025-11-19
 
