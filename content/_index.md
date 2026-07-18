@@ -34,6 +34,7 @@ My full [Curriculum Vitae](/cv/cv_ivan_pribec.pdf) is also available online.
 * [GitHub](https://github.com/ivan-pi)
 * [LinkedIn](https://www.linkedin.com/in/ivan-pribec-45514871/)
 * [YouTube](https://www.youtube.com/@ivanpribec3353)
+* [Fortran Discourse](https://fortran-lang.discourse.group/u/ivanpribec/activity)
 * [ORCID](https://orcid.org/0000-0001-8436-882X)
 * [Google Scholar](https://scholar.google.com/citations?user=2kZcNEgAAAAJ&hl=en)
 
@@ -41,5 +42,5 @@ My full [Curriculum Vitae](/cv/cv_ivan_pribec.pdf) is also available online.
 
 * **Upcoming:** [presentation](https://wccm-eccomas2026.org/event/contribution/f0e0ab35-05d3-11f1-919d-000c29ddfc0c) at the WCCM ECCOMAS Congress 2026 in Munich (July 2026).
 * [Easier API interoperability: writing a bindings generator to C/C++ with Coccinelle](https://archive.fosdem.org/2025/schedule/event/fosdem-2025-6509-easier-api-interoperability-writing-a-bindings-generator-to-c-c-with-coccinelle/) — talk at FOSDEM 2025, Brussels (February 2025).
-* [Bringing Fortran and C++ together](https://www.lrz.de/en/news/detail/2023-07-26-poster-award-en) — interview with LRZ (2024).
+* [Bringing Fortran and C++ together](https://www.lrz.de/en/news/detail/2023-07-26-poster-award-en) — interview with LRZ (2023).
 * [Bridging the Language Gap: Classes for C++/Fortran Interoperability](https://pasc-conference.org/editions/pasc23/program/plenary-sessions/awarded-contributions/) — poster P11, **awarded the Best Poster Prize** at the PASC23 Conference, Davos (June 2023).
