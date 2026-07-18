@@ -10,6 +10,7 @@ For my running, dated log of interesting links and papers, see the [Diary](/link
 
 - [Ondřej Čertík](https://ondrejcertik.com/)
 - [Milan Curcic](https://milancurcic.com/)
+- [Ehsan Fattahi](https://scholar.google.com/citations?user=pr-B96oAAAAJ&hl=en)
 - [Matteo Foglieni](https://foglienimatteo.com/)
 - [Jorge Luis Gálvez Vallejo](https://jorgeg94.github.io/)
 - [Michele Martone](https://michelemartone.org/)
