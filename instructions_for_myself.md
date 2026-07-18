@@ -193,11 +193,9 @@ coordinates, click a legend entry to toggle a curve). Two parts make it work:
   the SVG; the output is deterministic, so regenerating must produce an
   identical file unless the script changed).
 - **`static/js/gnuplot_svg.js`** — gnuplot's SVG mousing library, served at
-  `/js/gnuplot_svg.js`. It is an **unmodified, byte-identical copy** of
-  `/usr/share/gnuplot/gnuplot/6.0/js/gnuplot_svg.js` from the gnuplot 6.0
-  distribution (originally contributed to gnuplot by Marko Karjalainen; see the
-  attribution header inside the file). Keep it unmodified — if a newer gnuplot
-  is used to regenerate the SVG, refresh this file from the same release.
+  `/js/gnuplot_svg.js`. **Vendored third-party code — keep it byte-identical
+  to the gnuplot release it came from, never edit it here.** Full provenance,
+  attribution and update rules: [`static/js/README.md`](static/js/README.md).
 
 The post embeds the SVG with `<object>` (scripts don't run inside `<img>`)
 plus an `<img>` fallback for RSS readers and browsers without JavaScript.
