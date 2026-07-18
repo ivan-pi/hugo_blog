@@ -54,16 +54,6 @@ weight=1
     name = "now"
     weight = 50
 
-  # Footer
-  [[menu.footer]]
-    url = "https://github.com/ivan-pi"
-    name = "GitHub"
-    weight = 1
-  [[menu.footer]]
-    url = "/posts/index.xml"
-    name = "RSS"
-    weight = 2
-
 
 # Links format
 [permalinks]
