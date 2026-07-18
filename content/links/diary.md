@@ -31,6 +31,9 @@ Programming:
 - [Story-time: C++, bounds checking, performance, and compilers | Chandler Carruth](https://chandlerc.blog/posts/2024/11/story-time-bounds-checking/)
 - [The Second Coming of the Command Line](https://cautomaton.com/articles/second-coming-of-the-command-line/)
 
+AI Agents:
+- [Writing a Good AGENTS.md | Philipp Schmid](https://www.philschmid.de/writing-good-agents)
+
 Life Advice:
 - [Life Lessons from the First Half-Century of My Career | Communications of the ACM](https://cacm.acm.org/opinion/life-lessons-from-the-first-half-century-of-my-career/)
 - [What the Middle Ages can teach us about preventing burnout | BBC Culture](https://www.bbc.com/culture/article/20260713-what-the-middle-ages-can-teach-us-about-burnout)
