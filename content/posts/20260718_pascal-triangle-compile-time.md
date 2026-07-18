@@ -88,41 +88,32 @@ Reading the expression from the inside out:
 
 ### Why Fortran 2018?
 
-The youngest ingredient is the ability to **declare the type of an implied-`do`
-index directly inside the array constructor** — the `integer :: i = ...`,
-`integer :: k = ...`, and `integer :: n = ...` you see above. Fortran 2008
-introduced in-place index declarations for `do concurrent` and `forall`;
-Fortran 2018 extended them to the implied-`do` loops of array constructors and
-`data` statements (see §5.18 of John Reid's [*The New Features of Fortran
+The youngest ingredient is declaring the implied-`do` index **inside the array
+constructor** — the `integer :: i = ...` and friends above. Fortran 2008
+allowed this for `do concurrent` and `forall`; Fortran 2018 extended it to
+array constructors and `data` statements (§5.18 of John Reid's [*The New
+Features of Fortran
 2018*](https://wg5-fortran.org/N2151-N2200/ISO-IECJTC1-SC22-WG5_N2161_The_New_Features_of_Fortran_2018.pdf)).
-As Steve Lionel has explained [on Fortran
+As Steve Lionel [explains on Fortran
 Discourse](https://fortran-lang.discourse.group/t/declare-variables-inside-loops/3395/5),
-"declare" is almost too
-strong a word: the index is a construct-scope variable that must be an integer
-anyway, so the only real novelty is being able to state its kind in place. The
-practical payoff is tidiness — no `integer :: i, k, n` declarations lingering
-in the surrounding scope purely for the constructor's benefit, which is
-especially welcome when initializing parameters at module scope. The feature
-has been on paper since 2018, but compiler support is still thin on the
-ground — hence the very recent flang (22.1.8).
+the index is a construct-scope integer regardless — the real novelty is
+stating its kind in place, so no `integer :: i, k, n` declarations clutter the
+surrounding scope. On paper the feature is from 2018, but compiler support is
+still thin — hence the very recent flang.
 
 ### A note on the format
 
-The output edit descriptor `'(9(I6,:,1X))'` prints `9` (that is `nmax + 1`)
-integers per line in six-character fields. The colon (`:`) stops the format as
-soon as the data list is exhausted, and `1X` inserts a single space between
-columns. Getting the repeat count right — `9`, not the default that Fortran
-would pick — is what lets the whole table print with a single `write`
-statement. It is the one place where the program will not follow `nmax`
-automatically: change the parameter and you must touch the format too, as
-there is no convenient way to splice an integer into a character constant
-expression. (For single digits, `achar(iachar('0') + nmax + 1)` would do it —
-but that cure is worse than the disease.)
+The edit descriptor `'(9(I6,:,1X))'` prints `nmax + 1` integers per line in
+six-character fields, separated by a space; the colon (`:`) stops the format
+once the data list is exhausted. The repeat count `9` is the one thing that
+does not follow `nmax` automatically — change one and you must touch the
+other, as there is no convenient way to splice an integer into a character
+constant expression.
 
 ## Further reading
 
-Compile-time evaluation has plenty of more serious uses than pretty-printing a
-triangle. A few good starting points:
+Compile-time evaluation is still young territory in Fortran. A few more
+explorations of what is possible today:
 
 - [*Some adventures with compile time evaluation*](https://www.youtube.com/watch?v=zL9sNsjbM-w),
   Mohd Furquan, FortranCon 2021
