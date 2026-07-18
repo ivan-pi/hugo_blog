@@ -6,6 +6,27 @@ languageCode = "en-us"
 copyright = "© 2025 — Ivan Pribec — All rights reserved."
 timeZone = "Local"
 
+# Safety net: never publish stray scratch files accidentally left inside
+# content/. Real posts are Markdown; loose code/notes/data belong OUTSIDE
+# content/ (see instructions_for_myself.md). These patterns keep source-code
+# and notes dumps from being copied verbatim onto the live site.
+# NOTE: this also excludes such files from page bundles — if you ever need to
+# publish e.g. a .py alongside a post, remove the matching pattern or rename.
+# (.pdf, .odt, images, etc. are intentionally NOT ignored — the CV and figures
+# rely on them.)
+ignoreFiles = [
+  '\.py$',
+  '\.txt$',
+  '\.c$',
+  '\.h$',
+  '\.cpp$',
+  '\.f$',
+  '\.f90$',
+  '\.dat$',
+  '\.csv$',
+  '\.log$',
+]
+
 # Pagination
 [pagination]
   pagerSize = 10

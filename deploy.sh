@@ -20,7 +20,13 @@ green "Building the site with Hugo..."
 # Build into ./public. Drafts are excluded (this is a production build).
 # `set -e` above means a failed build aborts the script here, so a broken
 # site is never pushed.
-hugo --gc --minify
+#
+# --cleanDestinationDir wipes anything in ./public that this build did not
+# produce, so pages/files you deleted from the sources also disappear from the
+# live site. It preserves ./public/.git, and static/.nojekyll is regenerated
+# every build. (If you ever move to a custom domain, add the CNAME file to
+# static/ so it survives the clean too.)
+hugo --gc --minify --cleanDestinationDir
 
 # ./public must be the *Pages* repo clone. If it is not a git repository,
 # the git commands below would silently operate on the source repo instead,

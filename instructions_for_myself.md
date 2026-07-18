@@ -50,6 +50,42 @@ entirely (e.g. in a scratch folder that isn't published).
 
 ---
 
+## ⚠️ Where to keep unfinished work — `content/` *is* the public website
+
+Anything inside `content/` is fair game for publishing. There are two traps:
+
+- **Loose non-Markdown files get copied out verbatim and ignore `draft`.** Drop
+  a `notes.py`, `links.txt`, or `snippet.f90` into `content/posts/` and Hugo
+  publishes it at e.g. `https://ivan-pi.github.io/posts/notes.py` — there is no
+  draft switch for these. (This actually happened: `findloc.py`, `findloc.txt`,
+  `nvidia_links.txt`, and `reduce_misuse/reduce_misuse.f90` all went live once.)
+- **Stray `.md` files without front matter** re-create the `0001-01-01`
+  placeholder from the section above; without `draft: true` they publish
+  half-finished.
+
+**Habits to avoid this:**
+
+1. **Keep scratch material *outside* `content/`.** Hugo only reads `content/`,
+   `static/`, `assets/`, `layouts/`, `i18n/`, `data/`. A sibling folder such as
+   `notes/` or `drafts/` at the **repo root** is completely invisible to the
+   build — park ideas, link dumps, and code snippets there, and move a file
+   into `content/posts/` only once it's a real post with front matter.
+2. **In-progress posts you want to preview in place →** use `draft: true`
+   (works for `.md` only). `hugo server -D` shows them; `deploy.sh` omits them.
+3. **A post that needs companion files** (code, data, images) **→** use a *page
+   bundle*: a folder `content/posts/my-post/` with `index.md` plus the files.
+   The files then belong to that post and only publish when it does.
+
+**Safety net (belt and suspenders):** `config.toml` sets `ignoreFiles` to make
+Hugo skip common scratch types (`.py`, `.txt`, `.c`, `.h`, `.cpp`, `.f`,
+`.f90`, `.dat`, `.csv`, `.log`) wherever they appear in `content/`, so a
+forgotten snippet can't leak onto the site. Intentionally *not* ignored:
+`.pdf`, `.odt`, images (the CV and figures need them). If you ever genuinely
+need to publish one of the ignored types, remove its pattern from `ignoreFiles`
+(or rename the file).
+
+---
+
 ## Writing a new blog post
 
 1. **Create the file** under `content/posts/`. The naming convention here is:
@@ -208,11 +244,22 @@ Publishing is one command:
 
 What it does:
 
-1. Runs `hugo --gc --minify` to render the site into `./public` (drafts
-   excluded). If the build fails, the script stops — a broken site is never
-   pushed.
+1. Runs `hugo --gc --minify --cleanDestinationDir` to render the site into
+   `./public` (drafts excluded). If the build fails, the script stops — a
+   broken site is never pushed.
 2. Commits everything in `./public` and force-pushes it to the GitHub Pages
    repository. The live site updates within a couple of minutes.
+
+`--cleanDestinationDir` means anything you **remove** from the sources also
+disappears from `./public` (and therefore the live site) on the next deploy —
+so deleting a stray file actually un-publishes it, instead of leaving it
+orphaned in the output. The clean preserves `./public/.git`, and
+`static/.nojekyll` is regenerated every build (it tells GitHub Pages not to run
+Jekyll over the output).
+
+> If you ever switch to a **custom domain**, put its `CNAME` file in `static/`
+> (not just in `public/`), otherwise `--cleanDestinationDir` will delete it on
+> the next build.
 
 ### First-time deployment setup
 
@@ -247,6 +294,9 @@ listed in `.gitignore`, so build output never gets committed to the sources.
   from the date and title, not the filename.
 - **`katex = true`** and **`custom_css = ["css/address.css"]`** under
   `[params]` — consumed by `layouts/_partials/custom_head.html` (above).
+- **`ignoreFiles = [ … ]`** — the safety net that stops stray scratch files
+  (`.py`, `.txt`, `.f90`, …) in `content/` from being published. See "Where to
+  keep unfinished work" above.
 
 ---
 
@@ -258,4 +308,6 @@ listed in `.gitignore`, so build output never gets committed to the sources.
 | A blog entry shows date **`0001-01-01`** and no title | That file has no front matter (or no `title`/`date`). Add front matter, or mark it `draft: true`, or move it out of `content/posts/`. |
 | Math shows as raw `$$…$$` in the browser | KaTeX didn't load. Check `katex` isn't set to `false` on the page, and that `layouts/_partials/custom_head.html` is present. |
 | A finished post isn't on the live site | It's still `draft: true`. Set `draft: false` and redeploy. |
+| A scratch file (`foo.py`, `notes.txt`) got published | It was loose inside `content/`. Move it to a `notes/`/`drafts/` folder at the repo root; add its extension to `ignoreFiles` if needed. `--cleanDestinationDir` removes it from the live site on the next deploy. |
+| A deleted post/file is still live | Older Hugo left orphans in `public/`; the deploy now uses `--cleanDestinationDir`, so a redeploy removes it. |
 | Fresh clone won't build | Initialise the theme submodule: `git submodule update --init themes/hugo-simple`. |
