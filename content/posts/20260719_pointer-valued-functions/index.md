@@ -8,9 +8,26 @@ tags: ["Fortran", "pointers"]
 There is a little-known feature of Fortran involving functions that return
 pointers. Since Fortran 2008, a reference to such a function may appear not
 only in expressions, but also on the *left-hand side* of an assignment — and
-in other so-called *variable definition contexts*.
+in other so-called *variable definition contexts*. Here is just a little
+taste of it:
 
-Here is just a little taste of it, using a simple stack of integers:
+```fortran
+push(mystack) = 1
+push(mystack) = 2
+push(mystack) = 3
+```
+
+These may look like array element assignments, but they are actually
+*function calls*. To see what is going on, let's build the example up piece
+by piece. (The complete program is available as [stack.f90](stack.f90) if
+you'd like to follow along at home.)
+
+## A stack of integers
+
+We start with a derived type holding a fixed-size buffer of 1000 integers
+and a counter `i` pointing at the top of the stack. The components are
+`private`, so client code can only manipulate the stack through the
+procedures of the module:
 
 ```fortran
 module stack_type
@@ -25,6 +42,40 @@ end type
 
 contains
 
+    ! ... procedures shown below ...
+
+end module
+```
+
+Thanks to default initialization, a freshly declared `stack` starts out
+empty — no constructor call needed.
+
+## Is it empty? Is it full?
+
+Two small helper functions query the state of the stack. The counter tells
+us everything we need to know:
+
+```fortran
+    logical function is_empty(s)
+        type(stack), intent(in) :: s
+        is_empty = s%i == 0
+    end function
+
+    logical function is_full(s)
+        type(stack), intent(in) :: s
+        is_full = s%i == 1000
+    end function
+```
+
+Nothing surprising so far. These guard the operations that follow.
+
+## Push and pop
+
+Now for the interesting part. A conventional `push` would take the stack
+*and* the value to be stored as arguments. Instead, our `push` takes only
+the stack, reserves the next free slot, and returns a *pointer* to it:
+
+```fortran
     function push(s) result(k)
         type(stack), intent(inout), target :: s
         integer, pointer :: k
@@ -32,6 +83,15 @@ contains
         s%i = s%i + 1
         k => s%a(s%i)
     end function
+```
+
+The value itself never passes through `push`. It arrives later, through the
+returned pointer — this is what will let us write `push(mystack) = 1`.
+
+Its counterpart `pop` is an ordinary function returning the top value and
+decrementing the counter:
+
+```fortran
     function pop(s) result(k)
         type(stack), intent(inout) :: s
         integer :: k
@@ -40,16 +100,16 @@ contains
             s%i = s%i - 1
         end if
     end function
-    logical function is_empty(s)
-        type(stack), intent(in) :: s
-        is_empty = s%i == 0
-    end function
-    logical function is_full(s)
-        type(stack), intent(in) :: s
-        is_full = s%i == 1000
-    end function
-end module
+```
 
+(Popping an empty stack leaves the result undefined here; a real
+implementation would want to handle that case more gracefully.)
+
+## Putting the stack to use
+
+With the module in place, the main program becomes delightfully short:
+
+```fortran
 program demo
 use stack_type
 
@@ -66,10 +126,9 @@ end do
 end program
 ```
 
-The three `push` statements may look like array element assignments, but they
-are actually *function calls*. Each call to `push` bumps the stack counter and
-returns a pointer to the newly reserved slot; the assignment then stores the
-value through that pointer. Compiling and running with gfortran 13.3:
+Each call to `push` bumps the stack counter and returns a pointer to the
+newly reserved slot; the assignment then stores the value through that
+pointer. Compiling and running with gfortran 13.3:
 
 ```text
 $ gfortran -std=f2018 -Wall stack.f90 && ./a.out
@@ -141,17 +200,17 @@ conforming.
 
 ## Towards a dictionary
 
-Where this gets really fun is *associative* containers. With a
-pointer-valued lookup function we can build a dictionary-like type whose
-elements are created on first access, in the spirit of `std::map::operator[]`
-in C++ or `defaultdict` in Python:
+Where this could get really fun is *associative* containers. A
+pointer-valued lookup function makes it possible to write a dictionary whose
+entries are created on first access, in the spirit of
+`std::map::operator[]` in C++ — although I have never actually seen this
+done in the wild, apart from a lone thread on the [Fortran
+Discourse](https://fortran-lang.discourse.group/t/assignment-to-returned-pointer/1958).
+
+As a proof of concept, here is a toy dictionary mapping strings to
+integers (full program in [dict.f90](dict.f90)):
 
 ```fortran
-module dict_type
-implicit none
-private
-public :: dict
-
 type :: pair
     character(len=:), allocatable :: key
     integer :: val
@@ -163,9 +222,13 @@ type :: dict
 contains
     procedure :: of
 end type
+```
 
-contains
+The lookup function scans the pairs for a matching key, appending a new
+zero-initialized entry if the key is not found, and returns a pointer to the
+value:
 
+```fortran
     function of(self, key) result(v)
         class(dict), intent(inout), target :: self
         character(len=*), intent(in) :: key
@@ -181,35 +244,30 @@ contains
         self%pairs = [self%pairs, pair(key, 0)]
         v => self%pairs(size(self%pairs))%val
     end function
+```
 
-end module
+The same function then serves both sides of the assignment — on the left it
+*defines* an entry, on the right the pointer result is dereferenced and the
+value of its target is used:
 
-program demo
-use dict_type
-implicit none
-
+```fortran
 type(dict), target :: fruit
 
 fruit%of("apples") = 3
 fruit%of("oranges") = 5
 fruit%of("apples") = fruit%of("apples") + 1
 
-print *, fruit%of("apples"), fruit%of("oranges")
-
-end program
+print *, fruit%of("apples"), fruit%of("oranges")   ! prints 4, 5
 ```
 
-```text
-$ gfortran -std=f2018 -Wall dict.f90 && ./a.out
-           4           5
-```
-
-The same function `of` serves both sides of the assignment: on the left-hand
-side it *defines* the entry, on the right-hand side the pointer result is
-dereferenced and its target's value is used. Keys that don't exist yet are
-appended on the fly. (A linear scan over an array of pairs is of course a toy
-implementation — a serious dictionary would hash the keys — but the client
-code would look exactly the same.)
+The client code is pleasant, but I'm not convinced the implementation is
+the right way to go about it. The deferred-length `allocatable` keys mean
+every key is a separate small heap allocation, and the array constructor
+`[self%pairs, pair(key, 0)]` reallocates and copies the whole table on every
+insertion. A serious dictionary would hash its keys into buckets and manage
+the key storage more carefully. Still, as a demonstration of what
+pointer-valued functions make *syntactically* possible, it serves its
+purpose.
 
 ## Further reading
 
