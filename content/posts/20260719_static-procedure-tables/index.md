@@ -14,16 +14,16 @@ compile time. At least on paper: as of 2023, **every compiler I tried got
 this wrong**. This post shows the feature, why it is valid, and the small
 bug-reporting campaign that followed.
 
-## A dispatch table with procedure pointers
+> 📎 The complete example is attached to this post:
+> [`dispatch_test.f90`](dispatch_test.f90)
 
-Since Fortran does not allow arrays of procedure pointers directly, the usual
-workaround is to wrap the pointer in a derived type — a "procedure container"
-— and build an array of those:
+## Three functions and an interface
+
+We need some procedures to dispatch to. Three toy functions will do, each
+returning a single character, so that we can easily check which one was
+called. They share the abstract interface `retchar`:
 
 ```fortran
-! dispatch_test.f90 --
-!   Dispatch table using procedure pointers
-
 module funcs
 abstract interface
     function retchar()
@@ -44,36 +44,60 @@ contains
         c = 'c'
     end function
 end module
+```
 
-module dispatch_table
-use funcs
-implicit none
-private
+## A container for a procedure pointer
 
-public :: table
-public :: build_table, pc
+Fortran does not allow arrays of procedure pointers directly, so the usual
+workaround is to wrap the pointer in a derived type — a "procedure
+container" — and build an array of those:
 
+```fortran
 ! Procedure container
 type :: pc
     procedure(retchar), pointer, nopass :: rc => null()
 end type
+```
 
+The `nopass` attribute matters: without it the component would be treated
+as a type-bound procedure expecting the object itself as an argument.
+
+## The table, two ways
+
+The traditional way to fill a table is at run time, one structure
+constructor per entry:
+
+```fortran
+! Dynamic dispatch table
+function build_table() result(table)
+    type(pc) :: table(3)
+    table = [pc(a),pc(b),pc(c)]
+end function
+```
+
+This works on every compiler and always has. But the table never changes —
+so why build it at run time at all? Since Fortran 2008 the same structure
+constructors may appear in the initializer of a *named constant*:
+
+```fortran
 ! Static dispatch table
-type(pc), parameter :: table(3) = [pc(a),pc(b),pc(c)]  ! Doesn't work
+type(pc), parameter :: table(3) = [pc(a),pc(b),pc(c)]
+```
 
-! According to J3/24-007, section 7.5.10, a procedure target
-! can be used in the structure constructor.
+Here the procedure names `a`, `b`, `c` appear as data sources in a
+structure constructor that initializes a `parameter`. There is no run-time
+construction step at all: the table is baked into the object file, like a
+C `static` array of function pointers. For a big interpreter-style
+dispatch table that is exactly what you want — no initialization order
+concerns, no "did somebody call `build_table` yet?" bookkeeping, and the
+constant can be used anywhere a module variable can.
 
-contains
+## Exercising both tables
 
-    ! Dynamic dispatch table
-    function build_table() result(table)
-        type(pc) :: table(3)
-        table = [pc(a),pc(b),pc(c)]  ! This works
-    end function
+The test program calls each entry through both tables and concatenates the
+results; if everything is wired up correctly, both spell `abc`:
 
-end module
-
+```fortran
 program test
     use dispatch_table, only: pc, build_table
     implicit none
@@ -96,21 +120,18 @@ program test
 end program
 ```
 
-The *dynamic* version — filling an ordinary variable at run time with the
-structure constructors `[pc(a), pc(b), pc(c)]` — works everywhere and always
-has. The interesting line is the *static* one:
+(The `block` construct with its own `use` statement lets the static
+`table` shadow the local variable of the same name.)
 
-```fortran
-type(pc), parameter :: table(3) = [pc(a),pc(b),pc(c)]
+The attached file [`dispatch_test.f90`](dispatch_test.f90) assembles these
+pieces into a complete program — the two table variants live side by side
+in a module `dispatch_table`. On a compiler that supports the static
+table:
+
+```text
+$ flang dispatch_test.f90 && ./a.out
+ PASS
 ```
-
-Here the procedure names `a`, `b`, `c` appear as data sources in a structure
-constructor that initializes a named constant. There is no run-time
-construction step at all: the table is baked into the object file, like a C
-`static` array of function pointers. For a big interpreter-style dispatch
-table that is exactly what you want — no initialization order concerns, no
-"did somebody call `build_table` yet?" bookkeeping, and the constant can be
-used anywhere a module variable can.
 
 ## But is it legal?
 
@@ -211,12 +232,14 @@ call my_f%f(5)    ! same as call a(5)
 end program
 ```
 
+> 📎 Also attached: [`recursive_callback.f90`](recursive_callback.f90)
+
 The recursion never touches the procedure name directly — each level goes
 back through the parameter `my_f`. NAG Fortran 7.2 handles it without
 complaint:
 
 ```text
-> nagfor recursive.f90
+> nagfor recursive_callback.f90
 NAG Fortran Compiler Release 7.2(Shin-Urayasu) Build 7203
 [NAG Fortran Compiler normal termination]
 > ./a.out
@@ -237,5 +260,5 @@ even been seen.
 
 If you have wanted C-style static function pointer tables in Fortran, the
 language has had them since 2008 — the compilers just needed a nudge. Check
-whether your compiler of choice handles the example above, and if it does
-not, file a bug. It worked for me.
+whether your compiler of choice handles the attached examples, and if it
+does not, file a bug. It worked for me.
