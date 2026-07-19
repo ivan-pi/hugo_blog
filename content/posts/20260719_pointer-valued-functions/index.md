@@ -162,6 +162,31 @@ k = 1
 The one-liner `push(mystack) = 1` is exactly this, with the intermediate
 pointer hidden from view.
 
+John Reid's classic summary [The new features of Fortran
+2008](https://wg5-fortran.org/N1851-N1900/N1891.pdf) (WG5 document N1891)
+describes the feature concisely in section 6.6, *Pointer functions*:
+
+> A reference to a pointer function is treated as a variable and is
+> permitted in any variable definition context. For example, this function
+> might calculate where to store values depending on a key
+>
+> ```fortran
+> function storage(key) result(loc)
+>    integer, intent(in) :: key
+>    real, pointer :: loc
+>    loc => ...
+> end function
+> ```
+>
+> which would allow a value to be set thus:
+>
+> ```fortran
+> storage(5) = 0.5
+> ```
+
+Note how Reid's example computes the storage location *from a key* — we
+will run with that idea further below.
+
 The left-hand side of an assignment is only one of the variable definition
 contexts. Another one that works today is passing the function reference as
 an actual argument to an `intent(out)` or `intent(inout)` dummy:
@@ -275,6 +300,11 @@ pointer-valued functions make *syntactically* possible, it serves its
 purpose.
 
 ## Further reading
+
+John Reid describes pointer functions in variable definition contexts in
+section 6.6 of [The new features of Fortran
+2008](https://wg5-fortran.org/N1851-N1900/N1891.pdf) (WG5 document N1891,
+2014).
 
 Reinhold Bader shows this type of usage in his course on [Advanced Fortran
 Topics](https://doku.lrz.de/files/10746213/10746218/1/1684600341697/Advanced_Fortran_OO.pdf)
