@@ -204,8 +204,13 @@ Where this could get really fun is *associative* containers. A
 pointer-valued lookup function makes it possible to write a dictionary whose
 entries are created on first access, in the spirit of
 `std::map::operator[]` in C++ — although I have never actually seen this
-done in the wild, apart from the odd thread on the [Fortran
-Discourse](https://fortran-lang.discourse.group/t/assignment-to-returned-pointer/1958).
+done in the wild. The closest sightings are a couple of threads on the
+Fortran Discourse: a [question on assigning to returned
+pointers](https://fortran-lang.discourse.group/t/assignment-to-returned-pointer/1958),
+and a nice [bit bucket
+implementation](https://fortran-lang.discourse.group/t/moving-bits-question/4799/14)
+by Vipul Parekh (@FortranFan), which uses a pointer-valued function to
+access the bits while handling endianness internally.
 
 As a proof of concept, here is a toy dictionary mapping strings to
 integers (full program in [dict.f90](dict.f90)):
