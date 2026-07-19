@@ -276,11 +276,8 @@ The same function serves both sides of the assignment — on the left it
 value of its target is used.
 
 Doing the implementation justice — hashing the keys into buckets and
-managing the key storage carefully, rather than linearly scanning an
-ever-reallocated array of pairs — deserves a post of its own. I plan to
-return to it in a follow-up, building on ideas from A. Colin Day's book
-*Fortran Techniques: with special reference to non-numerical applications*.
-Stay tuned.
+managing the key storage carefully — is an idea worth trying out. Maybe I
+will return to it in a future post.
 
 ## Further reading
 
