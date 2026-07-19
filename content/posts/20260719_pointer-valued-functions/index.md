@@ -255,48 +255,11 @@ implementation](https://fortran-lang.discourse.group/t/moving-bits-question/4799
 by Vipul Parekh (@FortranFan), which uses a pointer-valued function to
 access the bits while handling endianness internally.
 
-As a proof of concept, here is a toy dictionary mapping strings to
-integers (full program in [dict.f90](dict.f90)):
-
-```fortran
-type :: pair
-    character(len=:), allocatable :: key
-    integer :: val
-end type
-
-type :: dict
-    private
-    type(pair), allocatable :: pairs(:)
-contains
-    procedure :: of
-end type
-```
-
-The lookup function scans the pairs for a matching key, appending a new
-zero-initialized entry if the key is not found, and returns a pointer to the
-value:
-
-```fortran
-    function of(self, key) result(v)
-        class(dict), intent(inout), target :: self
-        character(len=*), intent(in) :: key
-        integer, pointer :: v
-        integer :: i
-        if (.not. allocated(self%pairs)) allocate(self%pairs(0))
-        do i = 1, size(self%pairs)
-            if (self%pairs(i)%key == key) then
-                v => self%pairs(i)%val
-                return
-            end if
-        end do
-        self%pairs = [self%pairs, pair(key, 0)]
-        v => self%pairs(size(self%pairs))%val
-    end function
-```
-
-The same function then serves both sides of the assignment — on the left it
-*defines* an entry, on the right the pointer result is dereferenced and the
-value of its target is used:
+Notice that Reid's `storage` example above already points in this
+direction: the function computes the storage location *from a key*. Given a
+type-bound lookup function `of` returning an integer pointer — creating the
+entry on first access — the client code of such a dictionary could look
+like this:
 
 ```fortran
 type(dict), target :: fruit
@@ -308,14 +271,16 @@ fruit%of("apples") = fruit%of("apples") + 1
 print *, fruit%of("apples"), fruit%of("oranges")   ! prints 4, 5
 ```
 
-The client code is pleasant, but I'm not convinced the implementation is
-the right way to go about it. The deferred-length `allocatable` keys mean
-every key is a separate small heap allocation, and the array constructor
-`[self%pairs, pair(key, 0)]` reallocates and copies the whole table on every
-insertion. A serious dictionary would hash its keys into buckets and manage
-the key storage more carefully. Still, as a demonstration of what
-pointer-valued functions make *syntactically* possible, it serves its
-purpose.
+The same function serves both sides of the assignment — on the left it
+*defines* an entry, on the right the pointer result is dereferenced and the
+value of its target is used.
+
+Doing the implementation justice — hashing the keys into buckets and
+managing the key storage carefully, rather than linearly scanning an
+ever-reallocated array of pairs — deserves a post of its own. I plan to
+return to it in a follow-up, building on ideas from A. Colin Day's book
+*Fortran Techniques: with special reference to non-numerical applications*.
+Stay tuned.
 
 ## Further reading
 
