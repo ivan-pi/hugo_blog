@@ -1,0 +1,20 @@
+
+
+Other languages
+
+Go: os.Getenv, os.LookupEnv
+https://pkg.go.dev/os#example-Getenv
+https://pkg.go.dev/os#LookupEnv
+
+Python: os.getenv
+https://docs.python.org/3/library/os.html#os.getenv
+
+Further references:
+
+* [GNU Fortran Documentation - GET_ENVIRONMENT_VARIABLE]
+* [Intel Fortran Compiler Reference - GET_ENVIRONMENT_VARIABLE](https://www.intel.com/content/www/us/en/docs/fortran-compiler/developer-guide-reference/2026-1/get-environment-variable.html)
+* [Programming in Modern Fortran - Environment Variables](https://cyber.dabamos.de/programming/modernfortran/environment-variables.html)
+* [Fortran Wiki - Enviroment Variables](https://fortranwiki.org/fortran/show/Environment+Variables) (some of the information here may be out-dated)
+* [Fortran-lang - Accesing external system information](https://fortran-lang.org/learn/intrinsics/system/)
+* [fortran-lang/fpm - get_env Function](https://fortran-lang.github.io/fpm/proc/get_env.html)
+* [Intel Fortran Compiler forum - getenv and setenv subroutines in Fortran, July 2014](https://community.intel.com/t5/Intel-Fortran-Compiler/getenv-and-setenv-subroutines-in-Fortran/td-p/1057747)
