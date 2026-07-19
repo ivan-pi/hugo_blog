@@ -18,14 +18,22 @@ push(mystack) = 3
 ```
 
 These may look like array element assignments, but they are actually
-*function calls*. To see what is going on, let's build the example up piece
-by piece. (The complete program is available as [stack.f90](stack.f90) if
-you'd like to follow along at home.)
+*function calls*.[^1] To see what is going on, let's build the example up
+piece by piece. (The complete program is available as [stack.f90](stack.f90)
+if you'd like to follow along in your own terminal.)
+
+[^1]: Fortran's grammar is context sensitive: a line of the form
+    `name(arg) = expr` can be an assignment to an array element, an
+    assignment through a pointer-valued function — or even the definition
+    of an (obsolescent) *statement function*, if it appears at the end of
+    the specification part. Which one it is can only be settled by the
+    declarations in scope.
 
 ## A stack of integers
 
-We start with a derived type holding a fixed-size buffer of 1000 integers
-and a counter `i` pointing at the top of the stack. The components are
+We start with a derived type holding a fixed-size buffer of integers — the
+capacity of 1000 is arbitrary, just for this example — and a counter `i`
+pointing at the top of the stack. The components are
 `private`, so client code can only manipulate the stack through the
 procedures of the module:
 
