@@ -144,11 +144,70 @@ stack can never hold more than one element, so it is really just a single
 saved `mode` character wearing a disguise. I kept the stack as a memento of the
 function's origin.)
 
-The more interesting change is handling continuation lines. A string literal
-may end with `&` and continue on the next line, which means the in-string state
-has to survive *between* calls. The quick-and-dirty solution is a `save`
-attribute, with the understanding that the caller feeds the function one line
-at a time, in order. While I was at it, I changed the result from a logical to
+The more interesting question is what to do about continuation lines.
+
+### Can't we just work line by line?
+
+My initial hope was that the stripper could process each line in isolation,
+with no memory between lines. Interestingly, statement continuation *by itself*
+does not ruin that hope. If every string literal opens and closes on the same
+physical line, the scanner starts and ends every line in the "outside" state,
+so the lines can be judged independently — even lines that continue a
+statement:
+
+```fortran
+call assemble(stiffness, &   ! comments after & are fine
+              loads)         ! (outside character context)
+```
+
+The one construct that defeats line-by-line processing is a *continued
+character context*, i.e. a string literal split across lines:
+
+```fortran
+print *, "this string spans &
+     &two lines! see?"  ! trailing comment
+```
+
+The second line begins in the middle of a string literal, but nothing *on that
+line* tells you so — the evidence sits at the end of the previous line. A
+stateless scanner starts the second line in the "outside" state, takes the `!`
+after `lines` for a comment, and shreds the code:
+
+```fortran
+program demo
+    print *, "this string spans &
+         &two lines
+end program
+```
+
+```
+split_bad.f90:2:15:
+
+    2 |     print *, "this string spans &
+      |               1
+Error: Unterminated character constant beginning at (1)
+```
+
+The version that carries its state across calls strips only the real comment
+and leaves a compilable program behind:
+
+```fortran
+program demo
+    print *, "this string spans &
+         &two lines! see?"
+end program
+```
+
+So the necessary amount of memory between lines is exactly one item: *did the
+previous line end inside a string, and if so, with which delimiter* — the same
+three states as before. That is the entire price of handling continuations.
+Conversely, if you are willing to impose a style rule that literals are never
+split across lines (concatenate with `//` instead — kinder to `grep` users
+anyway), then the stateless line-by-line stripper really is sufficient.
+
+The quick-and-dirty way to carry the state is a `save` attribute, with the
+understanding that the caller feeds the function one line at a time, in
+order. While I was at it, I changed the result from a logical to
 an integer that returns the *position* of the `!`, so the caller can slice off
 the comment with `line(1:pos-1)`:
 
@@ -214,6 +273,55 @@ full-line-comment check must run *before* the trailing-comment lexer: the
 embedded comment line contains both a `"` and a `&`, and would corrupt the
 saved state if it were fed to the state machine.
 
+## How long is a line, anyway?
+
+Before assembling the full stripper, one more pitfall. My first draft read
+each line into a `character(len=80) :: line` buffer, which silently truncates
+anything longer — a bug waiting to happen in a tool that rewrites source
+files. What is a
+safe length? The standards keep moving the goalposts: free-form lines were
+limited to 132 characters from Fortran 90 through 2018, but **Fortran 2023
+raised the limit to 10,000 characters per line**, and to one million characters
+per statement (replacing the older cap of 255 continuation lines from
+Fortran 2003). Compilers have long accepted over-long lines as an extension
+anyway.
+
+One clean option is to declare `character(len=10000)` and lean on the standard:
+for conforming F2023 source that is now a guaranteed upper bound. The nicer
+option is to not guess at all and grow the buffer while reading, using a
+non-advancing `read` in a loop:
+
+```fortran
+!> Read a complete record, growing the buffer as needed
+subroutine get_line(unit, line, iostat)
+    integer, intent(in) :: unit
+    character(len=:), allocatable, intent(out) :: line
+    integer, intent(out) :: iostat
+    character(len=256) :: chunk
+    integer :: sz
+    line = ""
+    do
+        read (unit, '(a)', advance='no', size=sz, iostat=iostat) chunk
+        if (sz > 0) line = line // chunk(1:sz)
+        if (iostat == iostat_eor) then
+            iostat = 0      ! end of record: line is complete
+            return
+        end if
+        if (iostat /= 0) return   ! end of file or error
+    end do
+end subroutine
+```
+
+A non-advancing read fills the chunk without consuming the record terminator;
+when it hits the end of the record it signals `iostat_eor` (from
+`iso_fortran_env`) and reports the number of characters actually transferred in
+`sz`. The [Fortran stdlib](https://stdlib.fortran-lang.org/page/specs/stdlib_io.html)
+offers a ready-made `getline` with the same idea. Note that
+`has_trailing_comment` itself never cared: it takes assumed-length
+`character(len=*)`, so only the driver needed fixing. (In this light, my
+100-element delimiter stack — which after the nesting fix can never hold more
+than one entry — remains generously dimensioned.)
+
 ## The stripper, eating its own source
 
 Here is the complete program: read lines from standard input, drop full-line
@@ -222,13 +330,14 @@ comments, truncate trailing ones, and echo the rest.
 ```fortran
 ! strip_demo.f90 -- demonstrate detection of Fortran trailing comments
 program strip_demo
+    use, intrinsic :: iso_fortran_env, only: input_unit, iostat_eor
     implicit none
 
-    character(len=80) :: line
+    character(len=:), allocatable :: line
     integer :: pos, iostat
 
     do
-        read (*, '(a)', iostat=iostat) line
+        call get_line(input_unit, line, iostat)
         if (iostat /= 0) exit
 
         ! Full-line comments are easy: drop them entirely
@@ -245,7 +354,7 @@ program strip_demo
 
 contains
 
-    ! ... comment_or_blank and has_trailing_comment from above ...
+    ! ... get_line, comment_or_blank, and has_trailing_comment from above ...
 
 end program
 ```
@@ -282,6 +391,30 @@ The `don't` line that silently defeated version 1 is now handled, and the `!`
 inside `'it''s f_i_n_e!'` survives, since the doubled apostrophe toggles the
 state out and immediately back in.
 
+## What about fixed form?
+
+In some respects fixed form is the *easier* target. Comment lines are
+recognized by column position alone — `C` or `*` in column 1 in FORTRAN 77,
+with `!` joining them in Fortran 90 — and lines effectively end at column 72,
+with columns 73–80 reserved for sequence numbers (a comment zone of sorts).
+
+Trailing comments, however, are a younger invention than one might think:
+standard FORTRAN 77 had *no* inline comments at all. The `!` trailing comment
+entered the standard with Fortran 90, in both source forms, after years as a
+popular vendor extension (VAX FORTRAN being the usual culprit to credit).
+Nowadays fixed-form code freely mixes `C` comment lines with `!` trailing
+comments.
+
+For a stripping tool, fixed form needs the same three-state lexer with a few
+column-based tweaks: truncate at column 72 first; treat a `!` in column 6 as a
+continuation marker rather than a comment (any character other than blank or
+`0` in column 6 continues the previous line); and note that character context
+can still be split across lines, so the cross-line string state is just as
+necessary as in free form. The one genuine horror is the Hollerith-style `H`
+edit descriptor — `FORMAT(1H!)` embeds an unquoted, uncounted-by-our-lexer
+exclamation mark. It was declared obsolescent in Fortran 90 and deleted in
+Fortran 95, but legacy code is exactly where fixed form lives.
+
 ## Known gaps
 
 The function only *approximately* recognizes trailing comments, under the
@@ -294,17 +427,8 @@ Some gaps I am aware of:
   what the stripper needs), not the continuation.
 - **No reset.** The saved state persists across files; a proper tool would wrap
   the state in a derived type, or at least offer a reset.
-- **`include` lines** pull in text the line stream never sees.
-- **Fixed-form source** is a different game entirely: `C` or `*` in column 1,
-  continuation in column 6, and Hollerith constants that embed unquoted
-  exclamation marks.
 - **Preprocessor directives** (`#define` and friends) have their own quoting
   rules.
-
-And some trivia for perspective: Fortran 2003 capped a statement at 255
-continuation lines; Fortran 2023 instead allows a statement of up to one
-million characters. Either way, my 100-element delimiter stack — which can
-never hold more than one entry — is dimensioned generously enough.
 
 If you can construct a well-formed free-form line (or sequence of lines) that
 fools the function, I'd love to hear about it.
