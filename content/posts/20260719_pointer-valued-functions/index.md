@@ -204,7 +204,7 @@ Where this could get really fun is *associative* containers. A
 pointer-valued lookup function makes it possible to write a dictionary whose
 entries are created on first access, in the spirit of
 `std::map::operator[]` in C++ — although I have never actually seen this
-done in the wild, apart from a lone thread on the [Fortran
+done in the wild, apart from the odd thread on the [Fortran
 Discourse](https://fortran-lang.discourse.group/t/assignment-to-returned-pointer/1958).
 
 As a proof of concept, here is a toy dictionary mapping strings to
