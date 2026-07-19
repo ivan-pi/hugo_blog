@@ -262,3 +262,8 @@ If you have wanted C-style static function pointer tables in Fortran, the
 language has had them since 2008 — the compilers just needed a nudge. Check
 whether your compiler of choice handles the attached examples, and if it
 does not, file a bug. It worked for me.
+
+## Acknowledgments
+
+I would like to thank Reinhold Bader and Gilbert Brietzke for friendly
+discussions on this topic.
