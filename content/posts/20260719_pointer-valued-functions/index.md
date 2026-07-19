@@ -328,3 +328,7 @@ reference may (and may not) appear.
 
 I'd like to thank Gilbert Brietzke for discussion and feedback on the stack
 example.
+
+Have you found — or invented — an interesting use for functions returning
+pointers? I'd love to hear about it: drop me a line at
+[ivan.pribec@lrz.de](mailto:ivan.pribec@lrz.de).
