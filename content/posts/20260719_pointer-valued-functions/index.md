@@ -162,8 +162,8 @@ k = 1
 The one-liner `push(mystack) = 1` is exactly this, with the intermediate
 pointer hidden from view.
 
-John Reid's classic summary [The new features of Fortran
-2008](https://wg5-fortran.org/N1851-N1900/N1891.pdf) (WG5 document N1891)
+John Reid's classic summary [The new features of Fortran 2008 (PDF, 261
+KB)](https://wg5-fortran.org/N1851-N1900/N1891.pdf) (WG5 document N1891)
 describes the feature concisely in section 6.6, *Pointer functions*:
 
 > A reference to a pointer function is treated as a variable and is
@@ -204,6 +204,16 @@ read(*,*) push(mystack)
 
 although gfortran 13 does not accept this one yet ("Error: 'push' at (1) is
 not a variable").
+
+There are quite a few more variable definition contexts — the selector of
+an `associate` or `select type` construct, specifiers such as `iostat=` and
+`iomsg=`, even the `newunit=` specifier in an `open` statement — but I
+won't go into those here. The Intel Fortran Compiler Developer Guide has a
+page on the [variable definition
+context](https://www.intel.com/content/www/us/en/docs/fortran-compiler/developer-guide-reference/2026-1/variable-definition-context.html)
+cataloging where a data pointer function reference may (and may not)
+appear. In practice, assignment and argument association are likely the
+most useful situations for this feature.
 
 ## Mind the target attribute
 
@@ -302,13 +312,19 @@ purpose.
 ## Further reading
 
 John Reid describes pointer functions in variable definition contexts in
-section 6.6 of [The new features of Fortran
-2008](https://wg5-fortran.org/N1851-N1900/N1891.pdf) (WG5 document N1891,
+section 6.6 of [The new features of Fortran 2008 (PDF, 261
+KB)](https://wg5-fortran.org/N1851-N1900/N1891.pdf) (WG5 document N1891,
 2014).
 
 Reinhold Bader shows this type of usage in his course on [Advanced Fortran
-Topics](https://doku.lrz.de/files/10746213/10746218/1/1684600341697/Advanced_Fortran_OO.pdf)
+Topics (PDF, 2.3
+MB)](https://doku.lrz.de/files/10746213/10746218/1/1684600341697/Advanced_Fortran_OO.pdf)
 (slide 38).
+
+The [Intel Fortran Compiler Developer Guide and
+Reference](https://www.intel.com/content/www/us/en/docs/fortran-compiler/developer-guide-reference/2026-1/variable-definition-context.html)
+catalogs the variable definition contexts in which a data pointer function
+reference may (and may not) appear.
 
 I'd like to thank Gilbert Brietzke for discussion and feedback on the stack
 example.
