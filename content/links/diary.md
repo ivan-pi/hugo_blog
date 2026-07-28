@@ -6,6 +6,28 @@ aliases:
 
 A chronological collection of things I've found interesting. Back to [links](/links/).
 
+## 2026-07-28
+
+Nvidia Vera CPU:
+- [NVIDIA Vera CPU: Olympus Cores Built for Maximum Single-Thread Performance in Agentic AI | Nvidia](https://developer.nvidia.com/blog/inside-nvidia-vera-cpu-olympus-cores-built-for-maximum-single-threaded-performance-in-agentic-ai/)
+- [NVIDIA Vera CPU Architecture, Whitepaper](https://nvdam.widen.net/s/nmw5vblpqd/nvidia_vera_cpu_architecture_whitepaper?nvid=nv-tblg-543584) (PDF, 5.8 MB)
+- [Olympus CPU Core Software Optimization Guide](https://docs.nvidia.com/olympus-cpu-core-software-optimization-guide-dp12531-001v0-7.pdf)
+- [NVIDIA Vera CPU Benchmarks: Olympus Cores Delivering The Best Performance Ever Seen On ARM | Phoronix](https://www.phoronix.com/review/nvidia-vera-benchmarks)
+
+LLVM-MCA:
+- [llvm-mca - LLVM Machine Code Analyzer](https://llvm.org/docs/CommandGuide/llvm-mca.html)
+- [Machine Code Analyzers | Algorithmica](https://en.algorithmica.org/hpc/profiling/mca/)
+- [Performance Debugging with llvm-mca: Simulating the CPU! | Johnny's Software Lab](https://johnnysswlab.com/performance-debugging-with-llvm-mca-simulating-the-cpu/)
+- [Learn about LLVM Machine Code Analyzer | Arm Developer](https://learn.arm.com/learning-paths/cross-platform/mca-godbolt/)
+- [Using llvm-mca for predicting CPU cycle impact of code changes | Stewart Smith](https://www.flamingspork.com/blog/2024/01/13/using-llvm-mca-for-predicting-cpu-cycle-impact-of-code-changes/)
+- [LLVM MCA Correlation for AArch64, 2023 LLVM Developers' Meeting](https://llvm.org/devmtg/2023-10/slides/techtalks/Meijer-LLVM-MCA.pdf) [(talk recording)](https://youtu.be/Xm57_VYk2mw?si=uScJaCZiu5c_vF3-)
+- [Understanding the Performance of Code Using llvm-mca, A. Di Biagio & M. Davis, 2018 LLVM Developers' Meeting](https://www.youtube.com/watch?v=Ku2D8bjEGXk)
+
+Misc:
+- [I Thought I Knew Python. Then These 7 Features Humbled Me Completely.](https://python.plainenglish.io/i-thought-i-knew-python-then-these-7-features-humbled-me-completely-8a2c6b5862ce)
+- [SPIR-V on ROCm: A Portable IR for AMD GPUs | ROCm™ Blogs](https://rocm.blogs.amd.com/software-tools-optimization/spir-v-rocm/README.html)
+- [How the NVIDIA Compiler Moat Actually Works | The Software Frontier](https://www.thesoftwarefrontier.com/p/how-the-nvidia-compiler-moat-actually?r=3c7w5a&utm_campaign=post-expanded-share&utm_medium=web&triedRedirect=true)
+
 ## 2026-07-18
 
 GPU & Accelerated Computing:
