@@ -242,23 +242,25 @@ gnuplot_svg = function (svgElement) {
 
         });
 
-        // Zoom with wheel
-        svgElement.addEventListener('wheel', function (evt) {
-            // x or y scroll zoom both axels
-            var delta = Math.max(-1, Math.min(1, (evt.deltaY || evt.deltaX)));
-
-            if (delta > 0) {
-                setViewBox(zoom('in'));
-            }
-            else {
-                setViewBox(zoom('out'));
-            }
-
-            // Disable scroll the entire webpage
-            evt.stopPropagation();
-            evt.preventDefault();
-            return false;
-        });
+        // Scroll-wheel zoom disabled locally (it hijacked page scrolling over a
+        // figure); un-comment the block below to restore the upstream feature.
+        // // Zoom with wheel
+        // svgElement.addEventListener('wheel', function (evt) {
+        //     // x or y scroll zoom both axels
+        //     var delta = Math.max(-1, Math.min(1, (evt.deltaY || evt.deltaX)));
+        //
+        //     if (delta > 0) {
+        //         setViewBox(zoom('in'));
+        //     }
+        //     else {
+        //         setViewBox(zoom('out'));
+        //     }
+        //
+        //     // Disable scroll the entire webpage
+        //     evt.stopPropagation();
+        //     evt.preventDefault();
+        //     return false;
+        // });
 
         // Reset on right click or hold tap
         svgElement.addEventListener('contextmenu', function (evt) {
