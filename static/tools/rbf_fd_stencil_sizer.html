@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RBF-FD Stencil Sizer</title>
+<meta name="description" content="Interactive calculator for sizing RBF-FD stencils against CPU L1/L2 caches and Nvidia GPU shared memory. Covers LU, LDLT, and QR factorization footprints, batched compact-interleaved storage, polynomial degree vs. stencil size trade-offs, and shared-memory bank conflicts.">
+<meta name="author" content="Ivan Pribec">
+<meta name="keywords" content="RBF-FD, radial basis function, finite differences, stencil, cache, L1, shared memory, CUDA, LAPACK, QR factorization, LU, LDLT, batched linear algebra, HPC">
+<link rel="canonical" href="https://ivan-pi.github.io/tools/rbf_fd_stencil_sizer.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="RBF-FD Stencil Sizer">
+<meta property="og:description" content="Interactive calculator: does your RBF-FD stencil configuration fit in L1, L2, or GPU shared memory? LU/LDLT/QR footprints, batched compact storage, bank conflicts.">
+<meta property="og:url" content="https://ivan-pi.github.io/tools/rbf_fd_stencil_sizer.html">
+<meta property="og:site_name" content="Ivan Pribec">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RBF-FD Stencil Sizer">
+<meta name="twitter:description" content="Interactive calculator: does your RBF-FD stencil configuration fit in L1, L2, or GPU shared memory?">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "RBF-FD Stencil Sizer",
+  "url": "https://ivan-pi.github.io/tools/rbf_fd_stencil_sizer.html",
+  "description": "Interactive calculator for sizing RBF-FD stencils against CPU L1/L2 caches and Nvidia GPU shared memory, covering LU, LDLT, and QR factorization working sets.",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript",
+  "author": { "@type": "Person", "name": "Ivan Pribec", "url": "https://ivan-pi.github.io" },
+  "isAccessibleForFree": true
+}
+</script>
+<style>
+  :root {
+    --bg: #fcfcfb;
+    --panel: #ffffff;
+    --ink: #16181d;
+    --muted: #6b7178;
+    --rule: #dcdfe2;
+    --accent: #0e6e77;          /* selected / interactive */
+    --accent-soft: #e3f0f1;
+    --fit: #1f7a4d;
+    --fit-bg: #e9f4ee;
+    --spill: #b23a32;
+    --spill-bg: #f9ecea;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", Consolas, "Liberation Mono", monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--sans); font-size: 14px; line-height: 1.45;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 20px 16px 48px; }
+  header h1 { font-size: 20px; margin: 0 0 2px; font-weight: 650; letter-spacing: -0.01em; }
+  header p  { margin: 0 0 18px; color: var(--muted); font-size: 13px; }
+  header code { font-family: var(--mono); }
+  code { font-family: var(--mono); font-size: 0.95em; }
+  a { color: var(--accent); }
+
+  .layout { display: grid; grid-template-columns: 292px 1fr; gap: 20px; align-items: start; }
+  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+
+  /* ---- controls ---- */
+  .controls { display: flex; flex-direction: column; gap: 14px; }
+  fieldset {
+    border: 1px solid var(--rule); border-radius: 6px; background: var(--panel);
+    padding: 10px 12px 12px; margin: 0;
+  }
+  legend {
+    font-size: 11px; font-weight: 650; text-transform: uppercase; letter-spacing: 0.07em;
+    color: var(--muted); padding: 0 4px;
+  }
+  .row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
+  .row:first-of-type { margin-top: 2px; }
+  .row label { color: var(--ink); }
+  .row .hint { color: var(--muted); font-size: 12px; }
+  input[type="number"], select {
+    font-family: var(--mono); font-size: 13px; color: var(--ink);
+    border: 1px solid var(--rule); border-radius: 4px; background: #fff;
+    padding: 3px 6px; width: 104px;
+  }
+  input[type="number"]:focus, select:focus, button:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 1px;
+  }
+  select { width: 100%; }
+  #preset { margin: 6px 0 4px; }
+  .seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 5px; overflow: hidden; }
+  .seg button {
+    font-family: var(--mono); font-size: 12px; padding: 4px 10px; border: none;
+    background: #fff; color: var(--muted); cursor: pointer; border-left: 1px solid var(--rule);
+  }
+  .seg button:first-child { border-left: none; }
+  .seg button.on { background: var(--accent); color: #fff; }
+  .row .seg { width: 104px; }
+  .row .seg button { flex: 1 1 0; padding: 4px 0; text-align: center; }
+  .checkline { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+  .warn { color: var(--spill); font-size: 12px; margin-top: 6px; display: none; }
+  .warn.show { display: block; }
+  .subnote { color: var(--muted); font-size: 12px; margin-top: 8px; }
+
+  /* ---- table ---- */
+  .main { min-width: 0; }
+  .tablewrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 6px; background: var(--panel); }
+  table { border-collapse: collapse; width: 100%; font-family: var(--mono); font-size: 13px; }
+  thead th {
+    font-family: var(--mono); font-size: 13px; font-weight: 600;
+    color: var(--ink); text-align: right;
+    padding: 8px 10px 6px; border-bottom: 1px solid var(--rule); white-space: nowrap;
+    vertical-align: bottom;
+  }
+  thead th.l { text-align: left; }
+  thead th .sub {
+    display: block; font-family: var(--sans); font-size: 10.5px; font-weight: 400;
+    letter-spacing: 0.02em; color: var(--muted); margin-top: 1px;
+  }
+  tbody td { padding: 6px 10px; text-align: right; border-bottom: 1px solid #eef0f1; white-space: nowrap; }
+  tbody td.l { text-align: left; }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover { background: #f4f6f6; }
+  tbody tr.sel { background: var(--accent-soft); }
+  tbody tr.sel td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+  tbody tr.invalid td { color: #b6bcc1; }
+  td.nv { color: #b6bcc1; font-style: italic; }
+  td.fit   { color: var(--fit); }
+  td.spill { color: var(--spill); }
+  td.l2t   { color: #8a6d1a; }
+  .tag {
+    font-size: 9.5px; font-weight: 650; border-radius: 3px; padding: 0 4px; vertical-align: 1px;
+    white-space: nowrap;
+  }
+  .tag.t-l1  { color: var(--fit);   background: var(--fit-bg); }
+  .tag.t-l2  { color: #8a6d1a;      background: #f6efd8; }
+  .tag.t-mem { color: var(--spill); background: var(--spill-bg); }
+  .bar.l2b > i { background: #c9a227; }
+  th.fcol  { width: 28%; min-width: 150px; }
+  .bar {
+    height: 3px; border-radius: 2px; margin-top: 3px; background: #edf0f1; overflow: hidden;
+  }
+  .bar > i { display: block; height: 100%; }
+  .bar.fitb > i   { background: var(--fit); }
+  .bar.spillb > i { background: var(--spill); }
+  .mats { color: var(--muted); }
+  .cellrow { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
+  .tagslot { flex: 0 0 auto; }
+  .dyn {
+    font-size: 9.5px; font-weight: 650; color: #8a6d1a; background: #f6efd8;
+    border-radius: 3px; padding: 0 3px; vertical-align: 1px;
+  }
+  .capline { font-family: var(--mono); font-size: 12px; color: var(--muted); margin: 8px 2px 14px; }
+  .capline b { color: var(--ink); font-weight: 600; }
+
+  /* ---- details panels ---- */
+  details {
+    border: 1px solid var(--rule); border-radius: 6px; background: var(--panel);
+    margin-top: 16px; padding: 0 12px;
+  }
+  details summary {
+    cursor: pointer; padding: 10px 0; font-weight: 650; font-size: 13px; color: var(--ink);
+    list-style: none;
+  }
+  details summary::before { content: "▸ "; color: var(--muted); }
+  details[open] summary::before { content: "▾ "; }
+  details .inner { padding: 2px 0 14px; }
+
+  /* bank grid */
+  .bankctl { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+  .bankgrid { display: grid; grid-template-columns: repeat(32, 1fr); gap: 2px; max-width: 640px; }
+  .bankcol { display: flex; flex-direction: column-reverse; gap: 2px; min-height: 14px; }
+  .bankcell {
+    height: 12px; border-radius: 2px; background: var(--accent); opacity: 0.85;
+  }
+  .bankcol.hot .bankcell { background: var(--spill); }
+  .banklabels { display: grid; grid-template-columns: repeat(32, 1fr); gap: 2px; max-width: 640px;
+                font-family: var(--mono); font-size: 9px; color: var(--muted); margin-top: 3px; }
+  .banklabels span { text-align: center; }
+  .conflict { font-family: var(--mono); font-size: 13px; margin-top: 10px; }
+  .conflict b.bad  { color: var(--spill); }
+  .conflict b.good { color: var(--fit); }
+  .sweep { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; font-family: var(--mono); font-size: 12px; }
+  .sweep .chip {
+    border: 1px solid var(--rule); border-radius: 4px; padding: 3px 7px; background: #fff; color: var(--muted);
+  }
+  .sweep .chip b { display: block; font-weight: 600; }
+  .sweep .chip.ok b  { color: var(--fit); }
+  .sweep .chip.bad b { color: var(--spill); }
+  .sweep .chip.cur { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+
+  .formulas { font-family: var(--mono); font-size: 12.5px; color: var(--ink); line-height: 1.8; }
+  .formulas .c { color: var(--muted); }
+  @media (prefers-reduced-motion: no-preference) {
+    .bar > i { transition: width 120ms ease; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>RBF-FD Stencil Sizer</h1>
+  <p>Working-set footprint of local RBF-FD weight computation (PHS + full Taylor basis) vs. L1/L2 caches
+     or GPU shared memory. Click a row to select the polynomial degree. The comparison is purely
+     capacity: memory footprint against cache size. Footprints are optimistic:
+     the matrix and right-hand sides, factored in place (LAPACK convention), plus the pivot array
+     (int32 <code>ipiv</code>) for LU/LDL<sup>T</sup> or the Householder scalars (<code>tau</code>) for QR.</p>
+</header>
+
+<div class="layout">
+<div class="controls">
+
+  <fieldset>
+    <legend>Mode</legend>
+    <div class="seg" id="modeSeg" role="group" aria-label="Mode">
+      <button data-v="cpu" class="on">CPU standard</button>
+      <button data-v="batch">CPU batched</button>
+      <button data-v="gpu">GPU</button>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Problem</legend>
+    <div class="row">
+      <label>Dimension</label>
+      <div class="seg" id="dimSeg"><button data-v="2" class="on">2-D</button><button data-v="3">3-D</button></div>
+    </div>
+    <div class="row">
+      <label>Precision</label>
+      <div class="seg" id="precSeg"><button data-v="4">fp32</button><button data-v="8" class="on">fp64</button></div>
+    </div>
+    <div class="subnote" id="fp32Note" style="display:none">Caution: PHS saddle-point systems grow
+      ill-conditioned with degree; RBF-FD weights are normally computed in fp64. A configuration that
+      only fits at fp32 may not be numerically usable.</div>
+    <div class="row">
+      <label for="nrhs">Right-hand sides</label>
+      <input type="number" id="nrhs" autocomplete="off" min="1" step="1" value="1">
+    </div>
+    <div class="subnote">One column per differential operator whose weights are computed on the
+      same stencil (e.g. ∂/∂x, ∂/∂y, ∇² → 3).</div>
+    <div class="row">
+      <label for="mult">Stencil factor <code>c</code></label>
+      <input type="number" id="mult" autocomplete="off" min="1" step="0.1" value="2">
+    </div>
+    <div class="subnote">Stencil size n = max(⌈c·m⌉, m); the n ≈ 2m rule (c = 2) is the common
+      default in the RBF-FD literature. At n = m the RBF part drops out and the weights reduce
+      to polynomial FD on the stencil nodes.</div>
+    <div class="row">
+      <label for="nOver">n override (all degrees)</label>
+      <input type="number" id="nOver" autocomplete="off" min="1" step="1" placeholder="rule">
+    </div>
+    <div class="subnote">A fixed n answers "this stencil size is affordable — which degrees are
+      attainable?" Degrees with m &gt; n are greyed out as invalid.</div>
+    <div class="warn" id="nWarn"></div>
+  </fieldset>
+
+  <fieldset id="padFieldset">
+    <legend>Padding</legend>
+    <div class="row">
+      <label><code>lda</code> multiple of</label>
+      <div class="seg" id="modSeg">
+        <button data-v="1" class="on">1</button><button data-v="2">2</button>
+        <button data-v="4">4</button><button data-v="8">8</button><button data-v="16">16</button>
+      </div>
+    </div>
+    <div class="checkline" id="plusOneWrap">
+      <input type="checkbox" id="plusOne" autocomplete="off">
+      <label for="plusOne">+1 after rounding (bank-conflict padding)</label>
+    </div>
+    <div class="row">
+      <label for="ldaOver"><code>lda</code> override (selected degree)</label>
+      <input type="number" id="ldaOver" autocomplete="off" min="1" step="1" placeholder="rule">
+    </div>
+    <div class="warn" id="ldaWarn"></div>
+    <div class="subnote">Padded rows apply to the matrix and the right-hand sides.
+      The tool enforces <code>lda</code> ≥ n<sub>t</sub>.</div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Hardware</legend>
+    <select id="preset" aria-label="Hardware preset"></select>
+    <div class="row" id="carveoutRow" style="display:none">
+      <label for="carveout">SMEM carveout</label>
+      <select id="carveout" style="width:104px" aria-label="Shared memory carveout"></select>
+    </div>
+    <div class="row" id="packRow" style="display:none">
+      <label>Pack width <code>V</code></label>
+      <div class="seg" id="packSeg"></div>
+    </div>
+    <div class="row">
+      <label for="cacheKB" id="cacheLabel">L1D size (KB)</label>
+      <input type="number" id="cacheKB" autocomplete="off" min="1" step="1" value="128">
+    </div>
+    <div class="row" id="l2Row">
+      <label for="l2KB">L2/core (KB)</label>
+      <input type="number" id="l2KB" autocomplete="off" min="1" step="1" value="4096">
+    </div>
+    <div class="row">
+      <label for="safety">Safety factor ÷</label>
+      <input type="number" id="safety" autocomplete="off" min="1" step="0.1" value="1">
+    </div>
+    <div class="subnote">Divides the cache or shared-memory capacity to allow for other data sharing it (stack,
+      prefetched lines, workspace): 1 assumes the full cache is available, 2 assumes half.</div>
+    <div class="subnote" id="hwNote"></div>
+    <div class="subnote" id="gpuDisclaimer" style="display:none">GPU mode models Nvidia/CUDA only.
+      AMD (64 KB LDS per CU, 64-wide wavefronts) and Intel (SLM carved from L1) GPUs have different
+      shared-memory sizes, banking, and allocation constraints not represented here.</div>
+  </fieldset>
+
+</div>
+
+<div class="main">
+  <div class="capline" id="capline"></div>
+  <div class="tablewrap">
+    <table id="tbl" aria-label="Footprint per polynomial degree">
+      <thead><tr id="thead"></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <details id="bankPanel">
+    <summary>Shared-memory bank conflicts (selected degree)</summary>
+    <div class="inner">
+      <div class="bankctl">
+        <span>Access pattern:</span>
+        <div class="seg" id="patSeg">
+          <button data-v="col" class="on">column (thread t → A[t, j])</button>
+          <button data-v="row">row (thread t → A[i, t])</button>
+        </div>
+      </div>
+      <div class="subnote" style="margin:0 0 10px">
+        Each column below is one of the 32 banks; stacked cells are the threads of a warp landing in
+        that bank during a single access. A flat profile at height 1 (fp32) or 2 (fp64, classic model)
+        is the best achievable; anything taller serializes and is drawn red.
+        Conflict factor = gcd(w·stride, 32), so column access is independent of lda,
+        while row access is worst when lda is a multiple of 32/w and best when lda is odd.</div>
+      <div class="bankgrid" id="bankgrid"></div>
+      <div class="banklabels" id="banklabels"></div>
+      <div class="conflict" id="conflictLine"></div>
+      <div class="sweep" id="sweep"></div>
+      <div class="subnote">Classic model: 32 banks × 4 bytes; an fp64 element spans two banks.
+        Compute capability ≥ 8.x can service 8-byte accesses without the inherent 2-way split;
+        the stride-induced conflicts shown for row access still apply. Note the trade-off:
+        vectorized 128-bit shared loads (<code>double2</code>) require even lda, which doubles the
+        row-access conflict relative to odd lda.</div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Formulas</summary>
+    <div class="inner formulas" id="formulas"></div>
+  </details>
+
+  <footer style="margin-top:20px; font-size:12px; color:var(--muted);">
+    &copy; 2026 Ivan Pribec. Created with the assistance of Claude Fable 5.
+    Background: <a href="https://ivan-pi.github.io/posts/2026/07/sizing-rbf-fd-stencils-for-modern-cpu-caches/"
+    target="_blank" rel="noopener">Sizing RBF-FD stencils for modern CPU caches</a> (blog post).
+    Hardware figures compiled August 2026 — verify against vendor documentation for newer models.
+    Found a mistake? <a href="https://github.com/ivan-pi/hugo_blog/issues"
+    target="_blank" rel="noopener">Open an issue</a>.
+  </footer>
+</div>
+</div>
+</div>
+
+<script>
+(() => {
+"use strict";
+
+/* =====================================================================
+   1. Data
+   ===================================================================== */
+
+/* CPU presets: L1D and per-core L2 in KB, SIMD width in bits (all-cores-busy share for shared L2). */
+const CPU_PRESETS = [
+  { name: "AMD Zen 3",               kb: 32,  l2: 512,   simd: 256, note: "EPYC Milan / Ryzen 5000; AVX2 only.", pad: "AVX2 → pad multiple of 4 (fp64)." },
+  { name: "AMD Zen 4",               kb: 32,  l2: 1024,  simd: 512, note: "AVX-512 on all SKUs (256-bit double-pumped).", pad: "Pad multiple of 8 (fp64)." },
+  { name: "AMD Zen 5",               kb: 48,  l2: 1024,  simd: 512, note: "AVX-512 on all SKUs; full 512-bit datapath on desktop/server, 256-bit double-pumped on mobile (Strix Point).", pad: "Pad multiple of 8 (fp64)." },
+  { name: "Apple M-series (P-core)", kb: 128, l2: 4096,  simd: 128, note: "128 B cache lines. L2 shared per P-cluster; 4096 KB \u2248 per-core share with all cores busy.", pad: "NEON 128-bit → pad multiple of 2 (fp64)." },
+  { name: "Fujitsu A64FX",           kb: 64,  l2: 683,   simd: 512, note: "L2 shared per CMG (8 MB \u00f7 12 cores \u2248 683 KB/core with all cores busy).", pad: "SVE 512-bit → pad multiple of 8 (fp64)." },
+  { name: "Intel Granite Rapids",    kb: 48,  l2: 2048,  simd: 512, note: "", pad: "AVX-512 → pad multiple of 8 (fp64)." },
+  { name: "Intel Ice Lake (server)",       kb: 48,  l2: 1280,  simd: 512, note: "48 KB 12-way L1D, 1.25 MB L2. Client Ice Lake: 512 KB L2.", pad: "AVX-512 → pad multiple of 8 (fp64)." },
+  { name: "Intel Ice Lake / Rocket Lake (client)", kb: 48, l2: 512, simd: 512, note: "Sunny/Cypress Cove: 48 KB 12-way L1D, 512 KB L2; AVX-512 with 1×FMA.", pad: "AVX-512 → pad multiple of 8 (fp64)." },
+  { name: "Intel Raptor Lake",       kb: 48,  l2: 2048,  simd: 256, note: "Core 13th/14th Gen. No AVX-512 on any SKU (fused off). E-cores: 32 KB.", pad: "AVX2 on P-cores → pad multiple of 4 (fp64)." },
+  { name: "Intel Sapphire Rapids",   kb: 48,  l2: 2048,  simd: 512, note: "", pad: "AVX-512 → pad multiple of 8 (fp64)." },
+  { name: "Intel Skylake (server)",        kb: 32,  l2: 1024,  simd: 512, note: "32 KB 8-way L1D, 1 MB L2. AVX-512 (2\u00d7FMA on Gold 6xxx/Platinum, 1\u00d7 below). Client Skylake: 256 KB L2, AVX2 only.", pad: "AVX-512 → pad multiple of 8 (fp64)." },
+  { name: "Nvidia Grace",            kb: 64,  l2: 1024,  simd: 128, note: "Neoverse V2: 64 KB L1D, 1 MB L2/core; four 128-bit SVE2/NEON pipes.", pad: "SVE2 128-bit → pad multiple of 2 (fp64)." },
+  { name: "Nvidia Vera",             kb: 96,  l2: 2048,  simd: 128, note: "Olympus core: 96 KB 6-way L1D, 2 MB 8-way L2/core; six 128-bit SVE2 pipes.", pad: "SVE2 128-bit → pad multiple of 2 (fp64)." },
+  { name: "Custom",                  kb: 48,  l2: 1024,  simd: 256, note: "", pad: "" },
+];
+
+/* GPU presets by device compute capability (CUDA Programming Guide, Tables 30–32):
+   allowed carveouts, per-block shared limit, and resident-block limit per SM. Empty caps = custom. */
+const GPU_PRESETS = [
+  { name: "CC 7.0 \u00b7 Volta (V100)",        caps: [32, 64, 96],                                blockMax: 96,  blocksSM: 32, note: "128 KB unified L1/shared." },
+  { name: "CC 7.5 \u00b7 Turing",              caps: [32, 64],                                    blockMax: 64,  blocksSM: 16, note: "96 KB unified L1/shared." },
+  { name: "CC 8.0 \u00b7 Ampere (A100)",       caps: [8, 16, 32, 64, 100, 132, 164],              blockMax: 163, blocksSM: 32, note: "192 KB unified L1/shared." },
+  { name: "CC 8.6 \u00b7 Ampere (GA10x)",      caps: [8, 16, 32, 64, 100],                        blockMax: 99,  blocksSM: 16, note: "128 KB unified L1/shared." },
+  { name: "CC 8.9 \u00b7 Ada (RTX 40)",        caps: [8, 16, 32, 64, 100],                        blockMax: 99,  blocksSM: 24, note: "128 KB unified L1/shared." },
+  { name: "CC 9.0 \u00b7 Hopper (H100)",       caps: [8, 16, 32, 64, 100, 132, 164, 196, 228],    blockMax: 227, blocksSM: 32, note: "256 KB unified L1/shared." },
+  { name: "CC 10.0 \u00b7 Blackwell (B200)",   caps: [8, 16, 32, 64, 100, 132, 164, 196, 228],    blockMax: 227, blocksSM: 32, note: "256 KB unified L1/shared." },
+  { name: "CC 12.x \u00b7 Blackwell (RTX 50)", caps: [8, 16, 32, 64, 100],                        blockMax: 99,  blocksSM: 24, note: "128 KB unified L1/shared." },
+  { name: "Custom",                            caps: [],                                          blockMax: 0,   blocksSM: 32, note: "" },
+];
+
+const DEGREES = { min: 1, max: 10 };
+const INT32_BYTES = 4;
+const GPU = { staticLimitKB: 48, banks: 32, bankBytes: 4, warp: 32, sweepWidth: 8, customDefaultKB: 100 };
+const PACK_OPTIONS = { 8: [2, 4, 8], 4: [4, 8, 16] };   // real fp64 / fp32 lane counts
+
+/* =====================================================================
+   2. State — user choices only; everything else is derived below.
+   ===================================================================== */
+
+const state = {
+  mode: "cpu",            // "cpu" | "batch" | "gpu"
+  cpuPreset: 3,           // Apple M-series (P-core)
+  gpuPreset: 5,           // CC 9.0 Hopper
+  cacheKB: 128,           // L1D (cpu/batch) or shared-memory carveout (gpu)
+  l2KB: 4096,             // per-core L2 (cpu/batch)
+  safety: 1,
+  dim: 2,
+  bytes: 8,               // element size: 8 = fp64, 4 = fp32
+  nrhs: 1,
+  mult: 2,                // stencil factor c
+  selDeg: 4,
+  nOver: null,            // fixed n for all degrees, or null for the rule
+  ldaOver: null,          // lda for the selected degree, or null for the rule
+  mod: 1,                 // lda rounded up to a multiple of this
+  plusOne: false,         // gpu: +1 after rounding
+  pattern: "col",         // bank-conflict access pattern
+  pack: 8,                // batch: manual pack width
+  packAuto: true,         // batch: derive pack width from the preset's vector length
+};
+
+const isGpu = () => state.mode === "gpu";
+const isBatch = () => state.mode === "batch";
+const cpuPreset = () => CPU_PRESETS[state.cpuPreset];
+const gpuPreset = () => GPU_PRESETS[state.gpuPreset];
+const gpuIsCustom = () => gpuPreset().caps.length === 0;
+const maxCarveout = p => p.caps[p.caps.length - 1];
+
+const packOptions = () => PACK_OPTIONS[state.bytes];
+const laneCount = () => Math.min(16, Math.max(2, cpuPreset().simd / (8 * state.bytes)));
+function currentPack() {
+  const opts = packOptions();
+  const auto = opts.includes(laneCount()) ? laneCount() : opts[opts.length - 1];
+  return state.packAuto || !opts.includes(state.pack) ? auto : state.pack;
+}
+
+/* Effective capacities in bytes, after the safety factor. */
+function hardware() {
+  const cap = state.cacheKB * 1024 / state.safety;
+  const capL2 = state.l2KB * 1024 / state.safety;
+  const blockMaxKB = isGpu() ? (gpuIsCustom() ? state.cacheKB : gpuPreset().blockMax) : null;
+  const blockCap = isGpu() ? blockMaxKB * 1024 : Infinity;
+  return { cap, capL2, blockCap, blockMaxKB, blocksSM: gpuPreset().blocksSM };
+}
+
+/* =====================================================================
+   3. Model — pure functions of explicit arguments.
+   A rectangular (MWLS) system type would add a dims() variant and a
+   factorization list here without touching the view.
+   ===================================================================== */
+
+const binom = (a, b) => { let r = 1; for (let i = 1; i <= b; i++) r = r * (a - b + i) / i; return Math.round(r); };
+
+/* Stencil geometry for one degree: monomials m, stencil n, augmented size nt, leading dimension. */
+function dims(deg) {
+  const m = binom(deg + state.dim, state.dim);
+  const n = state.nOver != null ? state.nOver : Math.max(Math.ceil(state.mult * m), m);
+  const nt = n + m;
+  const ruleLda = Math.ceil(nt / state.mod) * state.mod + (state.plusOne ? 1 : 0);
+  const useOverride = deg === state.selDeg && state.ldaOver != null && state.ldaOver >= nt;
+  return { m, n, nt, lda: useOverride ? state.ldaOver : ruleLda, valid: n >= m };
+}
+
+/* Working-set footprints in bytes. */
+const FACTORIZATIONS = {
+  standard: [
+    { label: "LU / LDL\u1d40",          // A and B in place, int32 ipiv
+      bytes: d => (d.lda * d.nt + d.lda * state.nrhs) * state.bytes + d.nt * INT32_BYTES },
+    { label: "QR (fused [A|B])",        // widened panel + tau
+      bytes: d => d.lda * (d.nt + state.nrhs) * state.bytes + d.nt * state.bytes },
+  ],
+  batch: [
+    { label: "QR (compact interleaved)", // V members, each lda x (nt+nrhs) + tau
+      bytes: d => currentPack() * (d.lda * (d.nt + state.nrhs) + d.nt) * state.bytes },
+  ],
+};
+const factorizations = () => isBatch() ? FACTORIZATIONS.batch : FACTORIZATIONS.standard;
+
+/* Which level holds a footprint, plus the GPU-specific annotations. */
+function classify(bytes, hw) {
+  const fitsL1 = bytes <= hw.cap && bytes <= hw.blockCap;
+  const fitsL2 = !isGpu() && !fitsL1 && bytes <= hw.capL2;
+  const tier = fitsL1 ? "l1" : fitsL2 ? "l2" : "mem";
+  const label = isGpu() ? (fitsL1 ? "shared" : "global") : (fitsL1 ? "L1" : fitsL2 ? "L2" : "LLC/MEM");
+  const resident = isGpu() && fitsL1 ? Math.min(Math.floor(hw.cap / bytes), hw.blocksSM) : null;
+  const dyn = isGpu() && fitsL1 && bytes > GPU.staticLimitKB * 1024;
+  return { tier, label, resident, dyn, pct: Math.min(100, 100 * bytes / hw.cap) };
+}
+
+/* Shared-memory bank occupancy of one warp access (classic 32 × 4-byte model). */
+function bankConflict(lda, elemBytes, pattern) {
+  const w = elemBytes / GPU.bankBytes;
+  const stride = pattern === "col" ? w : lda * w;
+  const counts = new Array(GPU.banks).fill(0);
+  for (let t = 0; t < GPU.warp; t++) counts[(t * stride) % GPU.banks]++;
+  return { counts, conflict: Math.max(...counts), floor: w };
+}
+
+/* =====================================================================
+   4. View — reads state, writes DOM, never mutates state.
+   ===================================================================== */
+
+const $ = id => document.getElementById(id);
+const show = (id, on, mode = "block") => { $(id).style.display = on ? mode : "none"; };
+const KB = b => (b / 1024).toFixed(b >= 102400 ? 0 : b >= 10240 ? 1 : 2);
+const tag = (tier, text) => `<span class="tag t-${tier}">${text}</span>`;
+
+function syncSeg(id, val) {
+  for (const b of $(id).querySelectorAll("button"))
+    b.classList.toggle("on", b.dataset.v === String(val));
+}
+
+function renderControls() {
+  syncSeg("modeSeg", state.mode);
+  syncSeg("dimSeg", state.dim);
+  syncSeg("precSeg", state.bytes);
+  syncSeg("modSeg", state.mod);
+  syncSeg("patSeg", state.pattern);
+  if (isBatch()) {
+    $("packSeg").innerHTML = packOptions().map(v => `<button data-v="${v}">${v}</button>`).join("");
+  }
+  syncSeg("packSeg", currentPack());
+
+  show("plusOneWrap", isGpu(), "flex");
+  show("bankPanel", isGpu());
+  show("gpuDisclaimer", isGpu());
+  show("packRow", isBatch(), "flex");
+  show("fp32Note", state.bytes === 4);
+  show("l2Row", !isGpu(), "flex");
+  show("carveoutRow", isGpu() && !gpuIsCustom(), "flex");
+
+  const list = isGpu() ? GPU_PRESETS : CPU_PRESETS;
+  const idx = isGpu() ? state.gpuPreset : state.cpuPreset;
+  $("preset").innerHTML = list.map((p, i) =>
+    `<option value="${i}" ${i === idx ? "selected" : ""}>${p.name}</option>`).join("");
+  if (isGpu() && !gpuIsCustom()) {
+    $("carveout").innerHTML = gpuPreset().caps.map(c =>
+      `<option value="${c}" ${c === state.cacheKB ? "selected" : ""}>${c} KB</option>`).join("");
+  }
+  $("cacheLabel").textContent = isGpu() ? "Shared/SM (KB)" : "L1D size (KB)";
+  $("cacheKB").value = state.cacheKB;
+  $("l2KB").value = state.l2KB;
+}
+
+function renderHardwareNote(hw) {
+  if (isGpu()) {
+    $("hwNote").innerHTML = gpuPreset().note +
+      ` Per-block shared limit <b>${hw.blockMaxKB} KB</b>; max <b>${hw.blocksSM}</b> resident blocks/SM.` +
+      " Limits follow the <em>physical device's</em> compute capability, independent of the compile" +
+      " target; code built for a lower CC still gets the device's limits at runtime." +
+      " Carveouts above the driver default need <code>cudaFuncAttributePreferredSharedMemoryCarveout</code>;" +
+      " allocations over 48 KB/block need <code>extern __shared__</code> +" +
+      " <code>cudaFuncAttributeMaxDynamicSharedMemorySize</code>, with the size passed in the launch" +
+      " config <code>&lt;&lt;&lt;grid, block, smem&gt;&gt;&gt;</code>. Residency is scheduled by the" +
+      " hardware, not staged by the program: launch one block per stencil and the SM co-schedules" +
+      " \u00d7k of them; registers (64K/SM, not modeled) can lower this \u2014 verify with" +
+      " <code>cudaOccupancyMaxActiveBlocksPerMultiprocessor</code>. See" +
+      " <a href=\"https://docs.nvidia.com/cuda/cuda-programming-guide/03-advanced/advanced-kernel-programming.html#configuring-l1-shared-memory-balance\"" +
+      " target=\"_blank\" rel=\"noopener\">Configuring L1/Shared Memory Balance</a> in the CUDA Programming Guide.";
+  } else if (isBatch()) {
+    const p = cpuPreset();
+    $("hwNote").innerHTML = p.note +
+      " Compact interleaved storage (MKL-compact style): a pack of V matrices stored" +
+      " element-interleaved, with SIMD running across the pack." +
+      ` V defaults to the preset's vector length (${p.simd}-bit \u2192 ${laneCount()} lanes at` +
+      ` fp${state.bytes * 8}); wider V raises throughput per pack but multiplies cache pressure.`;
+  } else {
+    const p = cpuPreset();
+    $("hwNote").textContent = (p.note + " " + (p.pad || "")).trim();
+  }
+}
+
+function renderCapline(hw) {
+  const l1 = (hw.cap / 1024).toFixed(1), l2 = (hw.capL2 / 1024).toFixed(0);
+  $("capline").innerHTML = isGpu()
+    ? `Carveout <b>${l1} KB</b>/SM \u00b7 per-block limit ${hw.blockMaxKB} KB \u00b7 max ${hw.blocksSM} blocks/SM \u00b7
+       ${tag("l1", "shared")} = one stencil system per block in shared memory,
+       \u00d7k = min(\u230acarveout / footprint\u230b, ${hw.blocksSM}) resident per SM \u00b7
+       ${tag("mem", "global")} = assemble in global memory, L1-cached \u00b7
+       <span class="dyn">dyn</span> = exceeds the 48 KB static limit, needs dynamic shared memory`
+    : isBatch()
+    ? `One pack of V = ${currentPack()} interleaved matrices. Tag = smallest level holding the pack:
+       ${tag("l1", "L1")} ${l1} KB L1D \u00b7
+       ${tag("l2", "L2")} ${l2} KB L2/core, panel-streamed \u00b7
+       ${tag("mem", "LLC/MEM")} beyond L2`
+    : `Tag = smallest level holding the working set:
+       ${tag("l1", "L1")} ${l1} KB L1D \u00b7
+       ${tag("l2", "L2")} ${l2} KB L2/core \u00b7
+       ${tag("mem", "LLC/MEM")} beyond L2`;
+}
+
+function renderTable(hw) {
+  const facts = factorizations();
+  const sub = s => `<span class="sub">${s}</span>`;
+  const fsub = isGpu() ? "footprint KB \u00b7 resident/SM"
+             : isBatch() ? `pack footprint KB (V = ${currentPack()})`
+             : "footprint KB";
+  $("thead").innerHTML =
+      `<th class="l">\u2113${sub("poly degree")}</th>`
+    + `<th>m${sub("monomials")}</th>`
+    + `<th>n${sub("stencil size")}</th>`
+    + `<th>n\u209c = n+m${sub("matrix size")}</th>`
+    + `<th>lda${sub("leading dim.")}</th>`
+    + facts.map(f => `<th class="fcol">${f.label}${sub(fsub)}</th>`).join("");
+
+  const footprintCell = bytes => {
+    const c = classify(bytes, hw);
+    const dyn = c.dyn ? ` <span class="dyn">dyn</span>` : "";
+    const resident = c.resident != null ? ` <span class="mats">\u00d7${c.resident}</span>` : "";
+    const cls = { l1: ["fit", "fitb"], l2: ["l2t", "l2b"], mem: ["spill", "spillb"] }[c.tier];
+    return `<td class="${cls[0]}"><div class="cellrow"><span class="tagslot">${tag(c.tier, c.label)}${dyn}</span><span>${KB(bytes)}${resident}</span></div>
+          <div class="bar ${cls[1]}"><i style="width:${c.pct}%"></i></div></td>`;
+  };
+
+  let rows = "";
+  for (let deg = DEGREES.min; deg <= DEGREES.max; deg++) {
+    const d = dims(deg);
+    const cells = `<td class="l">${deg}</td><td>${d.m}</td><td>${d.n}</td>` + (d.valid
+      ? `<td>${d.nt}</td><td>${d.lda}</td>` + facts.map(f => footprintCell(f.bytes(d))).join("")
+      : `<td>\u2014</td><td>\u2014</td>` + facts.map(() => `<td class="nv">n &lt; m</td>`).join(""));
+    const cls = (deg === state.selDeg ? "sel " : "") + (d.valid ? "" : "invalid");
+    rows += `<tr data-deg="${deg}" class="${cls}">${cells}</tr>`;
+  }
+  $("tbody").innerHTML = rows;
+}
+
+function renderWarnings() {
+  const d = dims(state.selDeg);
+  const nBad = state.nOver != null && state.nOver < 1;
+  $("nWarn").textContent = nBad ? "n must be at least 1." : "";
+  $("nWarn").classList.toggle("show", nBad);
+  const ldaBad = state.ldaOver != null && state.ldaOver < d.nt;
+  $("ldaWarn").innerHTML = ldaBad ? `<code>lda</code> must satisfy lda \u2265 n\u209c = ${d.nt}; override ignored.` : "";
+  $("ldaWarn").classList.toggle("show", ldaBad);
+}
+
+function renderBanks() {
+  if (!isGpu()) return;
+  const d = dims(state.selDeg);
+  const { counts, conflict, floor } = bankConflict(d.lda, state.bytes, state.pattern);
+
+  $("bankgrid").innerHTML = counts.map(c =>
+    `<div class="bankcol ${c > floor ? "hot" : ""}">` +
+    `<div class="bankcell"></div>`.repeat(c) + `</div>`).join("");
+  $("banklabels").innerHTML = counts.map((_, i) => i % 4 === 0 ? `<span>${i}</span>` : `<span></span>`).join("");
+
+  const cls = conflict > floor ? "bad" : "good";
+  $("conflictLine").innerHTML =
+    `deg ${state.selDeg}: lda = ${d.lda}, element = ${state.bytes} B
+     \u2192 <b class="${cls}">${conflict}-way</b>` +
+    (conflict > floor ? ` (achievable floor: ${floor}-way)` : ` \u2014 at the achievable floor`);
+
+  $("sweep").innerHTML = state.pattern !== "row" ? "" :
+    Array.from({ length: GPU.sweepWidth }, (_, i) => {
+      const lda = d.nt + i;
+      const c = bankConflict(lda, state.bytes, "row").conflict;
+      return `<span class="chip ${c > floor ? "bad" : "ok"} ${lda === d.lda ? "cur" : ""}">lda ${lda}<b>${c}-way</b></span>`;
+    }).join("");
+}
+
+function renderFormulas() {
+  $("formulas").innerHTML = `
+[\u03a6 P; P\u1d40 0][w; \u03bc] = [L\u03c6|\u2093; Lp|\u2093]   <span class="c">weight system; one RHS column per operator L (nrhs of them); \u03bc = Lagrange multipliers</span><br>
+m  = C(\u2113 + d, d) = (\u2113+d)!/(\u2113!\u00b7d!)   <span class="c">binomial coefficient; monomials of total degree \u2264 \u2113 in d dimensions</span><br>
+n  = max(\u2308c\u00b7m\u2309, m)           <span class="c">stencil size; c = ${state.mult}; n \u2265 m for unisolvency; n = m \u21d2 RBF part inactive, polynomial FD weights</span><br>
+n\u209c = n + m                   <span class="c">size of the augmented saddle-point system</span><br>
+lda = \u2308n\u209c / k\u2309\u00b7k${state.plusOne ? " + 1" : ""}              <span class="c">k = ${state.mod}; applied to matrix and RHS</span><br>
+LU / LDL\u1d40: (lda\u00b7n\u209c + lda\u00b7nrhs)\u00b7w + 4\u00b7n\u209c   <span class="c">in-place, B overwritten, int32 ipiv; identical full-storage footprint</span><br>
+QR:        lda\u00b7(n\u209c + nrhs)\u00b7w + w\u00b7n\u209c      <span class="c">fused [A|B] panel; reflectors in place, tau</span><br>
+QR compact: V\u00b7(lda\u00b7(n\u209c + nrhs) + n\u209c)\u00b7w  <span class="c">batched CPU: pack of V element-interleaved [A|B] panels + tau; lda per de-interleaved member</span><br>
+<span class="c">fused [A|B]: geqrf on the widened n\u209c\u00d7(n\u209c+nrhs) panel leaves Q\u1d40B in the B columns;
+the solve completes with trsm against R. Same floats as separate A and B with shared lda.</span><br>
+w = ${state.bytes} B                     <span class="c">${state.bytes === 8 ? "fp64" : "fp32"}</span>`;
+}
+
+function render() {
+  const hw = hardware();
+  renderControls();
+  renderHardwareNote(hw);
+  renderCapline(hw);
+  renderTable(hw);
+  renderWarnings();
+  renderBanks();
+  renderFormulas();
+}
+
+/* =====================================================================
+   5. Controller — the only place state changes; every change re-renders.
+   ===================================================================== */
+
+/* Loading a preset resets the editable capacity fields to its values. */
+function applyCpuPreset(i) {
+  state.cpuPreset = i;
+  state.cacheKB = CPU_PRESETS[i].kb;
+  state.l2KB = CPU_PRESETS[i].l2;
+  state.packAuto = true;
+}
+function applyGpuPreset(i, customKB) {
+  state.gpuPreset = i;
+  const p = GPU_PRESETS[i];
+  state.cacheKB = p.caps.length ? maxCarveout(p) : customKB;
+}
+function setMode(mode) {
+  state.mode = mode;
+  if (isGpu()) applyGpuPreset(state.gpuPreset, GPU.customDefaultKB);
+  else { state.cacheKB = cpuPreset().kb; state.l2KB = cpuPreset().l2; }
+}
+
+/* Segmented controls use event delegation so re-rendered buttons stay live. */
+function onSeg(id, fn) {
+  $(id).addEventListener("click", e => {
+    const b = e.target.closest("button");
+    if (b) { fn(b.dataset.v); render(); }
+  });
+}
+const onInput = (id, fn) => $(id).addEventListener("input", e => { fn(e.target); render(); });
+const positive = v => Math.max(1, +v || 1);
+const optional = v => v === "" ? null : Math.round(+v);
+
+function wire() {
+  onSeg("modeSeg", setMode);
+  onSeg("dimSeg",  v => { state.dim = +v; });
+  onSeg("precSeg", v => { state.bytes = +v; });
+  onSeg("modSeg",  v => { state.mod = +v; });
+  onSeg("patSeg",  v => { state.pattern = v; });
+  onSeg("packSeg", v => { state.pack = +v; state.packAuto = false; });
+
+  $("preset").addEventListener("change", e => {
+    const i = +e.target.value;
+    if (isGpu()) applyGpuPreset(i, state.cacheKB); else applyCpuPreset(i);
+    render();
+  });
+  $("carveout").addEventListener("change", e => { state.cacheKB = +e.target.value; render(); });
+  onInput("cacheKB", t => { state.cacheKB = positive(t.value); });
+  onInput("l2KB",    t => { state.l2KB = positive(t.value); });
+  onInput("safety",  t => { state.safety = positive(t.value); });
+  onInput("nrhs",    t => { state.nrhs = Math.round(positive(t.value)); });
+  onInput("mult",    t => { state.mult = positive(t.value); });
+  onInput("nOver",   t => { state.nOver = optional(t.value); });
+  onInput("ldaOver", t => { state.ldaOver = optional(t.value); });
+  $("plusOne").addEventListener("change", e => { state.plusOne = e.target.checked; render(); });
+  $("tbody").addEventListener("click", e => {
+    const tr = e.target.closest("tr[data-deg]");
+    if (tr) { state.selDeg = +tr.dataset.deg; render(); }
+  });
+}
+
+/* Write defaults into every form control so a browser-restored value can never disagree with state. */
+function init() {
+  $("nrhs").value = state.nrhs;
+  $("mult").value = state.mult;
+  $("safety").value = state.safety;
+  $("nOver").value = "";
+  $("ldaOver").value = "";
+  $("plusOne").checked = state.plusOne;
+  wire();
+  render();
+}
+
+init();
+})();
+</script>
+</body>
+</html>

@@ -26,7 +26,8 @@ LLVM-MCA:
 Misc:
 - [I Thought I Knew Python. Then These 7 Features Humbled Me Completely.](https://python.plainenglish.io/i-thought-i-knew-python-then-these-7-features-humbled-me-completely-8a2c6b5862ce)
 - [SPIR-V on ROCm: A Portable IR for AMD GPUs | ROCm™ Blogs](https://rocm.blogs.amd.com/software-tools-optimization/spir-v-rocm/README.html)
-- [How the NVIDIA Compiler Moat Actually Works | The Software Frontier](https://www.thesoftwarefrontier.com/p/how-the-nvidia-compiler-moat-actually?r=3c7w5a&utm_campaign=post-expanded-share&utm_medium=web&triedRedirect=true)
+- [How the NVIDIA Compiler Moat Actually Works | The Software Frontier](https://www.thesoftwarefrontier.com/p/how-the-nvidia-compiler-moat-actually)
+- [Can Vectorization Slow Down Performance? Addressing the Challenges of Vectorizing Stride Access, K. Kinoshita, 2025 LLVM Developers' Meeting](https://llvm.org/devmtg/2025-10/slides/lightning_talks/kinoshita.pdf) (PDF, 304 KB)
 
 ## 2026-07-18
 
