@@ -10,6 +10,11 @@ tags:
   - "linear-algebra"
 ---
 
+{{< notice >}}
+**Interactive version:** the [RBF-FD Stencil Sizer](/tools/rbf_fd_stencil_sizer.html) computes the sizes below for any polynomial degree, dimension and precision, and checks the footprint against L1/L2 caches or GPU shared memory.
+It also covers what this post holds fixed: the stencil factor, the number of right-hand sides, and the leading-dimension padding.
+{{< /notice >}}
+
 One of the benefits of the RBF-FD methods compared to grid-based finite differences is it is straightforward to change the order of accuracy via the augmented polynomials.
 The number of monomial terms in the augmented polynomial basis is given by the [triangular numbers](https://en.wikipedia.org/wiki/Triangular_number) in 2-d and the [tetrahedral numbers](https://en.wikipedia.org/wiki/Tetrahedral_number) in 3-d.
 For a basis complete through total degree $p$ there are $(p+1)(p+2)/2$ terms in 2-d and $(p+1)(p+2)(p+3)/6$ terms in 3-d.
