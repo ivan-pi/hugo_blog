@@ -16,9 +16,10 @@ For a basis complete through total degree $p$ there are $(p+1)(p+2)/2$ terms in 
 The number of terms can also be read from Pascal's triangle/pyramid.
 
 For the RBF stencil size a common heuristic is to use twice the number of polynomials terms.
-This heuristic comes from the work of Flyer, Barnett, and co-authors on polynomial-augmented RBF-FD ([Flyer, Fornberg, Bayona, and Barnett, 2016](https://doi.org/10.1016/j.jcp.2016.05.026); [Bayona, Flyer, Fornberg, and Barnett, 2017](https://doi.org/10.1016/j.jcp.2016.12.008)).
-While this rule of thumb is a standard starting point for stencil sizing, the relationship between accuracy, computational time, and monomial augmentation remains an active area of research.
+This rule of thumb goes back to [Flyer, Barnett, and Wicker (2016)](https://doi.org/10.1016/j.jcp.2016.02.078).
+While it is a standard starting point for stencil sizing, the relationship between accuracy, computational time, and monomial augmentation remains an active area of research.
 Readers can find more information in the analysis by [Jančič, Slak, and Kosec (2021)](https://doi.org/10.1007/s10915-020-01401-y) and citing works.
+For a broad study of how the many RBF-FD parameters interact — stencil size, polynomial degree, RBF choice, node distribution — [Le Borne and Leinen (2023)](https://doi.org/10.1007/s10915-023-02123-7) is a good source.
 
 The tables below show how the RBF-FD matrix dimensions varies for 2-D and 3-D RBF-FD approximation.
 We also include the storage size of the matrices for 32- and 64-bit floats.
@@ -90,3 +91,7 @@ Intel made the upgrade from 32 KB to 48 KB in the Sunny Cove architecture launch
 
 (Note: Apples's efficiency cores (E-cores) use smaller 64 kB L1D caches.
 Intel's efficiency cores have remained at 32 kB L1 data caches. )
+
+---
+
+*Correction (2026-08-30): the monomial counts in the tables and the figure were originally shifted by one order — the row labelled order $p$ held the count for degree $p-1$, so order 2 in 2-D showed 3 terms instead of 6. The tables and figure have been recomputed, which moves the cache-fit thresholds down by one order as well. The stencil-size heuristic was also misattributed to Grady Wright; it originates with Flyer, Barnett, and Wicker.*
