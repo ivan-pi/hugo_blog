@@ -9,13 +9,13 @@
 #   gnuplot notes/rbf-fd-matrix-sizes.gp
 #
 # Model -----------------------------------------------------------------
-#   # monomials of total degree < p    2-D: triangular   T(p)  = p(p+1)/2
-#                                       3-D: tetrahedral  Te(p) = p(p+1)(p+2)/6
+#   # monomials of total degree <= p   2-D: (p+1)(p+2)/2
+#                                       3-D: (p+1)(p+2)(p+3)/6
 #   heuristic stencil size  n = 2 m  ->  augmented matrix is (n + m) = 3m square
 #   storage = (3m)^2 * bytes / 1024   [KB],  bytes = 4 (fp32) or 8 (fp64)
 
-m2(p)   = p*(p+1)/2.0
-m3(p)   = p*(p+1)*(p+2)/6.0
+m2(p)   = (p+1)*(p+2)/2.0
+m3(p)   = (p+1)*(p+2)*(p+3)/6.0
 dim(m)  = 3.0*m
 kb(m,b) = (dim(m)**2 * b) / 1024.0
 

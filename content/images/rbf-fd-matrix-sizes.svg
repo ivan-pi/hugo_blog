@@ -204,70 +204,70 @@ onclick="gnuplot_svg.toggleCoordBox(evt)"  onmousemove="gnuplot_svg.moveCoordBox
 <g fill="none" color="#FFFFFF" stroke="rgb(204, 204, 204)" stroke-width="2.50" stroke-linecap="butt" stroke-linejoin="miter">
 </g>
 <g fill="none" color="black" stroke="currentColor" stroke-width="2.50" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb( 31, 111, 180)'  d='M146.77,451.10 L196.05,386.87 L245.32,346.35 L294.60,316.49 L343.87,292.78 L393.15,273.11 L442.42,256.29 L491.69,241.60
-		L540.97,228.56 L590.24,216.82 L639.52,206.17 L688.79,196.40  '/>	<use xlink:href='#gpPt6' transform='translate(146.77,451.10) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt6' transform='translate(196.05,386.87) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt6' transform='translate(245.32,346.35) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt6' transform='translate(294.60,316.49) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt6' transform='translate(343.87,292.78) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt6' transform='translate(393.15,273.11) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt6' transform='translate(442.42,256.29) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt6' transform='translate(491.69,241.60) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt6' transform='translate(540.97,228.56) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt6' transform='translate(590.24,216.82) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt6' transform='translate(639.52,206.17) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt6' transform='translate(688.79,196.40) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<path stroke='rgb( 31, 111, 180)'  d='M146.77,386.87 L196.05,346.35 L245.32,316.49 L294.60,292.78 L343.87,273.11 L393.15,256.29 L442.42,241.60 L491.69,228.56
+		L540.97,216.82 L590.24,206.17 L639.52,196.40 L688.79,187.39  '/>	<use xlink:href='#gpPt6' transform='translate(146.77,386.87) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt6' transform='translate(196.05,346.35) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt6' transform='translate(245.32,316.49) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt6' transform='translate(294.60,292.78) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt6' transform='translate(343.87,273.11) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt6' transform='translate(393.15,256.29) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt6' transform='translate(442.42,241.60) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt6' transform='translate(491.69,228.56) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt6' transform='translate(540.97,216.82) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt6' transform='translate(590.24,206.17) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt6' transform='translate(639.52,196.40) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt6' transform='translate(688.79,187.39) scale(5.36)' color='rgb( 31, 111, 180)'/>
 </g>
 	</g>
 	<g id="rbffd_matrix_sizes_plot_2" ><title>2-D, fp32</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="2.50" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb( 31, 111, 180)' stroke-dasharray='6.2,10.0'  d='M146.77,471.36 L196.05,407.13 L245.32,366.61 L294.60,336.75 L343.87,313.04 L393.15,293.37 L442.42,276.55 L491.69,261.86
-		L540.97,248.82 L590.24,237.09 L639.52,226.43 L688.79,216.66  '/>	<use xlink:href='#gpPt5' transform='translate(146.77,471.36) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt5' transform='translate(196.05,407.13) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt5' transform='translate(245.32,366.61) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt5' transform='translate(294.60,336.75) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt5' transform='translate(343.87,313.04) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt5' transform='translate(393.15,293.37) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt5' transform='translate(442.42,276.55) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt5' transform='translate(491.69,261.86) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt5' transform='translate(540.97,248.82) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt5' transform='translate(590.24,237.09) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt5' transform='translate(639.52,226.43) scale(5.36)' color='rgb( 31, 111, 180)'/>
-	<use xlink:href='#gpPt5' transform='translate(688.79,216.66) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<path stroke='rgb( 31, 111, 180)' stroke-dasharray='6.2,10.0'  d='M146.77,407.13 L196.05,366.61 L245.32,336.75 L294.60,313.04 L343.87,293.37 L393.15,276.55 L442.42,261.86 L491.69,248.82
+		L540.97,237.09 L590.24,226.43 L639.52,216.66 L688.79,207.65  '/>	<use xlink:href='#gpPt5' transform='translate(146.77,407.13) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt5' transform='translate(196.05,366.61) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt5' transform='translate(245.32,336.75) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt5' transform='translate(294.60,313.04) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt5' transform='translate(343.87,293.37) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt5' transform='translate(393.15,276.55) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt5' transform='translate(442.42,261.86) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt5' transform='translate(491.69,248.82) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt5' transform='translate(540.97,237.09) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt5' transform='translate(590.24,226.43) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt5' transform='translate(639.52,216.66) scale(5.36)' color='rgb( 31, 111, 180)'/>
+	<use xlink:href='#gpPt5' transform='translate(688.79,207.65) scale(5.36)' color='rgb( 31, 111, 180)'/>
 </g>
 	</g>
 	<g id="rbffd_matrix_sizes_plot_3" ><title>3-D, fp64</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="2.50" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(215,  48,  31)'  d='M146.77,451.10 L196.05,370.06 L245.32,316.49 L294.60,275.96 L343.87,243.25 L393.15,215.77 L442.42,192.07 L491.69,171.21
-		L540.97,152.60 L590.24,135.78 L639.52,120.44 L688.79,106.34  '/>	<use xlink:href='#gpPt4' transform='translate(146.77,451.10) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt4' transform='translate(196.05,370.06) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt4' transform='translate(245.32,316.49) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt4' transform='translate(294.60,275.96) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt4' transform='translate(343.87,243.25) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt4' transform='translate(393.15,215.77) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt4' transform='translate(442.42,192.07) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt4' transform='translate(491.69,171.21) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt4' transform='translate(540.97,152.60) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt4' transform='translate(590.24,135.78) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt4' transform='translate(639.52,120.44) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt4' transform='translate(688.79,106.34) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<path stroke='rgb(215,  48,  31)'  d='M146.77,370.06 L196.05,316.49 L245.32,275.96 L294.60,243.25 L343.87,215.77 L393.15,192.07 L442.42,171.21 L491.69,152.60
+		L540.97,135.78 L590.24,120.44 L639.52,106.34 L688.79,93.30  '/>	<use xlink:href='#gpPt4' transform='translate(146.77,370.06) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt4' transform='translate(196.05,316.49) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt4' transform='translate(245.32,275.96) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt4' transform='translate(294.60,243.25) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt4' transform='translate(343.87,215.77) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt4' transform='translate(393.15,192.07) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt4' transform='translate(442.42,171.21) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt4' transform='translate(491.69,152.60) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt4' transform='translate(540.97,135.78) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt4' transform='translate(590.24,120.44) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt4' transform='translate(639.52,106.34) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt4' transform='translate(688.79,93.30) scale(5.36)' color='rgb(215,  48,  31)'/>
 </g>
 	</g>
 	<g id="rbffd_matrix_sizes_plot_4" ><title>3-D, fp32</title>
 <g fill="none" color="black" stroke="currentColor" stroke-width="2.50" stroke-linecap="butt" stroke-linejoin="miter">
-	<path stroke='rgb(215,  48,  31)' stroke-dasharray='6.2,10.0'  d='M146.77,471.36 L196.05,390.32 L245.32,336.75 L294.60,296.23 L343.87,263.51 L393.15,236.03 L442.42,212.33 L491.69,191.48
-		L540.97,172.86 L590.24,156.04 L639.52,140.70 L688.79,126.60  '/>	<use xlink:href='#gpPt3' transform='translate(146.77,471.36) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt3' transform='translate(196.05,390.32) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt3' transform='translate(245.32,336.75) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt3' transform='translate(294.60,296.23) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt3' transform='translate(343.87,263.51) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt3' transform='translate(393.15,236.03) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt3' transform='translate(442.42,212.33) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt3' transform='translate(491.69,191.48) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt3' transform='translate(540.97,172.86) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt3' transform='translate(590.24,156.04) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt3' transform='translate(639.52,140.70) scale(5.36)' color='rgb(215,  48,  31)'/>
-	<use xlink:href='#gpPt3' transform='translate(688.79,126.60) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<path stroke='rgb(215,  48,  31)' stroke-dasharray='6.2,10.0'  d='M146.77,390.32 L196.05,336.75 L245.32,296.23 L294.60,263.51 L343.87,236.03 L393.15,212.33 L442.42,191.48 L491.69,172.86
+		L540.97,156.04 L590.24,140.70 L639.52,126.60 L688.79,113.56  '/>	<use xlink:href='#gpPt3' transform='translate(146.77,390.32) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt3' transform='translate(196.05,336.75) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt3' transform='translate(245.32,296.23) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt3' transform='translate(294.60,263.51) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt3' transform='translate(343.87,236.03) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt3' transform='translate(393.15,212.33) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt3' transform='translate(442.42,191.48) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt3' transform='translate(491.69,172.86) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt3' transform='translate(540.97,156.04) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt3' transform='translate(590.24,140.70) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt3' transform='translate(639.52,126.60) scale(5.36)' color='rgb(215,  48,  31)'/>
+	<use xlink:href='#gpPt3' transform='translate(688.79,113.56) scale(5.36)' color='rgb(215,  48,  31)'/>
 </g>
 	</g>
 	<g stroke='none' shape-rendering='crispEdges'>
