@@ -12,7 +12,7 @@ tags:
 
 One of the benefits of the RBF-FD methods compared to grid-based finite differences is it is straightforward to change the order of accuracy via the augmented polynomials.
 The number of monomial terms in the augmented polynomial basis is given by the [triangular numbers](https://en.wikipedia.org/wiki/Triangular_number) in 2-d and the [tetrahedral numbers](https://en.wikipedia.org/wiki/Tetrahedral_number) in 3-d.
-For a basis complete through total degree $p$ there are $(p+1)(p+2)/2$ terms in 2-d and $(p+1)(p+2)(p+3)/6$ terms in 3-d — so order 1 (linear) already carries 3 terms in 2-d, and order 2 (quadratic) carries 6.
+For a basis complete through total degree $p$ there are $(p+1)(p+2)/2$ terms in 2-d and $(p+1)(p+2)(p+3)/6$ terms in 3-d.
 The number of terms can also be read from Pascal's triangle/pyramid.
 
 For the RBF stencil size a common heuristic is to use twice the number of polynomials terms.
