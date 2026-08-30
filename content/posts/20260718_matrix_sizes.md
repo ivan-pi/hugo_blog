@@ -12,7 +12,6 @@ tags:
 
 {{< notice >}}
 **Interactive version:** the [RBF-FD Stencil Sizer](/tools/rbf_fd_stencil_sizer.html) computes the sizes below for any polynomial degree, dimension and precision, and checks the footprint against L1/L2 caches or GPU shared memory.
-It also covers what this post holds fixed: the stencil factor, the number of right-hand sides, and the leading-dimension padding.
 {{< /notice >}}
 
 One of the benefits of the RBF-FD methods compared to grid-based finite differences is it is straightforward to change the order of accuracy via the augmented polynomials.
