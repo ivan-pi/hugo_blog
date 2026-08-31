@@ -58,11 +58,13 @@
   code { font-family: var(--mono); font-size: 0.95em; }
   a { color: var(--accent); }
 
-  .layout { display: grid; grid-template-columns: 292px 1fr; gap: 20px; align-items: start; }
-  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+  .layout { display: flex; flex-direction: column; gap: 18px; }
 
-  /* ---- controls ---- */
-  .controls { display: flex; flex-direction: column; gap: 14px; }
+  /* ---- controls: Mode strip, then three panels side by side ---- */
+  .controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-items: start; }
+  .controls fieldset:first-child { grid-column: 1 / -1; }
+  @media (max-width: 900px) { .controls { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { .controls { grid-template-columns: 1fr; } }
   fieldset {
     border: 1px solid var(--rule); border-radius: 6px; background: var(--panel);
     padding: 10px 12px 12px; margin: 0;
@@ -97,7 +99,8 @@
   .checkline { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
   .warn { color: var(--spill); font-size: 12px; margin-top: 6px; display: none; }
   .warn.show { display: block; }
-  .subnote { color: var(--muted); font-size: 12px; margin-top: 8px; }
+  .subnote { color: var(--muted); font-size: 12px; margin-top: 8px; overflow-wrap: anywhere; }
+  fieldset { min-width: 0; }
 
   /* ---- table ---- */
   .main { min-width: 0; }
@@ -147,7 +150,8 @@
     font-size: 9.5px; font-weight: 650; color: #8a6d1a; background: #f6efd8;
     border-radius: 3px; padding: 0 3px; vertical-align: 1px;
   }
-  .capline { font-family: var(--mono); font-size: 12px; color: var(--muted); margin: 8px 2px 14px; }
+  .capline { font-family: var(--mono); font-size: 12px; color: var(--muted); margin: 0 2px 10px; }
+  .capline > div { margin: 3px 0; }
   .capline b { color: var(--ink); font-weight: 600; }
 
   /* ---- details panels ---- */
@@ -251,28 +255,6 @@
     <div class="warn" id="nWarn"></div>
   </fieldset>
 
-  <fieldset id="padFieldset">
-    <legend>Padding</legend>
-    <div class="row">
-      <label><code>lda</code> multiple of</label>
-      <div class="seg" id="modSeg">
-        <button data-v="1" class="on">1</button><button data-v="2">2</button>
-        <button data-v="4">4</button><button data-v="8">8</button><button data-v="16">16</button>
-      </div>
-    </div>
-    <div class="checkline" id="plusOneWrap">
-      <input type="checkbox" id="plusOne" autocomplete="off">
-      <label for="plusOne">+1 after rounding (bank-conflict padding)</label>
-    </div>
-    <div class="row">
-      <label for="ldaOver"><code>lda</code> override (selected degree)</label>
-      <input type="number" id="ldaOver" autocomplete="off" min="1" step="1" placeholder="rule">
-    </div>
-    <div class="warn" id="ldaWarn"></div>
-    <div class="subnote">Padded rows apply to the matrix and the right-hand sides.
-      The tool enforces <code>lda</code> ≥ n<sub>t</sub>.</div>
-  </fieldset>
-
   <fieldset>
     <legend>Hardware</legend>
     <select id="preset" aria-label="Hardware preset"></select>
@@ -299,9 +281,28 @@
     <div class="subnote">Divides the cache or shared-memory capacity to allow for other data sharing it (stack,
       prefetched lines, workspace): 1 assumes the full cache is available, 2 assumes half.</div>
     <div class="subnote" id="hwNote"></div>
-    <div class="subnote" id="gpuDisclaimer" style="display:none">GPU mode models Nvidia/CUDA only.
-      AMD (64 KB LDS per CU, 64-wide wavefronts) and Intel (SLM carved from L1) GPUs have different
-      shared-memory sizes, banking, and allocation constraints not represented here.</div>
+  </fieldset>
+
+  <fieldset id="padFieldset">
+    <legend>Padding</legend>
+    <div class="row">
+      <label><code>lda</code> multiple of</label>
+      <div class="seg" id="modSeg">
+        <button data-v="1" class="on">1</button><button data-v="2">2</button>
+        <button data-v="4">4</button><button data-v="8">8</button><button data-v="16">16</button>
+      </div>
+    </div>
+    <div class="checkline" id="plusOneWrap">
+      <input type="checkbox" id="plusOne" autocomplete="off">
+      <label for="plusOne">+1 after rounding (bank-conflict padding)</label>
+    </div>
+    <div class="row">
+      <label for="ldaOver"><code>lda</code> override (selected degree)</label>
+      <input type="number" id="ldaOver" autocomplete="off" min="1" step="1" placeholder="rule">
+    </div>
+    <div class="warn" id="ldaWarn"></div>
+    <div class="subnote">Padded rows apply to the matrix and the right-hand sides.
+      The tool enforces <code>lda</code> ≥ n<sub>t</sub>.</div>
   </fieldset>
 
 </div>
@@ -352,6 +353,7 @@
     &copy; 2026 Ivan Pribec. Created with the assistance of Claude Fable 5.
     Background: <a href="https://ivan-pi.github.io/posts/2026/07/sizing-rbf-fd-stencils-for-modern-cpu-caches/"
     target="_blank" rel="noopener">Sizing RBF-FD stencils for modern CPU caches</a> (blog post).
+    GPU mode models Nvidia/CUDA only; AMD and Intel GPUs have different shared-memory constraints.
     Hardware figures compiled August 2026 — verify against vendor documentation for newer models.
     Found a mistake? <a href="https://github.com/ivan-pi/hugo_blog/issues"
     target="_blank" rel="noopener">Open an issue</a>.
@@ -534,7 +536,6 @@ function renderControls() {
 
   show("plusOneWrap", isGpu(), "flex");
   show("bankPanel", isGpu());
-  show("gpuDisclaimer", isGpu());
   show("packRow", isBatch(), "flex");
   show("fp32Note", state.bytes === 4);
   show("l2Row", !isGpu(), "flex");
@@ -557,17 +558,11 @@ function renderHardwareNote(hw) {
   if (isGpu()) {
     $("hwNote").innerHTML = gpuPreset().note +
       ` Per-block shared limit <b>${hw.blockMaxKB} KB</b>; max <b>${hw.blocksSM}</b> resident blocks/SM.` +
-      " Limits follow the <em>physical device's</em> compute capability, independent of the compile" +
-      " target; code built for a lower CC still gets the device's limits at runtime." +
-      " Carveouts above the driver default need <code>cudaFuncAttributePreferredSharedMemoryCarveout</code>;" +
-      " allocations over 48 KB/block need <code>extern __shared__</code> +" +
-      " <code>cudaFuncAttributeMaxDynamicSharedMemorySize</code>, with the size passed in the launch" +
-      " config <code>&lt;&lt;&lt;grid, block, smem&gt;&gt;&gt;</code>. Residency is scheduled by the" +
-      " hardware, not staged by the program: launch one block per stencil and the SM co-schedules" +
-      " \u00d7k of them; registers (64K/SM, not modeled) can lower this \u2014 verify with" +
-      " <code>cudaOccupancyMaxActiveBlocksPerMultiprocessor</code>. See" +
+      " Limits follow the physical device's compute capability, not the compile target." +
+      " Carveouts above the driver default and allocations over 48 KB/block are opt-in \u2014 see" +
       " <a href=\"https://docs.nvidia.com/cuda/cuda-programming-guide/03-advanced/advanced-kernel-programming.html#configuring-l1-shared-memory-balance\"" +
-      " target=\"_blank\" rel=\"noopener\">Configuring L1/Shared Memory Balance</a> in the CUDA Programming Guide.";
+      " target=\"_blank\" rel=\"noopener\">Configuring L1/Shared Memory Balance</a> in the CUDA Programming Guide." +
+      " Registers (not modeled) can lower \u00d7k.";
   } else if (isBatch()) {
     const p = cpuPreset();
     $("hwNote").innerHTML = p.note +
@@ -583,21 +578,16 @@ function renderHardwareNote(hw) {
 
 function renderCapline(hw) {
   const l1 = (hw.cap / 1024).toFixed(1), l2 = (hw.capL2 / 1024).toFixed(0);
-  $("capline").innerHTML = isGpu()
-    ? `Carveout <b>${l1} KB</b>/SM \u00b7 per-block limit ${hw.blockMaxKB} KB \u00b7 max ${hw.blocksSM} blocks/SM \u00b7
-       ${tag("l1", "shared")} = one stencil system per block in shared memory,
-       \u00d7k = min(\u230acarveout / footprint\u230b, ${hw.blocksSM}) resident per SM \u00b7
-       ${tag("mem", "global")} = assemble in global memory, L1-cached \u00b7
-       <span class="dyn">dyn</span> = exceeds the 48 KB static limit, needs dynamic shared memory`
+  const lines = isGpu()
+    ? [`Carveout <b>${l1} KB</b>/SM \u00b7 per-block limit ${hw.blockMaxKB} KB \u00b7 max ${hw.blocksSM} blocks/SM`,
+       `${tag("l1", "shared")} one stencil system per block in shared memory; \u00d7k = min(\u230acarveout / footprint\u230b, ${hw.blocksSM}) resident per SM`,
+       `${tag("mem", "global")} assemble in global memory, L1-cached \u00b7 <span class="dyn">dyn</span> exceeds the 48 KB static limit, needs dynamic shared memory`]
     : isBatch()
-    ? `One pack of V = ${currentPack()} interleaved matrices. Tag = smallest level holding the pack:
-       ${tag("l1", "L1")} ${l1} KB L1D \u00b7
-       ${tag("l2", "L2")} ${l2} KB L2/core, panel-streamed \u00b7
-       ${tag("mem", "LLC/MEM")} beyond L2`
-    : `Tag = smallest level holding the working set:
-       ${tag("l1", "L1")} ${l1} KB L1D \u00b7
-       ${tag("l2", "L2")} ${l2} KB L2/core \u00b7
-       ${tag("mem", "LLC/MEM")} beyond L2`;
+    ? [`One pack of V = ${currentPack()} interleaved matrices. Tag = smallest level holding the pack:`,
+       `${tag("l1", "L1")} ${l1} KB L1D \u00b7 ${tag("l2", "L2")} ${l2} KB L2/core, panel-streamed \u00b7 ${tag("mem", "LLC/MEM")} beyond L2`]
+    : [`Tag = smallest level holding the working set:`,
+       `${tag("l1", "L1")} ${l1} KB L1D \u00b7 ${tag("l2", "L2")} ${l2} KB L2/core \u00b7 ${tag("mem", "LLC/MEM")} beyond L2`];
+  $("capline").innerHTML = lines.map(l => `<div>${l}</div>`).join("");
 }
 
 function renderTable(hw) {
