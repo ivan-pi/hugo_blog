@@ -100,4 +100,4 @@ Intel's efficiency cores have remained at 32 kB L1 data caches. )
 
 *Correction (2026-08-30): the monomial counts in the tables and the figure were originally shifted by one order — the row labelled order $p$ held the count for degree $p-1$, so order 2 in 2-D showed 3 terms instead of 6. The tables and figure have been recomputed, which moves the cache-fit thresholds down by one order as well. The stencil-size heuristic was also misattributed to Grady Wright; it originates with Flyer, Barnett, and Wicker.*
 
-*Update (2026-08-30): added the [RBF-FD Stencil Sizer](/tools/rbf_fd_stencil_sizer.html) linked at the top.*
+*Update (2026-08-30): added the [RBF-FD Stencil Sizer](/tools/rbf_fd_stencil_sizer.html) linked at the top, inspired by the [layer condition calculator](https://rrze-hpc.github.io/layer-condition/) from RRZE ([sources](https://github.com/RRZE-HPC/layer-condition)).*
