@@ -128,6 +128,5 @@ videos, [*The Discovery That Transformed Pi*](https://www.youtube.com/watch?v=gM
 ---
 
 *Update (2026-09-01): I submitted a bug report to NAG, and the program is now
-accepted by NAG Fortran Version 7.2 Build 7248. I have not checked this myself
-— my license has expired — so the compiler roundup above still reflects the
-state of affairs at the time of writing.*
+accepted by NAG Fortran Version 7.2 Build 7248, which I have not verified
+myself.*
