@@ -98,7 +98,7 @@ surrounding scope. On paper the feature is from 2018; in practice the state of
 affairs is rather sad. Of the compilers I tried, gfortran 16.1, lfortran 0.59,
 nvfortran 26.5, and NAG 7.2 all reject the program, and ifx 2025.3 compiles it
 but prints a wrong table — leaving flang as the only compiler I know of that
-gets it right.
+gets it right. (NAG have since fixed their compiler — see the update below.)
 
 ### A note on the format
 
@@ -124,3 +124,9 @@ explorations of what is possible today:
 And if you enjoy the triangle itself, it stars in one of my favourite Veritasium
 videos, [*The Discovery That Transformed Pi*](https://www.youtube.com/watch?v=gMlf1ELvRzc)
 — highly recommended.
+
+---
+
+*Update (2026-09-01): I submitted a bug report to NAG, and the program is now
+accepted by NAG Fortran Version 7.2 Build 7248, which I have not verified
+myself.*
