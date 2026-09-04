@@ -1,0 +1,45 @@
+{{- /* One interactive artefact. The page body is an .html content file, so
+       Hugo inserts it verbatim (no Markdown processing). The byline carries
+       the date and, when `params.assisted_by` is set, the AI-assistance
+       disclosure — kept at the top, not in a footer. */ -}}
+{{ define "main" }}
+  <p class="gallery-byline">
+    <time datetime="{{ .Date.Format "2006-01-02" }}" pubdate>
+      {{ .Date.Format (default "2006-01-02" .Site.Params.dateFormat) }}
+    </time>
+    {{- with .Params.assisted_by }}
+      &middot; Created with the assistance of {{ . }}
+    {{- end }}
+  </p>
+  <content>
+    {{ .Content }}
+  </content>
+  {{ $tags := .GetTerms "tags" }}
+  {{ if gt (len $tags) 0 }}
+    <p>
+      {{ range $tags }}
+        <a href="{{ .RelPermalink }}">#{{ .LinkTitle }}</a>&nbsp;&nbsp;
+      {{ end }}
+    </p>
+  {{ end }}
+  {{ $pages := .CurrentSection.Pages.ByDate }}
+  {{ if or ($pages.Prev .) ($pages.Next .) }}
+    <div class="flex-between" style="margin-top: 3rem;">
+      {{ with $pages.Prev . }}
+        <a href="{{ .RelPermalink }}" rel="prev" aria-label="Previous: {{ .Title }}">
+          <span>←</span>
+          <span>{{ .Title }}</span>
+        </a>
+      {{ end }}
+      {{ with $pages.Next . }}
+        <a href="{{ .RelPermalink }}" rel="next" aria-label="Next: {{ .Title }}">
+          <span>{{ .Title }}</span>
+          <span>→</span>
+        </a>
+      {{ end }}
+    </div>
+  {{ end }}
+  <p style="margin-top: 2rem;">
+    <a href="{{ .CurrentSection.RelPermalink }}">← Back to the gallery</a>
+  </p>
+{{ end }}

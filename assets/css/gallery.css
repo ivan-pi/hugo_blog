@@ -1,0 +1,119 @@
+/* Styles shared by the interactive pages under content/gallery/.
+   Linked from layouts/_partials/custom_head.html for that section only.
+   Everything here is layered on top of the hugo-simple theme and uses its
+   colour variables, so the pages follow the light/dark theme automatically. */
+
+/* Byline under the title: date and the AI-assistance disclosure. */
+.gallery-byline {
+  color: var(--text-light);
+  font-style: italic;
+  margin-top: 0;
+}
+
+/* The canvas: as wide as the text column on phones, breaking out of it on
+   large screens up to 60rem (the sketches were drawn for 960 px). */
+.gallery-chart {
+  --gallery-w: min(60rem, calc(100vw - 2rem));
+  width: var(--gallery-w);
+  margin: 1rem calc(50% - var(--gallery-w) / 2);
+}
+.gallery-chart canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #fff;                 /* the sketches draw dark ink on white */
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--standard-border-radius);
+  cursor: crosshair;
+  touch-action: manipulation;       /* no double-tap zoom on a tap-to-restart */
+}
+
+/* Live read-outs (iteration counters, node counts, …). */
+.gallery-readout {
+  font-family: var(--mono-font);
+  font-size: 0.95rem;
+}
+.gallery-readout > span {
+  display: inline-block;          /* wrap between read-outs, not inside one */
+  margin-right: 1.2rem;
+}
+
+/* Parameter sliders: one row per parameter — label | input | value | note. */
+.gallery-controls {
+  display: grid;
+  grid-template-columns: max-content minmax(6rem, 1fr) max-content max-content;
+  gap: 0.5rem 0.8rem;
+  align-items: center;
+  margin: 1rem 0 1.5rem 0;
+  font-family: var(--mono-font);
+  font-size: 0.95rem;
+}
+.gallery-controls label {
+  grid-column: 1;
+  font-weight: normal;
+  margin: 0;
+}
+.gallery-controls input[type="range"] {
+  appearance: auto;
+  -webkit-appearance: auto;
+  width: 100%;
+  margin: 0;
+}
+.gallery-controls select {
+  grid-column: 2 / span 2;
+  margin: 0;
+  padding: 0.2em 1.8em 0.2em 0.5em;
+  font-family: var(--mono-font);
+  font-size: inherit;
+}
+.gallery-controls .note {
+  grid-column: 4;
+  color: var(--text-light);
+}
+@media only screen and (max-width: 720px) {
+  .gallery-controls {
+    grid-template-columns: max-content 1fr max-content;
+  }
+  .gallery-controls .note {
+    grid-column: 1 / -1;
+    margin-top: -0.4rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Static explanatory figures (inline SVG), side by side when there is room. */
+.gallery-figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+.gallery-figures figure {
+  flex: 1 1 22rem;
+  min-width: 0;
+}
+.gallery-figures svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  background: #fff;
+  border-radius: var(--standard-border-radius);
+}
+.gallery-figures figcaption {
+  position: static;
+  text-align: left;
+  margin-block: 0.5rem 0;
+}
+
+/* Reference list. */
+.gallery-references p {
+  margin: 0.4em 0;
+}
+
+/* The gallery index: date | title + one-line description. */
+ul.gallery-list > li {
+  margin-bottom: 0.6rem;
+}
+ul.gallery-list > li div small {
+  color: var(--text-light);
+}

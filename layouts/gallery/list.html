@@ -1,0 +1,26 @@
+{{- /* Index of the interactive gallery: intro text from _index.md, then
+       every artefact, newest first, with its date and description. */ -}}
+{{ define "main" }}
+  <content>
+    {{ .Content }}
+  </content>
+  <ul class="blog-posts gallery-list">
+    {{ range .Pages.ByDate.Reverse }}
+      <li>
+        <span>
+          <i>
+            <time datetime="{{ .Date.Format "2006-01-02" }}" pubdate>
+              {{ .Date.Format (default "2006-01-02" .Site.Params.dateFormat) }}
+            </time>
+          </i>
+        </span>
+        <div>
+          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+          {{ with .Description }}<br /><small>{{ . }}</small>{{ end }}
+        </div>
+      </li>
+    {{ else }}
+      <li>Nothing here yet.</li>
+    {{ end }}
+  </ul>
+{{ end }}

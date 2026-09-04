@@ -165,6 +165,49 @@ The menu itself and the footer links are defined under `[menu]` in
 
 ---
 
+## The gallery (`content/gallery/`)
+
+The **gallery** menu entry lists interactive sketches and simulation
+experiments — plain-JavaScript canvases, no libraries — rendered inside the
+theme. Each artefact is one **`.html` file** (not `.md`) under
+`content/gallery/`: Hugo parses the front matter and inserts the rest of the
+file verbatim, so the body is ordinary HTML + `<script>`, untouched by Markdown.
+
+```
+---
+title: "Circle-Fitting Relaxation"
+date: 2026-09-04
+description: "One sentence, shown under the title and on the index."
+tags: ["meshless", "visualisation"]
+params:
+  assisted_by: "Claude Fable 5"   # optional AI-assistance disclosure
+---
+<div class="gallery-chart" id="chart"></div>   <!-- the canvas goes here -->
+<div class="gallery-controls"> … </div>         <!-- label | slider | value | note -->
+<p>explanatory prose …</p>
+<script> … </script>
+```
+
+- The byline under the title (date · "Created with the assistance of …") comes
+  from `layouts/gallery/single.html`; it reads `params.assisted_by`, so the
+  disclosure is data, not something to retype in each page.
+- `assets/css/gallery.css` (linked only for this section by
+  `layouts/_partials/custom_head.html`) handles the responsive parts: the
+  canvas fills the text column on phones and breaks out to 60rem on wide
+  screens, `.gallery-controls` is a grid that wraps its notes on narrow
+  screens, `.gallery-figures` lays inline-SVG figures side by side.
+- In the scripts, size the canvas from `chart.clientWidth` (see the `resize()`
+  function in either existing page) rather than hard-coding 960 px, and map
+  mouse coordinates through `getBoundingClientRect()` because CSS scales the
+  canvas.
+- The index (`layouts/gallery/list.html`) is generated from the pages: date,
+  title and `description`, newest first. Intro text lives in
+  `content/gallery/_index.md`.
+- Standalone calculator apps (currently the RBF-FD Stencil Sizer) are a
+  different beast and stay in `static/tools/` as self-contained HTML files.
+
+---
+
 ## How the site is customised (the `layouts/` folder)
 
 The project's `layouts/` directory sits **on top of** the theme — any file here
