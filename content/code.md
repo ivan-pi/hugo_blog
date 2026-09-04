@@ -29,9 +29,9 @@ Fast Library for Approximate Nearest Neighbors (original library [here](http://p
 
 ## Interactive tools
 
-Small browser-based calculators that accompany blog posts. They are plain HTML pages that run entirely in the browser — nothing is sent anywhere.
+Small browser-based calculators.
 
-* [RBF-FD Stencil Sizer](/tools/rbf_fd_stencil_sizer.html): does your RBF-FD stencil fit in L1, L2, or GPU shared memory? Computes the local system sizes for any polynomial degree, dimension and precision, and checks the LU/LDLT/QR working sets against CPU caches and Nvidia shared memory. Companion to the post [Sizing RBF-FD Stencils for Modern CPU Caches](/posts/2026/07/sizing-rbf-fd-stencils-for-modern-cpu-caches/).
+* [RBF-FD Stencil Sizer](/tools/rbf_fd_stencil_sizer.html): checks whether an RBF-FD stencil fits in CPU cache or GPU shared memory; companion to [this post](/posts/2026/07/sizing-rbf-fd-stencils-for-modern-cpu-caches/).
 
 
 ## Fortran tooling
