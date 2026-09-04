@@ -1,0 +1,24 @@
+{{- /* Override of the theme's header partial. Identical except for the
+       gallery: on a gallery page the line under the title is the byline
+       (date · AI-assistance disclosure from params.assisted_by) instead of
+       the description, which stays front-matter-only (meta description). */ -}}
+<nav>{{- partial "nav.html" . -}}</nav>
+{{- if not (eq .Kind "404") }}
+  {{- with .Title }}
+    <h1>{{ . }}</h1>
+  {{- end }}
+{{- end }}
+{{- if and (eq .Section "gallery") .IsPage }}
+  <p class="gallery-byline">
+    <time datetime="{{ .Date.Format "2006-01-02" }}" pubdate>
+      {{- .Date.Format (default "2006-01-02" .Site.Params.dateFormat) -}}
+    </time>
+    {{- with .Params.assisted_by }}
+      &middot; Created with the assistance of {{ . }}
+    {{- end }}
+  </p>
+{{- else }}
+  {{ with .Description }}
+    <p>{{ . }}</p>
+  {{ end }}
+{{- end }}

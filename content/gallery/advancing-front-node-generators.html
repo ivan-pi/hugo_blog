@@ -1,0 +1,543 @@
+---
+title: "Advancing-Front Node Generators"
+linkTitle: "Node generators"      # short title for the gallery grid
+date: 2026-09-04
+description: "Two bulk node generators for meshless methods — Fornberg–Flyer (2015) and the 2-D height-field variant of van der Sande–Fornberg (2021) — ported line for line from Fortran/C and animated."
+tags: ["meshless", "node-generation", "rbf-fd", "visualisation"]
+params:
+  assisted_by: "Claude Fable 5"
+  thumbnail: "/images/gallery/advancing-front-node-generators.png"
+---
+<!-- Faithful JavaScript ports of the two bulk node generators in the
+     nodeplace library (Fortran/C):
+       node_placing            -- Fornberg & Flyer (2015)
+       node_placing_heightfield -- van der Sande & Fornberg (2021),
+                                   2-D specialisation
+     The ports preserve the seeding (cell-centred with jitter), the
+     outward walk for the nearest outside-PDPs, the five cell-centred
+     arc fractions, the splice semantics, the first-argmin tie rule,
+     and the height-field direction-dependence correction (their
+     section 2.3; inactive for constant radius).
+     This is a Hugo content file: the front matter above is parsed, the
+     rest is inserted verbatim by layouts/gallery/single.html. -->
+
+<div class="gallery-chart" id="chart"></div>
+
+<p class="gallery-readout">
+<span>nodes: <span id="count">0</span></span>
+<span>front size: <span id="fsize">0</span></span>
+</p>
+
+<div class="gallery-controls">
+  <label for="method">method</label>
+  <select id="method">
+    <option value="ff">Fornberg&ndash;Flyer 2015 (advancing front)</option>
+    <option value="hf">van der Sande&ndash;Fornberg 2021 (height field, 2-D)</option>
+  </select>
+
+  <label for="ninit">ninit</label>
+  <input type="range" id="ninit" min="20" max="120" step="5" value="60">
+  <span id="ninitval">60</span>
+  <span class="note">both algorithms</span>
+
+  <label for="rfun">radius</label>
+  <select id="rfun">
+    <option value="const">constant</option>
+    <option value="grade">graded in y</option>
+    <option value="wave">wave in x</option>
+  </select>
+
+  <label for="grad">strength</label>
+  <input type="range" id="grad" min="0" max="2" step="0.1" value="1">
+  <span id="gradval">1.0</span>
+  <span class="note">both algorithms</span>
+
+  <label for="nang">arc points</label>
+  <input type="range" id="nang" min="2" max="12" step="1" value="5">
+  <span id="nangval">5</span>
+  <span class="note">Fornberg&ndash;Flyer</span>
+
+  <label for="gfac">grid factor</label>
+  <input type="range" id="gfac" min="3" max="20" step="1" value="10">
+  <span id="gfacval">10</span>
+  <span class="note">van der Sande&ndash;Fornberg</span>
+
+  <label for="speed">dots/frame</label>
+  <input type="range" id="speed" min="1" max="50" step="1" value="8">
+  <span id="speedval">8</span>
+  <span class="note">animation</span>
+</div>
+
+<p>Two bulk generators, ported line for line from the reference
+Fortran/C.  Both sweep the box bottom to top, placing each node at
+the lowest admissible point and pushing an exclusion disc of radius
+r(x,&thinsp;y) into the front; the red line is the front.  Click (or
+tap) the canvas to restart.</p>
+
+<p>Fornberg&ndash;Flyer keep the front as an x-sorted list of
+potential dot positions (PDPs).  The next node is the lowest PDP; it is
+accepted, and the PDPs inside its exclusion disc are replaced by a
+configurable number of cell-centred points on the exclusion arc
+(five by default), spliced between the
+nearest outside PDPs found by walking outward from the dot.</p>
+
+<p>Van der Sande&ndash;Fornberg keep a height field on a background
+grid of grid-factor&thinsp;&times;&thinsp;ninit columns.  The next
+node goes to the lowest column; each accepted dot raises the
+heights under its exclusion disc to the disc&rsquo;s far
+hemisphere.  When the radius varies, the node is first pushed off
+the discs of earlier nearby nodes &mdash; the direction-dependence
+correction of their section&nbsp;2.3 (inactive for constant
+radius).</p>
+
+<div class="gallery-figures">
+<figure>
+<svg width="460" height="250" viewBox="0 0 460 250">
+  <g fill="#345">
+    <circle cx="230.0" cy="8.7" r="2.5"/>
+    <circle cx="361.4" cy="19.9" r="2.5"/>
+    <circle cx="164.3" cy="35.3" r="2.5"/>
+    <circle cx="32.9" cy="36.4" r="2.5"/>
+    <circle cx="428.9" cy="38.5" r="2.5"/>
+    <circle cx="274.2" cy="63.0" r="2.5"/>
+    <circle cx="115.3" cy="85.3" r="2.5"/>
+    <circle cx="340.3" cy="86.6" r="2.5"/>
+  </g>
+  <polyline points="14.3,103.9 52.3,115.9 77.1,144.0 112.9,155.3 149.3,146.5 175.9,120.2 183.2,102.7 218.5,105.4 244.2,126.2 276.6,132.9 294.3,139.4 321.9,154.2 353.2,155.4 381.9,142.9 402.3,119.1 422.5,108.2 455.1,103.4"
+      fill="none" stroke="#bbb" stroke-width="1.2"
+      stroke-dasharray="5 4"/>
+  <circle cx="183.2" cy="102.7" r="70" fill="none" stroke="#999"
+      stroke-dasharray="4 3"/>
+  <polyline points="14.3,103.9 52.3,115.9 77.1,144.0 112.9,155.3 137.5,155.8 164.3,170.1 194.6,171.8 222.8,160.4 243.5,138.2 276.6,132.9 294.3,139.4 321.9,154.2 353.2,155.4 381.9,142.9 402.3,119.1 422.5,108.2 455.1,103.4"
+      fill="none" stroke="#d62728" stroke-width="1.6"/>
+  <g stroke="#9c9" stroke-width="1">
+    <line x1="130.3" y1="142.2" x2="123.9" y2="147.0"/>
+    <line x1="152.0" y1="160.9" x2="148.2" y2="167.9"/>
+    <line x1="179.6" y1="168.6" x2="179.2" y2="176.6"/>
+    <line x1="207.9" y1="163.9" x2="210.8" y2="171.4"/>
+    <line x1="231.5" y1="147.7" x2="237.3" y2="153.2"/>
+    <line x1="246.0" y1="123.0" x2="253.6" y2="125.5"/>
+  </g>
+  <g stroke="#1f77b4" stroke-width="0.8" stroke-dasharray="2 3">
+    <line x1="183.2" y1="102.7" x2="112.9" y2="155.3"/>
+    <line x1="183.2" y1="102.7" x2="276.6" y2="132.9"/>
+  </g>
+  <g stroke="#999" stroke-width="1.6">
+    <line x1="144.3" y1="141.5" x2="154.3" y2="151.5"/>
+    <line x1="154.3" y1="141.5" x2="144.3" y2="151.5"/>
+    <line x1="170.9" y1="115.2" x2="180.9" y2="125.2"/>
+    <line x1="180.9" y1="115.2" x2="170.9" y2="125.2"/>
+    <line x1="213.5" y1="100.4" x2="223.5" y2="110.4"/>
+    <line x1="223.5" y1="100.4" x2="213.5" y2="110.4"/>
+    <line x1="239.2" y1="121.2" x2="249.2" y2="131.2"/>
+    <line x1="249.2" y1="121.2" x2="239.2" y2="131.2"/>
+  </g>
+  <circle cx="112.9" cy="155.3" r="4" fill="#1f77b4"/>
+  <circle cx="276.6" cy="132.9" r="4" fill="#1f77b4"/>
+  <circle cx="183.2" cy="102.7" r="5.5" fill="none" stroke="#d62728"
+      stroke-width="1.5"/>
+  <circle cx="183.2" cy="102.7" r="3.2" fill="#345"/>
+  <g fill="#2ca02c">
+    <circle cx="137.5" cy="155.8" r="3.5"/>
+    <circle cx="164.3" cy="170.1" r="3.5"/>
+    <circle cx="194.6" cy="171.8" r="3.5"/>
+    <circle cx="222.8" cy="160.4" r="3.5"/>
+    <circle cx="243.5" cy="138.2" r="3.5"/>
+  </g>
+  <g font-size="13" font-family="sans-serif">
+    <text x="157.2" y="94.7" fill="#345">&#9312;</text>
+    <text x="127.3" y="134.5" fill="#777">&#9313;</text>
+    <text x="175.2" y="194.7" fill="#2ca02c">&#9314;</text>
+  </g>
+  <g font-size="10.5" font-family="sans-serif">
+    <text x="8" y="16" fill="#666">placed nodes</text>
+    <text x="6.0" y="173.3" fill="#1f77b4">nearest outside PDP</text>
+    <text x="195.2" y="94.7" fill="#d62728">current lowest point</text>
+    <text x="238.2" y="157.7" fill="#d62728">new front</text>
+  </g>
+</svg>
+<figcaption>
+Fornberg&ndash;Flyer, a snapshot from an actual run of the port.
+Dark dots are placed nodes; the front advances downward.  &#9312; the lowest PDP of the old front (grey
+dashed) is accepted as a node.  &#9313; the PDPs inside its
+exclusion disc are removed.  &#9314; the angle between the
+directions to the nearest outside PDPs (dotted rays) is divided
+into five equal cells (ticks), and one point is placed at each
+cell&rsquo;s centre &mdash; so the end gaps to the rays are half
+the dot-to-dot gap, keeping new PDPs clear of the surviving
+outside ones.  The spliced result is the new front (red).
+</figcaption>
+</figure>
+<figure>
+<svg width="460" height="250" viewBox="0 0 460 250">
+  <g stroke="#f4f4f4" stroke-width="1">
+    <line x1="0.0" y1="20" x2="0.0" y2="235"/>
+    <line x1="10.0" y1="20" x2="10.0" y2="235"/>
+    <line x1="20.0" y1="20" x2="20.0" y2="235"/>
+    <line x1="30.0" y1="20" x2="30.0" y2="235"/>
+    <line x1="40.0" y1="20" x2="40.0" y2="235"/>
+    <line x1="50.0" y1="20" x2="50.0" y2="235"/>
+    <line x1="60.0" y1="20" x2="60.0" y2="235"/>
+    <line x1="70.0" y1="20" x2="70.0" y2="235"/>
+    <line x1="80.0" y1="20" x2="80.0" y2="235"/>
+    <line x1="90.0" y1="20" x2="90.0" y2="235"/>
+    <line x1="100.0" y1="20" x2="100.0" y2="235"/>
+    <line x1="110.0" y1="20" x2="110.0" y2="235"/>
+    <line x1="120.0" y1="20" x2="120.0" y2="235"/>
+    <line x1="130.0" y1="20" x2="130.0" y2="235"/>
+    <line x1="140.0" y1="20" x2="140.0" y2="235"/>
+    <line x1="150.0" y1="20" x2="150.0" y2="235"/>
+    <line x1="160.0" y1="20" x2="160.0" y2="235"/>
+    <line x1="170.0" y1="20" x2="170.0" y2="235"/>
+    <line x1="180.0" y1="20" x2="180.0" y2="235"/>
+    <line x1="190.0" y1="20" x2="190.0" y2="235"/>
+    <line x1="200.0" y1="20" x2="200.0" y2="235"/>
+    <line x1="210.0" y1="20" x2="210.0" y2="235"/>
+    <line x1="220.0" y1="20" x2="220.0" y2="235"/>
+    <line x1="230.0" y1="20" x2="230.0" y2="235"/>
+    <line x1="240.0" y1="20" x2="240.0" y2="235"/>
+    <line x1="250.0" y1="20" x2="250.0" y2="235"/>
+    <line x1="260.0" y1="20" x2="260.0" y2="235"/>
+    <line x1="270.0" y1="20" x2="270.0" y2="235"/>
+    <line x1="280.0" y1="20" x2="280.0" y2="235"/>
+    <line x1="290.0" y1="20" x2="290.0" y2="235"/>
+    <line x1="300.0" y1="20" x2="300.0" y2="235"/>
+    <line x1="310.0" y1="20" x2="310.0" y2="235"/>
+    <line x1="320.0" y1="20" x2="320.0" y2="235"/>
+    <line x1="330.0" y1="20" x2="330.0" y2="235"/>
+    <line x1="340.0" y1="20" x2="340.0" y2="235"/>
+    <line x1="350.0" y1="20" x2="350.0" y2="235"/>
+    <line x1="360.0" y1="20" x2="360.0" y2="235"/>
+    <line x1="370.0" y1="20" x2="370.0" y2="235"/>
+    <line x1="380.0" y1="20" x2="380.0" y2="235"/>
+    <line x1="390.0" y1="20" x2="390.0" y2="235"/>
+    <line x1="400.0" y1="20" x2="400.0" y2="235"/>
+    <line x1="410.0" y1="20" x2="410.0" y2="235"/>
+    <line x1="420.0" y1="20" x2="420.0" y2="235"/>
+    <line x1="430.0" y1="20" x2="430.0" y2="235"/>
+    <line x1="440.0" y1="20" x2="440.0" y2="235"/>
+    <line x1="450.0" y1="20" x2="450.0" y2="235"/>
+    <line x1="460.0" y1="20" x2="460.0" y2="235"/>
+  </g>
+  <g fill="#345">
+    <circle cx="225.0" cy="16.2" r="2.5"/>
+    <circle cx="345.0" cy="16.9" r="2.5"/>
+    <circle cx="425.0" cy="20.1" r="2.5"/>
+    <circle cx="155.0" cy="20.2" r="2.5"/>
+    <circle cx="25.0" cy="20.8" r="2.5"/>
+    <circle cx="285.0" cy="52.9" r="2.5"/>
+    <circle cx="95.0" cy="56.3" r="2.5"/>
+    <circle cx="385.0" cy="77.6" r="2.5"/>
+    <circle cx="195.0" cy="79.4" r="2.5"/>
+    <circle cx="455.0" cy="83.4" r="2.5"/>
+    <circle cx="5.0" cy="87.9" r="2.5"/>
+    <circle cx="325.0" cy="113.6" r="2.5"/>
+    <circle cx="135.0" cy="115.5" r="2.5"/>
+  </g>
+  <polyline points="0.0,157.9 10.0,157.9 10.0,157.2 20.0,157.2 20.0,155.0 30.0,155.0 30.0,151.1 40.0,151.1 40.0,145.3 50.0,145.3 50.0,136.9 60.0,136.9 60.0,123.9 70.0,123.9 70.0,151.5 80.0,151.5 80.0,164.4 90.0,164.4 90.0,172.9 100.0,172.9 100.0,178.7 110.0,178.7 110.0,182.5 120.0,182.5 120.0,184.7 130.0,184.7 130.0,185.5 140.0,185.5 140.0,184.7 150.0,184.7 150.0,182.5 160.0,182.5 160.0,178.7 170.0,178.7 170.0,172.9 180.0,172.9 180.0,164.4 190.0,164.4 190.0,151.5 200.0,151.5 200.0,148.7 210.0,148.7 210.0,146.5 220.0,146.5 220.0,142.6 230.0,142.6 230.0,136.8 240.0,136.8 240.0,128.4 250.0,128.4 250.0,116.2 260.0,116.2 260.0,149.7 270.0,149.7 270.0,162.6 280.0,162.6 280.0,171.1 290.0,171.1 290.0,176.9 300.0,176.9 300.0,180.7 310.0,180.7 310.0,182.9 320.0,182.9 320.0,183.6 330.0,183.6 330.0,182.9 340.0,182.9 340.0,180.7 350.0,180.7 350.0,176.9 360.0,176.9 360.0,171.1 370.0,171.1 370.0,162.6 380.0,162.6 380.0,149.7 390.0,149.7 390.0,146.8 400.0,146.8 400.0,144.6 410.0,144.6 410.0,140.8 420.0,140.8 420.0,146.6 430.0,146.6 430.0,150.4 440.0,150.4 440.0,152.6 450.0,152.6 450.0,153.4 460.0,153.4"
+      fill="none" stroke="#bbb" stroke-width="1.2"
+      stroke-dasharray="5 4"/>
+  <circle cx="255.0" cy="116.2" r="70" fill="none" stroke="#999"
+      stroke-dasharray="4 3"/>
+  <polyline points="0.0,157.9 10.0,157.9 10.0,157.2 20.0,157.2 20.0,155.0 30.0,155.0 30.0,151.1 40.0,151.1 40.0,145.3 50.0,145.3 50.0,136.9 60.0,136.9 60.0,123.9 70.0,123.9 70.0,151.5 80.0,151.5 80.0,164.4 90.0,164.4 90.0,172.9 100.0,172.9 100.0,178.7 110.0,178.7 110.0,182.5 120.0,182.5 120.0,184.7 130.0,184.7 130.0,185.5 140.0,185.5 140.0,184.7 150.0,184.7 150.0,182.5 160.0,182.5 160.0,178.7 170.0,178.7 170.0,172.9 180.0,172.9 180.0,164.4 190.0,164.4 190.0,152.2 200.0,152.2 200.0,165.2 210.0,165.2 210.0,173.6 220.0,173.6 220.0,179.4 230.0,179.4 230.0,183.3 240.0,183.3 240.0,185.5 250.0,185.5 250.0,186.2 260.0,186.2 260.0,185.5 270.0,185.5 270.0,183.3 280.0,183.3 280.0,179.4 290.0,179.4 290.0,176.9 300.0,176.9 300.0,180.7 310.0,180.7 310.0,182.9 320.0,182.9 320.0,183.6 330.0,183.6 330.0,182.9 340.0,182.9 340.0,180.7 350.0,180.7 350.0,176.9 360.0,176.9 360.0,171.1 370.0,171.1 370.0,162.6 380.0,162.6 380.0,149.7 390.0,149.7 390.0,146.8 400.0,146.8 400.0,144.6 410.0,144.6 410.0,140.8 420.0,140.8 420.0,146.6 430.0,146.6 430.0,150.4 440.0,150.4 440.0,152.6 450.0,152.6 450.0,153.4 460.0,153.4"
+      fill="none" stroke="#d62728" stroke-width="1.6"/>
+  <circle cx="255.0" cy="116.2" r="5.5" fill="none" stroke="#d62728"
+      stroke-width="1.5"/>
+  <circle cx="255.0" cy="116.2" r="3.2" fill="#345"/>
+  <g font-size="13" font-family="sans-serif">
+    <text x="229.0" y="108.2" fill="#345">&#9312;</text>
+    <text x="247.0" y="208.2" fill="#d62728">&#9313;</text>
+  </g>
+  <g font-size="10.5" font-family="sans-serif">
+    <text x="158" y="143" fill="#666">old heights</text>
+    <text x="296.0" y="224.2" fill="#d62728">new heights follow</text>
+    <text x="296.0" y="237.2" fill="#d62728">the disc boundary</text>
+    <text x="8" y="229" fill="#999">background columns</text>
+  </g>
+  <text x="267.0" y="108.2" fill="#d62728" font-size="10.5" font-family="sans-serif">lowest column</text>
+</svg>
+<figcaption>
+Van der Sande&ndash;Fornberg.  The height field (one value per
+background column) is the front.  &#9312; the node is placed at the
+lowest column of the old heights (grey dashed).  &#9313; the
+heights under its exclusion disc are raised to the disc&rsquo;s far
+hemisphere, so the new heights (red) sample the disc boundary on
+the columns; elsewhere the old heights already lie outside the disc
+and are unchanged.  The data is a snapshot from an actual run of
+the height-field port.  Later nodes sit on the height curve, hence at least
+r away &mdash; for constant radius no node ever lands inside
+another&rsquo;s disc.
+</figcaption>
+</figure>
+</div>
+
+<div class="gallery-references">
+<p>References:</p>
+<p>
+Fornberg, B., &amp; Flyer, N. (2015).  Fast generation of 2-D node
+distributions for mesh-free PDE discretizations.
+<i>Computers &amp; Mathematics with Applications</i>, 69(7),
+531&ndash;544.
+<a href="https://doi.org/10.1016/j.camwa.2015.01.009">doi:10.1016/j.camwa.2015.01.009</a>
+</p>
+<p>
+van der Sande, K., &amp; Fornberg, B. (2021).  Fast variable density
+3-D node generation.  <i>SIAM Journal on Scientific Computing</i>,
+43(1), A242&ndash;A257.
+<a href="https://doi.org/10.1137/20M1337016">doi:10.1137/20M1337016</a>
+</p>
+</div>
+
+<p>Inspired by the visualisations of
+<a href="https://www.jasondavies.com/">Jason Davies</a>.</p>
+
+<script>
+(function() {
+"use strict";
+
+var chart = document.getElementById("chart"),
+    canvas = document.createElement("canvas"),
+    ctx;
+chart.appendChild(canvas);
+
+// The canvas fills its container (the full text column on a phone, up to
+// 960 CSS px on a large screen) and is drawn at the device pixel ratio.
+// Both generators scale with the box, so a narrower canvas gives the same
+// picture with fewer pixels, not a cropped one.
+var ratio, width, height,
+    bbox;                           // xmin, xmax, ymin, ymax
+
+function resize() {
+  ratio = window.devicePixelRatio || 1;
+  var cssWidth = Math.max(240, chart.clientWidth || 960);
+  width = Math.round(cssWidth * ratio);
+  height = Math.round(width * 500 / 960);
+  canvas.width = width; canvas.height = height;
+  ctx = canvas.getContext("2d");
+  bbox = [0, width, 0, height];
+}
+
+var mSel = document.getElementById("method"),
+    ninitSl = document.getElementById("ninit"),
+    nangSl = document.getElementById("nang"),
+    rfunSel = document.getElementById("rfun"),
+    gradSl = document.getElementById("grad"),
+    gfacSl = document.getElementById("gfac"),
+    speedSl = document.getElementById("speed");
+
+var gen = null;                     // active generator state
+
+function radiusFactory() {
+  var ninit = +ninitSl.value,
+      r0 = (bbox[1] - bbox[0]) / ninit,
+      g = +gradSl.value,
+      kind = rfunSel.value;
+  if (kind === "const")
+    return function(x, y) { return r0; };
+  if (kind === "grade")
+    return function(x, y) {
+      return r0 * (1 + g * (y - bbox[2]) / (bbox[3] - bbox[2]));
+    };
+  return function(x, y) {
+    return r0 * (1 + 0.5 * g *
+        Math.sin(6 * Math.PI * (x - bbox[0]) / (bbox[1] - bbox[0])));
+  };
+}
+
+// ---------- Fornberg-Flyer 2015: node_placing ----------
+function makeFF() {
+  var ninit = +ninitSl.value,
+      radius = radiusFactory(),
+      nang = +nangSl.value,
+      dx = (bbox[1] - bbox[0]) / ninit,
+      fx = [], fy = [], dots = [];
+  for (var i = 0; i < ninit; ++i) {
+    fx.push(bbox[0] + dx * (i + 0.5));
+    fy.push(bbox[2] + 0.5 * dx * Math.random());
+  }
+  function argminY() {              // first index of the minimum
+    var im = 0;
+    for (var i = 1; i < fy.length; ++i)
+      if (fy[i] < fy[im]) im = i;
+    return im;
+  }
+  return {
+    dots: dots,
+    frontSize: function() { return fx.length; },
+    step: function() {              // place one dot; false when done
+      if (fx.length === 0) return false;
+      var im = argminY();
+      var y0 = fy[im];
+      if (y0 > bbox[3]) return false;
+      var x0 = fx[im];
+      dots.push([x0, y0]);
+      var r = radius(x0, y0), r2 = r * r;
+
+      var il = im - 1;              // walk outward: nearest outside
+      while (il >= 0 &&
+             (fx[il]-x0)*(fx[il]-x0) + (fy[il]-y0)*(fy[il]-y0) <= r2)
+        --il;
+      var angL = il < 0 ? Math.PI
+                        : Math.atan2(fy[il]-y0, fx[il]-x0);
+      var ir = im + 1;
+      while (ir < fx.length &&
+             (fx[ir]-x0)*(fx[ir]-x0) + (fy[ir]-y0)*(fy[ir]-y0) <= r2)
+        ++ir;
+      var angR = ir >= fx.length ? 0
+                                 : Math.atan2(fy[ir]-y0, fx[ir]-x0);
+
+      var nx = [], ny = [];
+      for (var k = 1; k <= nang; ++k) {
+        var frac = (k - 0.5) / nang,
+            a = angL - frac * (angL - angR),
+            px = x0 + r * Math.cos(a);
+        if (px < bbox[0] || px > bbox[1]) continue;
+        nx.push(px); ny.push(y0 + r * Math.sin(a));
+      }
+      // splice: [0..il] ++ arc ++ [ir..end]
+      var args = [il + 1, ir - il - 1];
+      fx.splice.apply(fx, args.concat(nx));
+      fy.splice.apply(fy, args.concat(ny));
+      return true;
+    },
+    drawFront: function() {
+      if (fx.length === 0) return;
+      ctx.strokeStyle = "#d62728";
+      ctx.lineWidth = 1.0 * ratio;
+      ctx.beginPath();
+      ctx.moveTo(fx[0], fy[0]);
+      for (var i = 1; i < fx.length; ++i) ctx.lineTo(fx[i], fy[i]);
+      ctx.stroke();
+      ctx.fillStyle = "#d62728";
+      for (i = 0; i < fx.length; ++i) {
+        ctx.beginPath();
+        ctx.arc(fx[i], fy[i], 1.4 * ratio, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+    }
+  };
+}
+
+// -- van der Sande-Fornberg 2021 (2-D): node_placing_heightfield --
+function makeHF() {
+  var ninit = +ninitSl.value,
+      gf = +gfacSl.value,
+      radius = radiusFactory(),
+      ncol = gf * ninit,
+      dx = (bbox[1] - bbox[0]) / ncol,
+      gx = [], gy = [], lasty = [], lset = [], dots = [];
+  for (var i = 0; i < ncol; ++i) {
+    gx.push(bbox[0] + dx * (i + 0.5));
+    gy.push(bbox[2] + radius(gx[i], bbox[2]) * Math.random());
+    lasty.push(0); lset.push(false);
+  }
+  function argminY() {
+    var im = 0;
+    for (var i = 1; i < ncol; ++i)
+      if (gy[i] < gy[im]) im = i;
+    return im;
+  }
+  return {
+    dots: dots,
+    frontSize: function() { return ncol; },
+    step: function() {
+      var im = argminY();
+      var ym = gy[im];
+      if (ym > bbox[3]) return false;
+      var x0 = gx[im], y0 = ym;
+
+      // direction-dependence correction (section 2.3, first order)
+      var r = radius(x0, y0), r2 = r * r,
+          kw = Math.floor(r / dx),
+          k0 = Math.max(0, im - kw),
+          k1 = Math.min(ncol - 1, im + kw), k, rx;
+      for (k = k0; k <= k1; ++k) {
+        if (!lset[k]) continue;
+        rx = (im - k) * dx;
+        if (rx * rx + (y0 - lasty[k]) * (y0 - lasty[k]) < r2)
+          y0 = Math.max(y0, lasty[k] + Math.sqrt(r2 - rx * rx));
+      }
+      dots.push([x0, y0]);
+      lasty[im] = y0; lset[im] = true;
+
+      // raise heights to the upper hemisphere of the exclusion disc
+      r = radius(x0, y0); r2 = r * r;
+      kw = Math.floor(r / dx);
+      k0 = Math.max(0, im - kw);
+      k1 = Math.min(ncol - 1, im + kw);
+      for (k = k0; k <= k1; ++k) {
+        rx = (im - k) * dx;
+        gy[k] = Math.max(gy[k], y0 + Math.sqrt(r2 - rx * rx));
+      }
+      return true;
+    },
+    drawFront: function() {
+      ctx.strokeStyle = "#d62728";
+      ctx.lineWidth = 1.0 * ratio;
+      ctx.beginPath();
+      var y = Math.min(gy[0], height);
+      ctx.moveTo(bbox[0], y);
+      for (var i = 0; i < ncol; ++i) {
+        y = Math.min(gy[i], height);
+        ctx.lineTo(bbox[0] + dx * i, y);
+        ctx.lineTo(bbox[0] + dx * (i + 1), y);
+      }
+      ctx.stroke();
+    }
+  };
+}
+
+function reset() {
+  gen = mSel.value === "ff" ? makeFF() : makeHF();
+  document.getElementById("ninitval").textContent = ninitSl.value;
+  document.getElementById("gradval").textContent =
+      (+gradSl.value).toFixed(1);
+  document.getElementById("gfacval").textContent = gfacSl.value;
+  document.getElementById("nangval").textContent = nangSl.value;
+  gfacSl.disabled = mSel.value !== "hf";
+  nangSl.disabled = mSel.value !== "ff";
+  gradSl.disabled = rfunSel.value === "const";
+}
+
+function draw() {
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = "#345";
+  for (var i = 0; i < gen.dots.length; ++i) {
+    ctx.beginPath();
+    ctx.arc(gen.dots[i][0], gen.dots[i][1], 1.8 * ratio,
+            0, 2 * Math.PI);
+    ctx.fill();
+  }
+  gen.drawFront();
+  document.getElementById("count").textContent = gen.dots.length;
+  document.getElementById("fsize").textContent = gen.frontSize();
+}
+
+function frame() {
+  var n = +speedSl.value;
+  document.getElementById("speedval").textContent = n;
+  for (var i = 0; i < n; ++i)
+    if (!gen.step()) break;
+  draw();
+  requestAnimationFrame(frame);
+}
+
+[mSel, ninitSl, rfunSel, gradSl, gfacSl, nangSl].forEach(function(el) {
+  el.addEventListener("change", reset);
+  el.addEventListener("input", reset);
+});
+canvas.addEventListener("click", reset);
+window.addEventListener("resize", function() {
+  // restart when the layout width changes (rotation, window resize)
+  var cssWidth = Math.max(240, chart.clientWidth || 960);
+  if (Math.abs(cssWidth * (window.devicePixelRatio || 1) - width) > 2) {
+    resize(); reset();
+  }
+});
+
+resize();
+reset();
+frame();
+
+})();
+</script>

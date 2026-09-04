@@ -1,0 +1,23 @@
+{{- /* Index of the interactive gallery: a grid of thumbnail cards, newest
+       first. Each artefact supplies `linkTitle` (the short title) and
+       `params.thumbnail` (a screenshot under static/images/gallery/). */ -}}
+{{ define "main" }}
+  <content>
+    {{ .Content }}
+  </content>
+  <ul class="gallery-grid">
+    {{ range .Pages.ByDate.Reverse }}
+      <li>
+        <a href="{{ .RelPermalink }}">
+          {{ $page := . }}
+          {{ with .Params.thumbnail }}
+            <img src="{{ . | relURL }}" alt="{{ $page.Title }}" loading="lazy" />
+          {{ end }}
+          <span>{{ .LinkTitle }}</span>
+        </a>
+      </li>
+    {{ else }}
+      <li>Nothing here yet.</li>
+    {{ end }}
+  </ul>
+{{ end }}

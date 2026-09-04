@@ -24,6 +24,14 @@ style = "catppuccin-latte"
 
 disableKinds = ["taxonomy"]
 
+# Hugo ≥ 0.150 refuses .html content files unless allowed here. The gallery
+# pages (content/gallery/*.html) are hand-written HTML + JavaScript that Hugo
+# must insert verbatim, so allow that content type (everything else stays at
+# Hugo's defaults).
+[security]
+  allowContent = ['^text/html$', '^text/markdown$']
+
+
 # Taxonomies
 [taxonomies]
   tag = "tags"
@@ -41,6 +49,10 @@ weight=1
     url = "/posts/"
     name = "blog"
     weight = 10
+  [[menu.main]]
+    pageRef = "/gallery"
+    name = "gallery"
+    weight = 20
   [[menu.main]]
     url = "/code/"
     name = "code"
@@ -60,6 +72,9 @@ weight=1
   posts = "/posts/:year/:month/:title/"
 
 [params]
+# The blog is the "main" section (used by the theme for post navigation and
+# tag pages); set it explicitly so adding other sections never changes it.
+mainSections = ["posts"]
 # Date format (default: Jan 2, 2006)
 # datefmt  = "Jan 2, 2006"
 # enable_katex = true

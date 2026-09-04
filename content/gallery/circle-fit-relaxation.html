@@ -1,0 +1,478 @@
+---
+title: "Circle-Fitting Relaxation"
+linkTitle: "Circle fitting"      # short title for the gallery grid
+date: 2026-09-04
+description: "Poisson-disc samples relaxed toward hexagonal order by blending short-range repulsion with a pull toward the least-squares circle through each node's neighbours."
+tags: ["meshless", "node-generation", "visualisation"]
+params:
+  assisted_by: "Claude Fable 5"
+  thumbnail: "/images/gallery/circle-fit-relaxation.png"
+---
+<!-- Minimal working example: Poisson-disc sampling (Bridson) followed
+     by circle-fitting relaxation: each node is attracted toward the
+     centre of the least-squares (Kasa) circle through its k=6 nearest
+     neighbours, blended with short-range repulsion.  The residual of
+     the same fit is the convergence monitor, shown as the colour of
+     each point and as the mean readout.  Hover to see one node's
+     neighbours, fitted circle, and attraction; click to resample.
+     Style after Jason Davies' Lloyd's Relaxation / Poisson-Disc pages.
+     This is a Hugo content file: the front matter above is parsed, the
+     rest is inserted verbatim by layouts/gallery/single.html. -->
+
+<div class="gallery-chart" id="chart"></div>
+
+<p class="gallery-readout">
+<span>Iteration: <span id="iter">0</span></span>
+<span>mean &sigma;/h: <span id="sigma">&ndash;</span></span>
+<span>mean &psi;<sub>6</sub>: <span id="psi6">&ndash;</span></span>
+<span id="status"></span>
+</p>
+
+<div class="gallery-controls">
+  <label for="omega">&omega;</label>
+  <input type="range" id="omega" min="0" max="1" step="0.05" value="0.4">
+  <span id="omegaval">0.40</span>
+  <span class="note">0 = circle fit, 1 = repulsion</span>
+
+  <label for="mexp">m</label>
+  <input type="range" id="mexp" min="2" max="16" step="1" value="8">
+  <span id="mval">8</span>
+  <span class="note">repulsion exponent</span>
+
+  <label for="knb">k</label>
+  <input type="range" id="knb" min="3" max="12" step="1" value="6">
+  <span id="kval">6</span>
+  <span class="note">neighbours, force and fit</span>
+</div>
+
+<p>Poisson-disc samples, relaxed by two forces.
+Click (or tap) the canvas to restart; hover to inspect one node.</p>
+
+<p>The repulsion from the k nearest neighbours y<sub>j</sub> is
+$$f(x) = \sum_{j} \left( \frac{h}{|x - y_j|} \right)^{m} (x - y_j),$$
+and each step blends it with the pull toward &#265;(x), the centre of
+the least-squares circle through the neighbours (K&aring;sa, 1976):
+$$\Delta x = \omega\, f + (1 - \omega)\, \big(\hat{c}(x) - x\big).$$
+</p>
+
+<p>&sigma; is the root-mean-square deviation of the neighbours
+from their fitted circle, in units of the spacing h: zero for a
+perfect ring.
+Each point is coloured by its own &sigma;.
+&psi;<sub>6</sub> compares the directions to the six nearest
+neighbours with a perfect hexagon: 1 is hexagonal, near 0 is random.
+(At k = 3 a circle fits three points exactly, and &sigma; stops
+meaning anything.)</p>
+
+<p>The black squares are fixed.  The first ten iterations run pure
+repulsion with a ramped-in step clamp; after that the sliders take
+over.  A hard floor keeps every pair at least 0.7&thinsp;h apart;
+the repulsive shift and the total step are clamped to
+0.2&thinsp;h, the step is damped by &frac12;, and neighbour lists
+refresh every five iterations.</p>
+
+<p>Inspired by the beautiful visualizations of
+<a href="https://www.jasondavies.com/">Jason Davies</a>.</p>
+
+<script>
+(function() {
+"use strict";
+
+var chart = document.getElementById("chart"),
+    canvas = document.createElement("canvas"),
+    ctx;
+chart.appendChild(canvas);
+
+// The canvas fills its container (the full text column on a phone, up to
+// 960 CSS px on a large screen) and is redrawn at the device pixel ratio.
+// The target spacing h is fixed in CSS pixels, so a narrower canvas simply
+// holds fewer points instead of shrinking them.
+var ratio, width, height, h,
+    clampFrac = 0.2,          // max step per iteration, in units of h
+    damping = 0.5,            // under-relaxation of the total step:
+                              // deadbeat for period-2 oscillation
+    precond = 10,             // pure-repulsion iterations
+    refreshEvery = 5,          // neighbour-list refresh interval
+    floorRatio = 0.7;         // hard pairwise floor, in units of h
+
+function resize() {
+  ratio = window.devicePixelRatio || 1;
+  var cssWidth = Math.max(240, chart.clientWidth || 960);
+  width = Math.round(cssWidth * ratio);
+  height = Math.round(width * 500 / 960);
+  h = 18 * ratio;             // target spacing
+  canvas.width = width; canvas.height = height;
+  ctx = canvas.getContext("2d");
+}
+
+var pts, nfixed, iter, running, hover = null, nbCache = null,
+    k = 6,
+    omegaSlider = document.getElementById("omega"),
+    mSlider = document.getElementById("mexp"),
+    kSlider = document.getElementById("knb");
+function rearm() {
+  running = true;
+  document.getElementById("omegaval").textContent =
+      (+omegaSlider.value).toFixed(2);
+  document.getElementById("mval").textContent = mSlider.value;
+  document.getElementById("kval").textContent = kSlider.value;
+  if (+kSlider.value !== k) { k = +kSlider.value; nbCache = null; }
+  mSlider.disabled = +omegaSlider.value === 0;
+}
+omegaSlider.addEventListener("input", rearm);
+mSlider.addEventListener("input", rearm);
+kSlider.addEventListener("input", rearm);
+
+function dist2(a, b) {
+  var dx = b[0] - a[0], dy = b[1] - a[1];
+  return dx * dx + dy * dy;
+}
+
+// ---------- fixed boundary ring along the canvas rectangle ----------
+function boundaryRing() {
+  var inset = 3 * ratio,
+      w = width - 2 * inset, hh = height - 2 * inset,
+      out = [], n, i;
+  n = Math.round(w / h);
+  for (i = 0; i < n; ++i) {
+    out.push([inset + w * i / n, inset]);
+    out.push([inset + w - w * i / n, inset + hh]);
+  }
+  n = Math.round(hh / h);
+  for (i = 0; i < n; ++i) {
+    out.push([inset + w, inset + hh * i / n]);
+    out.push([inset, inset + hh - hh * i / n]);
+  }
+  return out;
+}
+
+// ---- Poisson-disc sampling (Bridson), seeded by the fixed ring ----
+function poisson(r, seeds) {
+  var kk = 30,
+      r2 = r * r, A = 3 * r2,
+      cell = r * Math.SQRT1_2,
+      gw = Math.ceil(width / cell), gh = Math.ceil(height / cell),
+      grid = new Array(gw * gh),
+      queue = [], out = [];
+  function put(p) {
+    grid[gw * (p[1] / cell | 0) + (p[0] / cell | 0)] = p;
+  }
+  function far(p) {
+    var x = p[0] / cell | 0, y = p[1] / cell | 0,
+        x0 = Math.max(x - 2, 0), y0 = Math.max(y - 2, 0),
+        x1 = Math.min(x + 3, gw), y1 = Math.min(y + 3, gh);
+    for (var j = y0; j < y1; ++j)
+      for (var i = x0; i < x1; ++i) {
+        var g = grid[gw * j + i];
+        if (g && dist2(g, p) < 0.72 * r2) return false;
+      }
+    return true;
+  }
+  seeds.forEach(function(p) { put(p); queue.push(p); });
+  while (queue.length) {
+    var qi = Math.random() * queue.length | 0, p = queue[qi], j;
+    for (j = 0; j < kk; ++j) {
+      var t = 2 * Math.PI * Math.random(),
+          rr = Math.sqrt(r2 + A * Math.random()),
+          q = [p[0] + rr * Math.cos(t), p[1] + rr * Math.sin(t)];
+      if (q[0] >= 0 && q[0] < width && q[1] >= 0 && q[1] < height
+          && far(q)) { put(q); queue.push(q); out.push(q); break; }
+    }
+    if (j === kk) queue[qi] = queue[queue.length - 1], queue.pop();
+  }
+  return out;
+}
+
+// ---------- k nearest neighbours via a cell grid ----------
+function buildGrid() {
+  var cell = h,
+      gw = Math.ceil(width / cell), gh = Math.ceil(height / cell),
+      grid = new Array(gw * gh);
+  pts.forEach(function(p, i) {
+    var c = gw * (p[1] / cell | 0) + (p[0] / cell | 0);
+    (grid[c] || (grid[c] = [])).push(i);
+  });
+  return function(i, kk) {
+    kk = kk || k;
+    var p = pts[i],
+        x = p[0] / cell | 0, y = p[1] / cell | 0,
+        cand = [];
+    for (var ring = 1; ring <= 3; ++ring) {
+      cand.length = 0;
+      var x0 = Math.max(x - ring, 0), y0 = Math.max(y - ring, 0),
+          x1 = Math.min(x + ring + 1, gw),
+          y1 = Math.min(y + ring + 1, gh);
+      for (var j = y0; j < y1; ++j)
+        for (var ii = x0; ii < x1; ++ii) {
+          var b = grid[gw * j + ii];
+          if (b) for (var t = 0; t < b.length; ++t)
+            if (b[t] !== i) cand.push(b[t]);
+        }
+      if (cand.length >= Math.max(kk, 6) + 2) break;
+    }
+    cand.sort(function(a, b) {
+      return dist2(pts[a], p) - dist2(pts[b], p);
+    });
+    return cand.slice(0, kk);
+  };
+}
+
+// ------ Kasa circle fit (centred, so the system is 2x2) ------
+// Least squares on 2*a*u + 2*b*v + c = u^2 + v^2 in coordinates centred
+// on the centroid: the first-moment sums vanish, leaving a 2x2 system
+// for the centre and c = mean(z); also better conditioned than the raw
+// 3x3 normal equations.
+function kasa(q) {
+  var n = q.length, mx = 0, my = 0, i;
+  for (i = 0; i < n; ++i) { mx += q[i][0]; my += q[i][1]; }
+  mx /= n; my /= n;
+  var Suu = 0, Suv = 0, Svv = 0, Suz = 0, Svz = 0, Sz = 0;
+  for (i = 0; i < n; ++i) {
+    var u = q[i][0] - mx, v = q[i][1] - my, z = u * u + v * v;
+    Suu += u * u; Suv += u * v; Svv += v * v;
+    Suz += u * z; Svz += v * z; Sz += z;
+  }
+  var d = 2 * (Suu * Svv - Suv * Suv);
+  if (Math.abs(d) < 1e-9) return null;   // collinear neighbours
+  var a = (Svv * Suz - Suv * Svz) / d,   // centre, relative to the centroid
+      b = (Suu * Svz - Suv * Suz) / d,
+      R = Math.sqrt(Math.max(a * a + b * b + Sz / n, 0)),
+      st = 0;
+  for (i = 0; i < n; ++i)
+    st += Math.pow(Math.hypot(q[i][0] - mx - a, q[i][1] - my - b) - R, 2);
+  return { cx: mx + a, cy: my + b, r: R, sigma: Math.sqrt(st / n) };
+}
+
+// ------- hard floor: pairwise Gauss-Seidel projection -------
+function floorSweep() {
+  floorSweep.maxCorr = 0;
+  var dmin = floorRatio * h, dmin2 = dmin * dmin,
+      cell = h,
+      gw = Math.ceil(width / cell), gh = Math.ceil(height / cell),
+      grid = new Array(gw * gh), i, moved = false;
+  for (i = 0; i < pts.length; ++i) {
+    var c = gw * (pts[i][1] / cell | 0) + (pts[i][0] / cell | 0);
+    (grid[c] || (grid[c] = [])).push(i);
+  }
+  for (i = 0; i < pts.length; ++i) {
+    var p = pts[i],
+        x = p[0] / cell | 0, y = p[1] / cell | 0,
+        x0 = Math.max(x - 1, 0), y0 = Math.max(y - 1, 0),
+        x1 = Math.min(x + 2, gw), y1 = Math.min(y + 2, gh);
+    for (var jj = y0; jj < y1; ++jj)
+      for (var ii = x0; ii < x1; ++ii) {
+        var b = grid[gw * jj + ii];
+        if (!b) continue;
+        for (var tt = 0; tt < b.length; ++tt) {
+          var j = b[tt];
+          if (j <= i) continue;
+          if (i < nfixed && j < nfixed) continue;
+          var q = pts[j],
+              dx = p[0] - q[0], dy = p[1] - q[1],
+              d2 = dx * dx + dy * dy;
+          if (d2 >= dmin2) continue;
+          var d = Math.sqrt(d2), ux, uy;
+          if (d < 1e-9) {           // coincident: random direction
+            var th = 2 * Math.PI * Math.random();
+            ux = Math.cos(th); uy = Math.sin(th); d = 0;
+          } else { ux = dx / d; uy = dy / d; }
+          var gap = dmin - d;
+          floorSweep.maxCorr = Math.max(floorSweep.maxCorr, gap);
+          if (i >= nfixed && j >= nfixed) {
+            p[0] += 0.5 * gap * ux; p[1] += 0.5 * gap * uy;
+            q[0] -= 0.5 * gap * ux; q[1] -= 0.5 * gap * uy;
+          } else if (i >= nfixed) {
+            p[0] += gap * ux; p[1] += gap * uy;
+          } else {
+            q[0] -= gap * ux; q[1] -= gap * uy;
+          }
+          moved = true;
+        }
+      }
+  }
+  return moved;
+}
+
+// ---------- one relaxation iteration (fixed ring clamped) ----------
+function step() {
+  if (nbCache === null || iter % refreshEvery === 0) {
+    var knnf = buildGrid();
+    nbCache = new Array(pts.length);
+    var psum = 0, pn = 0;
+    for (var c = nfixed; c < pts.length; ++c) {
+      nbCache[c] = knnf(c);
+      var six = k === 6 ? nbCache[c] : knnf(c, 6),
+          re = 0, im = 0;
+      for (var jj6 = 0; jj6 < six.length; ++jj6) {
+        var th6 = Math.atan2(pts[six[jj6]][1] - pts[c][1],
+                             pts[six[jj6]][0] - pts[c][0]);
+        re += Math.cos(6 * th6); im += Math.sin(6 * th6);
+      }
+      if (six.length === 6) {
+        psum += Math.hypot(re, im) / 6; ++pn;
+      }
+    }
+    document.getElementById("psi6").textContent =
+        pn ? (psum / pn).toFixed(3) : "-";
+  }
+  var omega = iter < precond ? 1.0 : +omegaSlider.value,
+      m = +mSlider.value,
+      clamp = clampFrac * h *
+          (0.3 + 0.7 * Math.min(1, (iter + 1) / precond)),
+      shifts = new Array(pts.length),
+      sig = 0, nsig = 0, maxShift = 0, i, j;
+  for (i = 0; i < pts.length; ++i) {
+    if (i < nfixed) { shifts[i] = [0, 0]; continue; }
+    var p = pts[i], nb = nbCache[i];
+    if (!nb || nb.length < 4) { shifts[i] = [0, 0]; continue; }
+    // repulsion with LENGTH units: f = sum (h/d)^m (p - q)
+    var fx = 0, fy = 0;
+    for (j = 0; j < nb.length; ++j) {
+      var q = pts[nb[j]],
+          dx = p[0]-q[0], dy = p[1]-q[1],
+          d = Math.hypot(dx, dy) || 1e-9,
+          w = Math.pow(h / d, m);
+      fx += w * dx; fy += w * dy;
+    }
+    var fn = Math.hypot(fx, fy);
+    if (fn > clamp) {               // clamp the repulsive shift
+      fx *= clamp / fn; fy *= clamp / fn;
+    }
+    // proportional attraction toward the fitted centre
+    var fit = kasa(nb.map(function(t) { return pts[t]; })),
+        ax = 0, ay = 0;
+    if (fit) {
+      ax = fit.cx - p[0]; ay = fit.cy - p[1];
+      sig += fit.sigma / h; ++nsig;
+      pts[i].sigma = fit.sigma / h;
+    }
+    var sx = omega * fx + (1 - omega) * ax,
+        sy = omega * fy + (1 - omega) * ay,
+        sn = Math.hypot(sx, sy);
+    if (sn > clamp) {               // clamp the total step
+      sx *= clamp / sn; sy *= clamp / sn;
+    }
+    shifts[i] = [sx, sy];
+  }
+  for (i = nfixed; i < pts.length; ++i) {
+    var s = shifts[i];
+    pts[i][0] += damping * s[0]; pts[i][1] += damping * s[1];
+    maxShift = Math.max(maxShift,
+        damping * Math.hypot(s[0], s[1]));
+  }
+  for (var sweep = 0; sweep < 3 && floorSweep(); ++sweep) {
+    maxShift = Math.max(maxShift, floorSweep.maxCorr);
+  }
+  ++iter;
+  document.getElementById("iter").textContent = iter;
+  var sigBar = nsig ? sig / nsig : Infinity;
+  document.getElementById("sigma").textContent =
+      nsig ? sigBar.toFixed(4) : "-";
+  if (iter > precond + 5 && maxShift < 5e-3 * h)
+    running = false;
+}
+
+// ---------- drawing ----------
+function colour(s) {
+  var t = Math.max(0, Math.min(1, (s || 0) / 0.25));
+  var r = Math.round( 40 + 215 * t),
+      g = Math.round( 60 + 160 * t),
+      b = Math.round(110 - 80 * t);
+  return "rgb(" + r + "," + g + "," + b + ")";
+}
+function draw() {
+  ctx.clearRect(0, 0, width, height);
+  var s = 4.5 * ratio;
+  for (var i = 0; i < pts.length; ++i) {
+    if (i < nfixed) {
+      ctx.fillStyle = "#000";
+      ctx.fillRect(pts[i][0] - s / 2, pts[i][1] - s / 2, s, s);
+    } else {
+      ctx.beginPath();
+      ctx.arc(pts[i][0], pts[i][1], 2 * ratio, 0, 2 * Math.PI);
+      ctx.fillStyle = colour(pts[i].sigma);
+      ctx.fill();
+    }
+  }
+  if (hover !== null && hover >= nfixed && pts[hover]) {
+    var nb = nbCache && nbCache[hover]
+        ? nbCache[hover] : buildGrid()(hover),
+        p = pts[hover],
+        fit = kasa(nb.map(function(t) { return pts[t]; }));
+    ctx.lineWidth = 1.2 * ratio;
+    for (var j = 0; j < nb.length; ++j) {
+      var q = pts[nb[j]];
+      ctx.beginPath();
+      ctx.arc(q[0], q[1], 3.2 * ratio, 0, 2 * Math.PI);
+      ctx.strokeStyle = "#1f77b4"; ctx.stroke();
+    }
+    if (fit) {
+      ctx.beginPath();
+      ctx.arc(fit.cx, fit.cy, fit.r, 0, 2 * Math.PI);
+      ctx.strokeStyle = "#2ca02c"; ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(p[0], p[1]); ctx.lineTo(fit.cx, fit.cy);
+      ctx.strokeStyle = "#d62728"; ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(fit.cx, fit.cy, 2.5 * ratio, 0, 2 * Math.PI);
+      ctx.fillStyle = "#2ca02c"; ctx.fill();
+    }
+    ctx.beginPath();
+    ctx.arc(p[0], p[1], 3.5 * ratio, 0, 2 * Math.PI);
+    ctx.fillStyle = "#d62728"; ctx.fill();
+  }
+}
+
+function statusText() {
+  var t = "(" + pts.length + " points, " + nfixed + " fixed)";
+  if (iter < precond) t += " (preconditioning: ω=1)";
+  else if (!running) t += " (converged)";
+  return t;
+}
+
+function frame() {
+  if (running) step();
+  draw();
+  document.getElementById("status").textContent = statusText();
+  requestAnimationFrame(frame);
+}
+
+function reset() {
+  var ring = boundaryRing();
+  nfixed = ring.length;
+  var inner = poisson(h, ring);
+  pts = ring.concat(inner);
+  nbCache = null;
+  hover = null;
+  iter = 0;
+  running = true;
+}
+
+canvas.addEventListener("click", reset);
+canvas.addEventListener("mousemove", function(ev) {
+  // map CSS pixels to canvas pixels (the canvas is scaled by CSS)
+  var r = canvas.getBoundingClientRect(),
+      mx = (ev.clientX - r.left) * width / r.width,
+      my = (ev.clientY - r.top) * height / r.height,
+      best = -1, bd = 1e18;
+  for (var i = nfixed; i < pts.length; ++i) {
+    var d = dist2(pts[i], [mx, my]);
+    if (d < bd) { bd = d; best = i; }
+  }
+  hover = bd < h * h * 4 ? best : null;
+});
+canvas.addEventListener("mouseleave", function() { hover = null; });
+window.addEventListener("resize", function() {
+  // resample when the layout width changes (rotation, window resize)
+  var cssWidth = Math.max(240, chart.clientWidth || 960);
+  if (Math.abs(cssWidth * (window.devicePixelRatio || 1) - width) > 2) {
+    resize(); reset();
+  }
+});
+
+resize();
+reset();
+frame();
+
+})();
+</script>

@@ -46,3 +46,13 @@
 {{- range site.Params.custom_css }}
   <link rel="stylesheet" href="{{ . | relURL }}" />
 {{- end }}
+
+{{- /* ---- 3. Stylesheet for the interactive gallery pages --------------- */ -}}
+{{- /* Every page under content/gallery/ (the list and the individual
+       artefacts) shares one stylesheet, bundled from assets/css/gallery.css. */ -}}
+{{- if eq .Section "gallery" }}
+  {{- with resources.Get "css/gallery.css" }}
+    {{- $gallery := . | minify }}
+  <link rel="stylesheet" href="{{ $gallery.RelPermalink }}" />
+  {{- end }}
+{{- end }}
