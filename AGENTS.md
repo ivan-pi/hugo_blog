@@ -42,6 +42,10 @@ hugo server -D  # local preview incl. drafts → http://localhost:1313
 - Filename convention: `content/posts/YYYYMMDD_short-slug.md`. The date prefix is
   only for sorting — the URL comes from the post's `date` + `title`.
 - Keep unfinished work as `draft: true`.
+- **Interactive tools** (standalone HTML calculators) live in `static/tools/`
+  and are served verbatim at `/tools/<file>.html`. Every tool **must** be listed
+  on `content/tools.md` (the `/tools/` index, linked from the top menu) — a file
+  dropped into `static/tools/` alone is unreachable except by direct URL.
 - Math is KaTeX (`$…$`, `$$…$$`); numbered equations use the `{{< neq >}}`
   shortcode. **Do not delete `layouts/_shortcodes/neq.html`** — several posts
   need it and the build fails without it.

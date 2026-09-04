@@ -25,6 +25,11 @@ Fast Library for Approximate Nearest Neighbors (original library [here](http://p
 * [phs_poly](https://pypi.org/project/phs-poly/): Procedures for generating RBF-FD weights for derivative calculations.
 
 
+## Interactive tools
+
+Browser-based calculators that accompany blog posts (e.g. the RBF-FD Stencil Sizer) are collected on the [tools](/tools/) page.
+
+
 ## Fortran tooling
 
 * [fpm-deps and fpm-tree](https://ivan-pi.github.io/fpm-deps/): `fpm-deps` generates dependency graphs of [fpm](https://fpm.fortran-lang.org/) packages, with `fpm-tree` as a companion tool.

@@ -46,6 +46,10 @@ weight=1
     name = "code"
     weight = 40
   [[menu.main]]
+    url = "/tools/"
+    name = "tools"
+    weight = 42
+  [[menu.main]]
     url = "/links/"
     name = "links"
     weight = 45

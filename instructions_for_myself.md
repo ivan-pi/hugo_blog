@@ -157,7 +157,8 @@ These live directly in `content/` (not under `posts/`) and back the top menu:
 |------|------|-----------|
 | Home | `content/_index.md` | `home` |
 | Code | `content/code.md` | `code` |
-| Diary | `content/diary.md` | `diary` |
+| Tools | `content/tools.md` | `tools` |
+| Links | `content/links/_index.md` (Diary: `content/links/diary.md`) | `links` |
 | Now | `content/now.md` | `now` |
 
 The menu itself and the footer links are defined under `[menu]` in
@@ -180,6 +181,25 @@ overrides or supplements the theme's version. Two files live here:
   `static/css/address.css`, which adds 📧/📞 icons to the contact links on the
   home page). The theme does not read `custom_css` on its own, so this partial
   is what makes that config key work.
+
+---
+
+## Interactive tools (`static/tools/`)
+
+Standalone, self-contained HTML calculators (currently the **RBF-FD Stencil
+Sizer**, `static/tools/rbf_fd_stencil_sizer.html`) live under `static/tools/`.
+Hugo copies them verbatim, so they are served at `/tools/<file>.html` with no
+theme chrome — each page carries its own CSS/JS and a footer linking back to
+the blog post it accompanies.
+
+Being static files, they are invisible to Hugo's section listings: nothing
+links to them automatically. The index page **`content/tools.md`** (menu entry
+`tools`, served at `/tools/`) is the one place that lists them. **When adding a
+new tool, add a bullet to `content/tools.md`** — and link it from the related
+post — otherwise it is only reachable by typing the URL.
+
+Keep the sizer's filename and URL stable: its canonical URL is hard-coded in
+the file's `<head>` and the matrix-sizes post links to it.
 
 ---
 
