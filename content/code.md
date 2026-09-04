@@ -1,5 +1,7 @@
 ---
 title: "Code development"
+aliases:
+  - /tools/
 ---
 
 In my free time I like to work on scientific coding projects in Fortran.
@@ -23,6 +25,13 @@ Fast Library for Approximate Nearest Neighbors (original library [here](http://p
 
 * [zvode](https://ivan-pi.github.io/zvode/): Python bindings to the classic ZVODE ODE solver.
 * [phs_poly](https://pypi.org/project/phs-poly/): Procedures for generating RBF-FD weights for derivative calculations.
+
+
+## Interactive tools
+
+Small browser-based calculators.
+
+* [RBF-FD Stencil Sizer](/tools/rbf_fd_stencil_sizer.html): checks whether an RBF-FD stencil fits in CPU cache or GPU shared memory; companion to [this post](/posts/2026/07/sizing-rbf-fd-stencils-for-modern-cpu-caches/).
 
 
 ## Fortran tooling
