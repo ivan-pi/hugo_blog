@@ -43,11 +43,14 @@ hugo server -D  # local preview incl. drafts → http://localhost:1313
   only for sorting — the URL comes from the post's `date` + `title`.
 - Keep unfinished work as `draft: true`.
 - **Interactive pages live in `content/gallery/`** as `.html` files with the
-  same front matter (plus `description` and `params.assisted_by`). Hugo inserts
-  the body verbatim, so write plain HTML/JS there, not Markdown; put the canvas
-  in `<div class="gallery-chart">` and sliders in `<div class="gallery-controls">`
-  so the shared stylesheet `assets/css/gallery.css` makes them phone-friendly.
-  Layouts: `layouts/gallery/`. Small calculator apps stay in `static/tools/`.
+  same front matter plus `linkTitle` (short title for the index grid),
+  `description` (meta description only — not displayed), `params.assisted_by`
+  (AI-assistance byline under the title) and `params.thumbnail` (a screenshot
+  in `static/images/gallery/`). Hugo inserts the body verbatim, so write plain
+  HTML/JS there, not Markdown; put the canvas in `<div class="gallery-chart">`
+  and sliders in `<div class="gallery-controls">` so the shared stylesheet
+  `assets/css/gallery.css` makes them phone-friendly. Layouts:
+  `layouts/gallery/`. Small calculator apps stay in `static/tools/`.
 - **Interactive tools** (standalone HTML calculators) live in `static/tools/`
   and are served verbatim at `/tools/<file>.html`. Every tool **must** be listed
   under "Interactive tools" on `content/code.md` (`/tools/` itself redirects

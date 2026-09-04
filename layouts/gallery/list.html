@@ -1,23 +1,20 @@
-{{- /* Index of the interactive gallery: intro text from _index.md, then
-       every artefact, newest first, with its date and description. */ -}}
+{{- /* Index of the interactive gallery: a grid of thumbnail cards, newest
+       first. Each artefact supplies `linkTitle` (the short title) and
+       `params.thumbnail` (a screenshot under static/images/gallery/). */ -}}
 {{ define "main" }}
   <content>
     {{ .Content }}
   </content>
-  <ul class="blog-posts gallery-list">
+  <ul class="gallery-grid">
     {{ range .Pages.ByDate.Reverse }}
       <li>
-        <span>
-          <i>
-            <time datetime="{{ .Date.Format "2006-01-02" }}" pubdate>
-              {{ .Date.Format (default "2006-01-02" .Site.Params.dateFormat) }}
-            </time>
-          </i>
-        </span>
-        <div>
-          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-          {{ with .Description }}<br /><small>{{ . }}</small>{{ end }}
-        </div>
+        <a href="{{ .RelPermalink }}">
+          {{ $page := . }}
+          {{ with .Params.thumbnail }}
+            <img src="{{ . | relURL }}" alt="{{ $page.Title }}" loading="lazy" />
+          {{ end }}
+          <span>{{ .LinkTitle }}</span>
+        </a>
       </li>
     {{ else }}
       <li>Nothing here yet.</li>

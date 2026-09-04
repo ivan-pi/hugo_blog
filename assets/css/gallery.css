@@ -3,11 +3,11 @@
    Everything here is layered on top of the hugo-simple theme and uses its
    colour variables, so the pages follow the light/dark theme automatically. */
 
-/* Byline under the title: date and the AI-assistance disclosure. */
+/* Byline in the page header, under the title: date and the AI-assistance
+   disclosure (rendered by the header partial override). */
 .gallery-byline {
   color: var(--text-light);
   font-style: italic;
-  margin-top: 0;
 }
 
 /* The canvas: as wide as the text column on phones, breaking out of it on
@@ -110,10 +110,35 @@
   margin: 0.4em 0;
 }
 
-/* The gallery index: date | title + one-line description. */
-ul.gallery-list > li {
-  margin-bottom: 0.6rem;
+/* The gallery index: a grid of thumbnail cards with short titles. */
+ul.gallery-grid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1.5rem;
 }
-ul.gallery-list > li div small {
-  color: var(--text-light);
+ul.gallery-grid a {
+  display: block;
+  text-decoration: none;
+}
+ul.gallery-grid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 960 / 500;          /* same as the canvases */
+  object-fit: cover;
+  background: #fff;                 /* thumbs are white like the canvases */
+  border: var(--border-width) solid var(--border);
+  border-radius: var(--standard-border-radius);
+}
+ul.gallery-grid a:hover img {
+  border-color: var(--accent);
+}
+ul.gallery-grid span {
+  display: block;
+  margin-top: 0.4rem;
+  text-align: center;
+}
+ul.gallery-grid a:hover span {
+  text-decoration: underline;
 }
