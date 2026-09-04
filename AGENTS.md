@@ -44,8 +44,9 @@ hugo server -D  # local preview incl. drafts → http://localhost:1313
 - Keep unfinished work as `draft: true`.
 - **Interactive tools** (standalone HTML calculators) live in `static/tools/`
   and are served verbatim at `/tools/<file>.html`. Every tool **must** be listed
-  on `content/tools.md` (the `/tools/` index, linked from the top menu) — a file
-  dropped into `static/tools/` alone is unreachable except by direct URL.
+  under "Interactive tools" on `content/code.md` (`/tools/` itself redirects
+  there) — a file dropped into `static/tools/` alone is unreachable except by
+  direct URL.
 - Math is KaTeX (`$…$`, `$$…$$`); numbered equations use the `{{< neq >}}`
   shortcode. **Do not delete `layouts/_shortcodes/neq.html`** — several posts
   need it and the build fails without it.
